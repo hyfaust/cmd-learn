@@ -1,0 +1,3556 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Windows 命令行脚本编程完整学习教程">
+      
+      
+        <meta name="author" content="CMD Learn Project">
+      
+      
+      
+        <link rel="prev" href="../ch10-network/">
+      
+      
+        <link rel="next" href="../ch12-task-scheduler/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>第11章 进程与服务管理 — 系统的守护者 - CMD/BAT 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#11" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-header__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CMD/BAT 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第11章 进程与服务管理 — 系统的守护者
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch01-hello-cmd/" class="md-tabs__link">
+          
+  
+  
+  入门篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch05-string-processing/" class="md-tabs__link">
+          
+  
+  
+  进阶篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ch09-env-registry/" class="md-tabs__link">
+          
+  
+  
+  高级篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch13-multilang/" class="md-tabs__link">
+          
+  
+  
+  精通篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../appendix/" class="md-tabs__link">
+          
+  
+  
+  附录
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-nav__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CMD/BAT 从入门到精通
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    入门篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    入门篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch01-hello-cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第01章：Hello CMD — 初识命令行脚本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch02-file-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第02章 文件与目录管理 — 操作文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch03-conditionals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第03章：条件与流程控制 — 程序的判断力
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch04-loops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第04章 循环与跳转 — 重复的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进阶篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    进阶篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch05-string-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第05章 字符串处理 — 文本的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch06-file-io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第06章：文件I/O与重定向 — 数据的流动
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch07-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第07章 函数与模块化 — 代码的组织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch08-data-structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第08章 数据结构模拟 — 在限制中创造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高级篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    高级篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch09-env-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第09章 环境变量与注册表 — 系统配置的钥匙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch10-network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第10章 网络工具 — 连接世界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章 进程与服务管理 — 系统的守护者
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章 进程与服务管理 — 系统的守护者
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        你将学到什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 进程管理基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.1 进程管理基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.1 什么是进程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1112-tasklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.2 tasklist — 查看进程列表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 进程控制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.2 进程控制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1121-taskkill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2.1 taskkill — 终止进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1122-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2.2 start — 启动新进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 服务管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 服务管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1131-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.1 什么是 Windows 服务？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1132-sc-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.2 sc query — 查询服务状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1133-sc-startstop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.3 sc start/stop — 启动/停止服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1134-sc-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.4 sc config — 配置服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1135-net-startstop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.5 net start/stop — 简化版服务控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 系统信息查询
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.4 系统信息查询">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1141-systeminfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.1 systeminfo — 系统详细信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1142-wmic-wmi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.2 wmic — WMI 查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1143-driverquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.3 driverquery — 驱动信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 进程监控
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.5 进程监控">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1151" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.1 监控特定进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1152" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.2 进程资源使用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1153" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.3 进程间通信基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 核心概念与数据结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 核心概念与数据结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1161-process-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.1 进程树（Process Tree）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1162" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.2 服务状态机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1163-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.3 PID管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.7 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1171-python-psutil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.1 Python (psutil库)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1172-nodejs-child_process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.2 Node.js (child_process)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1173-c-systempopen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.3 C语言 (system/popen)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1174-lua-osexecute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.4 Lua (os.execute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#118" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 最佳实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.8 最佳实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1181" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.1 权限管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1182" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.2 避免进程残留
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.3 安全终止进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.4 常见陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#119" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.9 实战练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.9 实战练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：基础进程查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：服务状态检查
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：进程监控器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：系统健康检查
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1110" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.10 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.10 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键要点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下一步
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1111_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.11 参考资源
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.11 参考资源">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方文档
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch12-task-scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第12章 任务计划与调度 — 自动化的基石
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    精通篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    精通篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch13-multilang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第13章 多语言集成 — 万物互联
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch14-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：实战项目 — 学以致用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch15-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第15章 安全与权限 — 守护系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录：速查表与参考资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        你将学到什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 进程管理基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.1 进程管理基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.1 什么是进程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1112-tasklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.2 tasklist — 查看进程列表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 进程控制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.2 进程控制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1121-taskkill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2.1 taskkill — 终止进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1122-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2.2 start — 启动新进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 服务管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 服务管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1131-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.1 什么是 Windows 服务？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1132-sc-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.2 sc query — 查询服务状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1133-sc-startstop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.3 sc start/stop — 启动/停止服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1134-sc-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.4 sc config — 配置服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1135-net-startstop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.5 net start/stop — 简化版服务控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 系统信息查询
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.4 系统信息查询">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1141-systeminfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.1 systeminfo — 系统详细信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1142-wmic-wmi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.2 wmic — WMI 查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1143-driverquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.3 driverquery — 驱动信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 进程监控
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.5 进程监控">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1151" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.1 监控特定进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1152" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.2 进程资源使用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1153" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.3 进程间通信基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 核心概念与数据结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 核心概念与数据结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1161-process-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.1 进程树（Process Tree）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1162" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.2 服务状态机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1163-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.3 PID管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.7 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1171-python-psutil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.1 Python (psutil库)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1172-nodejs-child_process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.2 Node.js (child_process)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1173-c-systempopen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.3 C语言 (system/popen)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1174-lua-osexecute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7.4 Lua (os.execute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#118" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 最佳实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.8 最佳实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1181" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.1 权限管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1182" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.2 避免进程残留
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.3 安全终止进程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8.4 常见陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#119" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.9 实战练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.9 实战练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：基础进程查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：服务状态检查
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：进程监控器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：系统健康检查
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1110" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.10 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.10 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键要点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下一步
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1111_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.11 参考资源
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.11 参考资源">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方文档
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="11">第11章 进程与服务管理 — 系统的守护者<a class="headerlink" href="#11" title="Permanent link">&para;</a></h1>
+<h2 id="_1">你将学到什么<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>通过本章学习，你将能够：</p>
+<ul>
+<li>使用 <code>tasklist</code> 查看、筛选和分析运行中的进程</li>
+<li>使用 <code>taskkill</code> 安全地终止进程（按PID或名称）</li>
+<li>使用 <code>start</code> 启动新进程并控制运行方式</li>
+<li>使用 <code>sc</code> 命令查询和管理 Windows 服务</li>
+<li>使用 <code>systeminfo</code> 和 <code>wmic</code> 获取系统详细信息</li>
+<li>编写进程监控脚本</li>
+<li>理解进程树、服务状态机等核心概念</li>
+</ul>
+<p><strong>预计学习时间</strong>：90-120 分钟</p>
+<p><strong>前置要求</strong>：</p>
+<ul>
+<li>完成第1-10章内容</li>
+<li>理解基本的批处理语法</li>
+<li>管理员权限（部分操作需要）</li>
+</ul>
+<hr />
+<h2 id="111">11.1 进程管理基础<a class="headerlink" href="#111" title="Permanent link">&para;</a></h2>
+<h3 id="1111">11.1.1 什么是进程？<a class="headerlink" href="#1111" title="Permanent link">&para;</a></h3>
+<p>进程是正在运行的程序实例。每个进程都有：</p>
+<ul>
+<li><strong>PID（进程ID）</strong>：唯一标识符</li>
+<li><strong>内存空间</strong>：独立的地址空间</li>
+<li><strong>优先级</strong>：决定CPU调度顺序</li>
+<li><strong>父子关系</strong>：进程可以创建子进程</li>
+</ul>
+<pre class="mermaid"><code>graph TD
+    A[系统启动] --&gt; B[csrss.exe&lt;br&gt;PID: 400]
+    A --&gt; C[wininit.exe&lt;br&gt;PID: 500]
+    C --&gt; D[services.exe&lt;br&gt;PID: 600]
+    C --&gt; E[lsass.exe&lt;br&gt;PID: 700]
+    D --&gt; F[svchost.exe&lt;br&gt;PID: 1000]
+    D --&gt; G[svchost.exe&lt;br&gt;PID: 1100]
+    F --&gt; H[具体服务]
+    G --&gt; I[具体服务]</code></pre>
+<h3 id="1112-tasklist">11.1.2 tasklist — 查看进程列表<a class="headerlink" href="#1112-tasklist" title="Permanent link">&para;</a></h3>
+<p><code>tasklist</code> 是查看系统进程的基本工具。</p>
+<p><strong>基本语法</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tasklist [/s computer] [/u domain\user] [/p password] [/fo format] [/fi filter] [/m module]
+</span></code></pre></div>
+<p><strong>常用参数</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/fo TABLE</code></td>
+<td>表格格式输出（默认）</td>
+<td><code>tasklist /fo TABLE</code></td>
+</tr>
+<tr>
+<td><code>/fo CSV</code></td>
+<td>CSV格式输出</td>
+<td><code>tasklist /fo CSV</code></td>
+</tr>
+<tr>
+<td><code>/fo LIST</code></td>
+<td>列表格式输出</td>
+<td><code>tasklist /fo LIST</code></td>
+</tr>
+<tr>
+<td><code>/fi</code></td>
+<td>筛选条件</td>
+<td><code>tasklist /fi "imagename eq cmd.exe"</code></td>
+</tr>
+<tr>
+<td><code>/v</code></td>
+<td>详细信息</td>
+<td><code>tasklist /v</code></td>
+</tr>
+<tr>
+<td><code>/m</code></td>
+<td>查看加载的模块</td>
+<td><code>tasklist /m /fi "imagename eq notepad.exe"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>筛选条件运算符</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eq</code></td>
+<td>等于</td>
+<td><code>"PID eq 1234"</code></td>
+</tr>
+<tr>
+<td><code>ne</code></td>
+<td>不等于</td>
+<td><code>"status ne running"</code></td>
+</tr>
+<tr>
+<td><code>gt</code></td>
+<td>大于</td>
+<td><code>"memusage gt 100000"</code></td>
+</tr>
+<tr>
+<td><code>lt</code></td>
+<td>小于</td>
+<td><code>"memusage lt 100000"</code></td>
+</tr>
+<tr>
+<td><code>ge</code></td>
+<td>大于等于</td>
+<td><code>"PID ge 1000"</code></td>
+</tr>
+<tr>
+<td><code>le</code></td>
+<td>小于等于</td>
+<td><code>"PID le 2000"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>常用筛选字段</strong>：</p>
+<ul>
+<li><code>imagename</code>：进程名</li>
+<li><code>PID</code>：进程ID</li>
+<li><code>session</code>：会话ID</li>
+<li><code>status</code>：状态（running/suspended/not responding）</li>
+<li><code>username</code>：用户名</li>
+<li><code>memusage</code>：内存使用（KB）</li>
+<li><code>cputime</code>：CPU时间</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">实践技巧</p>
+<p>使用 <code>/fo CSV</code> 格式便于后续脚本解析，可以配合 <code>for /f</code> 命令提取数据。</p>
+</div>
+<hr />
+<h2 id="112">11.2 进程控制<a class="headerlink" href="#112" title="Permanent link">&para;</a></h2>
+<h3 id="1121-taskkill">11.2.1 taskkill — 终止进程<a class="headerlink" href="#1121-taskkill" title="Permanent link">&para;</a></h3>
+<p><code>taskkill</code> 用于终止正在运行的进程。</p>
+<p><strong>基本语法</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>taskkill [/s computer] [/u domain\user] [/p password] [/fi filter] [/pid processid] [/im imagename] [/f] [/t]
+</span></code></pre></div>
+<p><strong>常用参数</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/pid</code></td>
+<td>按PID终止</td>
+</tr>
+<tr>
+<td><code>/im</code></td>
+<td>按进程名终止</td>
+</tr>
+<tr>
+<td><code>/f</code></td>
+<td>强制终止</td>
+</tr>
+<tr>
+<td><code>/t</code></td>
+<td>终止进程及其子进程树</td>
+</tr>
+</tbody>
+</table>
+<p><strong>安全终止进程示例</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">REM 安全终止记事本进程</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>tasklist /fi <span class="s2">&quot;imagename eq notepad.exe&quot;</span> <span class="p">|</span> find <span class="s2">&quot;notepad.exe&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">equ</span> 0 <span class="p">(</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="k">echo</span> 正在终止记事本...
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    taskkill /im notepad.exe
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">echo</span> 记事本未运行
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<ol>
+<li>不要强制终止系统关键进程（如 csrss.exe, winlogon.exe）</li>
+<li>使用 <code>/t</code> 参数会终止整个进程树，谨慎使用</li>
+<li>终止前最好先确认进程存在</li>
+</ol>
+</div>
+<h3 id="1122-start">11.2.2 start — 启动新进程<a class="headerlink" href="#1122-start" title="Permanent link">&para;</a></h3>
+<p><code>start</code> 命令用于启动新程序或窗口。</p>
+<p><strong>基本语法</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">start</span> [<span class="s2">&quot;title&quot;</span>] [/d path] [/i] [/min <span class="p">|</span> /max] [/separate <span class="p">|</span> /shared] [/low <span class="p">|</span> /normal <span class="p">|</span> /high <span class="p">|</span> /realtime <span class="p">|</span> /abovenormal <span class="p">|</span> /belownormal] [/affinity hex] [/wait] [/b] [command/program]
+</span></code></pre></div>
+<p><strong>常用参数</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/min</code></td>
+<td>最小化窗口</td>
+</tr>
+<tr>
+<td><code>/max</code></td>
+<td>最大化窗口</td>
+</tr>
+<tr>
+<td><code>/b</code></td>
+<td>不创建新窗口（后台运行）</td>
+</tr>
+<tr>
+<td><code>/wait</code></td>
+<td>等待程序结束</td>
+</tr>
+<tr>
+<td><code>/d path</code></td>
+<td>设置工作目录</td>
+</tr>
+<tr>
+<td><code>/low</code></td>
+<td>低优先级</td>
+</tr>
+<tr>
+<td><code>/high</code></td>
+<td>高优先级</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">REM 最小化启动记事本</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">start</span> /min notepad.exe
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">REM 后台启动程序</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">start</span> /b ping -t localhost
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">REM 等待程序结束后继续</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">start</span> /wait notepad.exe
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">echo</span> 记事本已关闭
+</span></code></pre></div>
+<hr />
+<h2 id="113">11.3 服务管理<a class="headerlink" href="#113" title="Permanent link">&para;</a></h2>
+<h3 id="1131-windows">11.3.1 什么是 Windows 服务？<a class="headerlink" href="#1131-windows" title="Permanent link">&para;</a></h3>
+<p>Windows 服务是在后台运行的程序，具有以下特点：</p>
+<ul>
+<li>不需要用户登录即可运行</li>
+<li>可以配置为自动启动</li>
+<li>由服务控制管理器（SCM）管理</li>
+</ul>
+<p><strong>服务状态</strong>：</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Stopped
+    Stopped --&gt; StartPending: 启动请求
+    StartPending --&gt; Running: 启动完成
+    Running --&gt; StopPending: 停止请求
+    StopPending --&gt; Stopped: 停止完成
+    Running --&gt; Paused: 暂停请求
+    Paused --&gt; Running: 继续请求
+    Running --&gt; [*]</code></pre>
+<h3 id="1132-sc-query">11.3.2 sc query — 查询服务状态<a class="headerlink" href="#1132-sc-query" title="Permanent link">&para;</a></h3>
+<p><code>sc</code> 命令是服务管理的核心工具。</p>
+<p><strong>查询所有服务</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sc query state= all
+</span></code></pre></div>
+<p><strong>查询特定服务</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sc query wuauserv
+</span></code></pre></div>
+<p><strong>输出字段说明</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SERVICE_NAME</td>
+<td>服务名称</td>
+</tr>
+<tr>
+<td>DISPLAY_NAME</td>
+<td>显示名称</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td>服务类型</td>
+</tr>
+<tr>
+<td>STATE</td>
+<td>当前状态</td>
+</tr>
+<tr>
+<td>WIN32_EXIT_CODE</td>
+<td>退出代码</td>
+</tr>
+<tr>
+<td>SERVICE_EXIT_CODE</td>
+<td>服务退出代码</td>
+</tr>
+<tr>
+<td>CHECKPOINT</td>
+<td>检查点</td>
+</tr>
+<tr>
+<td>WAIT_HINT</td>
+<td>等待提示</td>
+</tr>
+</tbody>
+</table>
+<p><strong>筛选服务状态</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">REM 查询所有运行中的服务</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>sc query state= active type= service
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">REM 查询所有停止的服务</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>sc query state= inactive type= service
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">注意</p>
+<p><code>state=</code> 后面的等号后面必须有一个空格，这是 <code>sc</code> 命令的特殊语法要求。</p>
+</div>
+<h3 id="1133-sc-startstop">11.3.3 sc start/stop — 启动/停止服务<a class="headerlink" href="#1133-sc-startstop" title="Permanent link">&para;</a></h3>
+<p><strong>启动服务</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sc start servicename
+</span></code></pre></div>
+<p><strong>停止服务</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sc stop servicename
+</span></code></pre></div>
+<p><strong>暂停/继续服务</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sc pause servicename
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>sc continue servicename
+</span></code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">重要安全提示</p>
+<p>本教程中的示例仅演示查询操作。实际启停服务需要：</p>
+<ol>
+<li>管理员权限</li>
+<li>充分了解服务依赖关系</li>
+<li>在生产环境谨慎操作</li>
+<li>操作前备份相关配置</li>
+</ol>
+</div>
+<h3 id="1134-sc-config">11.3.4 sc config — 配置服务<a class="headerlink" href="#1134-sc-config" title="Permanent link">&para;</a></h3>
+<p><strong>修改启动类型</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">REM 设置为自动启动</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>sc config servicename start= auto
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1">REM 设置为手动启动</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>sc config servicename start= demand
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1">REM 设置为禁用</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>sc config servicename start= disabled
+</span></code></pre></div>
+<p><strong>修改服务描述</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sc description servicename <span class="s2">&quot;新的服务描述&quot;</span>
+</span></code></pre></div>
+<h3 id="1135-net-startstop">11.3.5 net start/stop — 简化版服务控制<a class="headerlink" href="#1135-net-startstop" title="Permanent link">&para;</a></h3>
+<p><code>net</code> 命令提供更简单的服务控制接口：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">REM 查看所有运行的服务</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>net start
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1">REM 启动服务（需管理员权限）</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>net start servicename
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1">REM 停止服务（需管理员权限）</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>net stop servicename
+</span></code></pre></div>
+<p><strong>比较 sc 和 net</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>sc 命令</th>
+<th>net 命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>功能完整性</td>
+<td>完整</td>
+<td>基本</td>
+</tr>
+<tr>
+<td>查询能力</td>
+<td>强大</td>
+<td>有限</td>
+</tr>
+<tr>
+<td>配置能力</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>输出格式</td>
+<td>结构化</td>
+<td>简单文本</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>复杂管理</td>
+<td>快速操作</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="114">11.4 系统信息查询<a class="headerlink" href="#114" title="Permanent link">&para;</a></h2>
+<h3 id="1141-systeminfo">11.4.1 systeminfo — 系统详细信息<a class="headerlink" href="#1141-systeminfo" title="Permanent link">&para;</a></h3>
+<p><code>systeminfo</code> 显示系统配置的详细信息。</p>
+<p><strong>基本使用</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>systeminfo
+</span></code></pre></div>
+<p><strong>输出信息包括</strong>：</p>
+<ul>
+<li>主机名、OS名称、版本</li>
+<li>系统制造商、型号、处理器</li>
+<li>BIOS版本</li>
+<li>物理内存总量、可用内存</li>
+<li>网络适配器配置</li>
+<li>已安装的热修补程序</li>
+</ul>
+<p><strong>格式化输出</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">REM CSV格式</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>systeminfo /fo CSV
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1">REM 列表格式</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>systeminfo /fo LIST
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1">REM 远程计算机</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>systeminfo /s remotepc /u admin /p password
+</span></code></pre></div>
+<h3 id="1142-wmic-wmi">11.4.2 wmic — WMI 查询<a class="headerlink" href="#1142-wmic-wmi" title="Permanent link">&para;</a></h3>
+<p>WMI（Windows Management Instrumentation）提供强大的系统管理能力。</p>
+<p><strong>查询进程信息</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">REM 获取进程列表</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>wmic process get name,processid,parentprocessid
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1">REM 获取特定进程详细信息</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>wmic process where name=<span class="s2">&quot;notepad.exe&quot;</span> get name,processid,executablepath,workingsetsize
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1">REM 获取进程命令行</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>wmic process where processid=1234 get commandline
+</span></code></pre></div>
+<p><strong>查询系统信息</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1">REM CPU信息</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>wmic cpu get name,numberofcores,maxclockspeed
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1">REM 内存信息</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>wmic memorychip get capacity,speed,manufacturer
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1">REM 磁盘信息</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>wmic diskdrive get model,size,status
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1">REM BIOS信息</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>wmic bios get manufacturer,version,releasedate
+</span></code></pre></div>
+<h3 id="1143-driverquery">11.4.3 driverquery — 驱动信息<a class="headerlink" href="#1143-driverquery" title="Permanent link">&para;</a></h3>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">REM 查看所有驱动</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>driverquery
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1">REM 详细信息</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>driverquery /v
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1">REM 签名状态</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>driverquery /si
+</span></code></pre></div>
+<hr />
+<h2 id="115">11.5 进程监控<a class="headerlink" href="#115" title="Permanent link">&para;</a></h2>
+<h3 id="1151">11.5.1 监控特定进程<a class="headerlink" href="#1151" title="Permanent link">&para;</a></h3>
+<p><strong>检查进程是否存在</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p">:</span><span class="nl">check_loop</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>tasklist /fi <span class="s2">&quot;imagename eq notepad.exe&quot;</span> <span class="p">|</span> find <span class="s2">&quot;notepad.exe&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">equ</span> 0 <span class="p">(</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="k">echo</span> [<span class="nv">%time%</span>] 记事本正在运行
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="k">echo</span> [<span class="nv">%time%</span>] 记事本未运行
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="p">)</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>timeout /t 5 <span class="p">&gt;</span>nul
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="k">goto</span> <span class="nl">check_loop</span>
+</span></code></pre></div>
+<p><strong>监控进程内存使用</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">echo</span> 进程内存使用监控
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">echo</span> ==================
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>tasklist /fi <span class="s2">&quot;imagename eq chrome.exe&quot;</span> /fo list <span class="p">|</span> findstr <span class="s2">&quot;Mem Usage&quot;</span>
+</span></code></pre></div>
+<h3 id="1152">11.5.2 进程资源使用<a class="headerlink" href="#1152" title="Permanent link">&para;</a></h3>
+<p><strong>使用 wmic 获取CPU使用率</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1">REM 获取进程CPU时间</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>wmic process where name=<span class="s2">&quot;notepad.exe&quot;</span> get kernelmodetime,usermodetime
+</span></code></pre></div>
+<p><strong>内存使用监控</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1">REM 获取进程内存使用（字节）</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>wmic process where name=<span class="s2">&quot;notepad.exe&quot;</span> get workingsetsize
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1">REM 格式化为MB</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;skip=1&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;wmic process where name=&quot;notepad.exe&quot; get workingsetsize&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="nv">mem</span><span class="o">=%%</span><span class="nv">a</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    <span class="k">echo</span> 内存使用: <span class="nv">!mem!</span> MB
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="1153">11.5.3 进程间通信基础<a class="headerlink" href="#1153" title="Permanent link">&para;</a></h3>
+<p>虽然批处理本身不直接支持进程间通信（IPC），但可以通过以下方式实现：</p>
+<p><strong>使用临时文件通信</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1">REM 进程A写入数据</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="k">echo</span> data <span class="p">&gt;</span> temp_comm.txt
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1">REM 进程B读取数据</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="k">for</span> <span class="k">/f</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>temp_comm.txt<span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="nv">data</span><span class="p">=</span><span class="se">%%</span>a
+</span></code></pre></div>
+<p><strong>使用环境变量</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">REM 设置全局环境变量（通过setx）</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>setx /m SHARED_DATA <span class="s2">&quot;some_value&quot;</span>
+</span></code></pre></div>
+<hr />
+<h2 id="116">11.6 核心概念与数据结构<a class="headerlink" href="#116" title="Permanent link">&para;</a></h2>
+<h3 id="1161-process-tree">11.6.1 进程树（Process Tree）<a class="headerlink" href="#1161-process-tree" title="Permanent link">&para;</a></h3>
+<p>Windows进程以树形结构组织，理解进程树对于：</p>
+<ul>
+<li>定位问题进程的来源</li>
+<li>理解服务依赖关系</li>
+<li>安全地终止进程及其子进程</li>
+</ul>
+<pre class="mermaid"><code>graph TD
+    System[系统进程&lt;br&gt;PID: 4]
+    System --&gt; csrss1[csrss.exe&lt;br&gt;Session 0]
+    System --&gt; csrss2[csrss.exe&lt;br&gt;Session 1]
+    System --&gt; wininit[wininit.exe]
+
+    wininit --&gt; services[services.exe&lt;br&gt;服务控制管理器]
+    wininit --&gt; lsass[lsass.exe&lt;br&gt;本地安全认证]
+
+    services --&gt; svchost1[svchost.exe&lt;br&gt;-k netsvcs]
+    services --&gt; svchost2[svchost.exe&lt;br&gt;-k LocalService]
+    services --&gt; spoolsv[spoolsv.exe&lt;br&gt;打印服务]
+
+    svchost1 --&gt; svc1[Windows Update]
+    svchost1 --&gt; svc2[任务计划程序]
+    svchost2 --&gt; svc3[防火墙]
+
+    style System fill:#f9f,stroke:#333,stroke-width:4px
+    style services fill:#bbf,stroke:#333,stroke-width:2px
+    style lsass fill:#fbb,stroke:#333,stroke-width:2px</code></pre>
+<h3 id="1162">11.6.2 服务状态机<a class="headerlink" href="#1162" title="Permanent link">&para;</a></h3>
+<p>Windows服务的状态转换遵循严格的状态机模型：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>说明</th>
+<th>可执行操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STOPPED</td>
+<td>服务已停止</td>
+<td>Start</td>
+</tr>
+<tr>
+<td>START_PENDING</td>
+<td>正在启动</td>
+<td>（等待）</td>
+</tr>
+<tr>
+<td>RUNNING</td>
+<td>正在运行</td>
+<td>Stop, Pause</td>
+</tr>
+<tr>
+<td>PAUSE_PENDING</td>
+<td>正在暂停</td>
+<td>（等待）</td>
+</tr>
+<tr>
+<td>PAUSED</td>
+<td>已暂停</td>
+<td>Continue, Stop</td>
+</tr>
+<tr>
+<td>CONTINUE_PENDING</td>
+<td>正在继续</td>
+<td>（等待）</td>
+</tr>
+<tr>
+<td>STOP_PENDING</td>
+<td>正在停止</td>
+<td>（等待）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1163-pid">11.6.3 PID管理<a class="headerlink" href="#1163-pid" title="Permanent link">&para;</a></h3>
+<p><strong>PID分配规则</strong>：</p>
+<ul>
+<li>PID 0：系统空闲进程</li>
+<li>PID 4：系统进程</li>
+<li>其他进程随机分配（通常为4的倍数）</li>
+<li>PID会循环使用（在一定范围内）</li>
+</ul>
+<p><strong>PID的有效范围</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1">REM 查看当前系统PID范围</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>wmic os get MaxProcessId
+</span></code></pre></div>
+<hr />
+<h2 id="117">11.7 与其他语言的对比<a class="headerlink" href="#117" title="Permanent link">&para;</a></h2>
+<h3 id="1171-python-psutil">11.7.1 Python (psutil库)<a class="headerlink" href="#1171-python-psutil" title="Permanent link">&para;</a></h3>
+<p>Python的 <code>psutil</code> 库提供了跨平台的进程管理能力：</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># comparison.py</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1"># 获取所有进程</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">process_iter</span><span class="p">([</span><span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;memory_percent&#39;</span><span class="p">]):</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PID: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pid&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, 名称: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, 内存: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;memory_percent&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="c1"># 获取特定进程</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">process_iter</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">]):</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;notepad.exe&#39;</span><span class="p">:</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;找到记事本进程，PID: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="1172-nodejs-child_process">11.7.2 Node.js (child_process)<a class="headerlink" href="#1172-nodejs-child_process" title="Permanent link">&para;</a></h3>
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1">// comparison.js</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">exec</span><span class="p">,</span><span class="w"> </span><span class="nx">spawn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">);</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="c1">// 执行tasklist命令</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="nx">exec</span><span class="p">(</span><span class="s1">&#39;tasklist&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">stdout</span><span class="p">,</span><span class="w"> </span><span class="nx">stderr</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`执行错误: </span><span class="si">${</span><span class="nx">error</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`进程列表:\n</span><span class="si">${</span><span class="nx">stdout</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="p">});</span>
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="c1">// 启动子进程</span>
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="kd">const</span><span class="w"> </span><span class="nx">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;localhost&#39;</span><span class="p">]);</span>
+</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="nx">child</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-16"><a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`输出: </span><span class="si">${</span><span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-27-17"><a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="p">});</span>
+</span></code></pre></div>
+<h3 id="1173-c-systempopen">11.7.3 C语言 (system/popen)<a class="headerlink" href="#1173-c-systempopen" title="Permanent link">&para;</a></h3>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1">// comparison.c</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">    </span><span class="c1">// 使用popen执行命令</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">popen</span><span class="p">(</span><span class="s">&quot;tasklist&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;执行失败</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>
+</span><span id="__span-28-16"><a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="w">    </span><span class="c1">// 读取输出</span>
+</span><span id="__span-28-17"><a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="n">fp</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-18"><a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+</span><span id="__span-28-19"><a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-28-20"><a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a>
+</span><span id="__span-28-21"><a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a><span class="w">    </span><span class="n">pclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</span><span id="__span-28-22"><a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-28-23"><a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="1174-lua-osexecute">11.7.4 Lua (os.execute)<a class="headerlink" href="#1174-lua-osexecute" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1">-- comparison.lua</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="c1">-- 执行系统命令</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="nb">os.execute</span><span class="p">(</span><span class="s2">&quot;tasklist &gt; process_list.txt&quot;</span><span class="p">)</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="c1">-- 读取输出</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="kd">local</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.open</span><span class="p">(</span><span class="s2">&quot;process_list.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="kr">if</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">file</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;*all&quot;</span><span class="p">)</span>
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">content</span><span class="p">)</span>
+</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">    </span><span class="nv">file</span><span class="p">:</span><span class="nf">close</span><span class="p">()</span>
+</span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="kr">end</span>
+</span><span id="__span-29-12"><a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>
+</span><span id="__span-29-13"><a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="c1">-- 使用io.popen获取输出</span>
+</span><span id="__span-29-14"><a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="kd">local</span><span class="w"> </span><span class="nv">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.popen</span><span class="p">(</span><span class="s2">&quot;tasklist&quot;</span><span class="p">)</span>
+</span><span id="__span-29-15"><a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="kd">local</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">handle</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;*a&quot;</span><span class="p">)</span>
+</span><span id="__span-29-16"><a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="nv">handle</span><span class="p">:</span><span class="nf">close</span><span class="p">()</span>
+</span><span id="__span-29-17"><a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a><span class="nb">print</span><span class="p">(</span><span class="nv">result</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>语言对比总结</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>CMD批处理</th>
+<th>Python</th>
+<th>Node.js</th>
+<th>C</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学习曲线</td>
+<td>低</td>
+<td>中</td>
+<td>中</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>跨平台</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>进程管理</td>
+<td>基础</td>
+<td>强大</td>
+<td>强大</td>
+<td>强大</td>
+<td>基础</td>
+</tr>
+<tr>
+<td>异步支持</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有限</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>Windows自动化</td>
+<td>系统管理</td>
+<td>Web服务</td>
+<td>系统编程</td>
+<td>脚本扩展</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="118">11.8 最佳实践<a class="headerlink" href="#118" title="Permanent link">&para;</a></h2>
+<h3 id="1181">11.8.1 权限管理<a class="headerlink" href="#1181" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">权限注意事项</p>
+<ol>
+<li><strong>查询操作</strong>：普通用户权限即可</li>
+<li><strong>终止进程</strong>：可能需要管理员权限（终止其他用户的进程）</li>
+<li><strong>服务管理</strong>：通常需要管理员权限</li>
+<li><strong>远程操作</strong>：需要相应凭据</li>
+</ol>
+</div>
+<p><strong>检查管理员权限</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>net session <span class="p">&gt;</span>nul <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">neq</span> 0 <span class="p">(</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="k">echo</span> 需要管理员权限，请以管理员身份运行！
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    <span class="k">pause</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>    <span class="k">exit</span> /b 1
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="p">)</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="k">echo</span> 已获得管理员权限
+</span></code></pre></div>
+<h3 id="1182">11.8.2 避免进程残留<a class="headerlink" href="#1182" title="Permanent link">&para;</a></h3>
+<p><strong>等待进程结束</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">start</span> /wait notepad.exe
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">echo</span> 记事本已关闭
+</span></code></pre></div>
+<p><strong>循环检查直到进程结束</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">:</span><span class="nl">wait_loop</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>tasklist /fi <span class="s2">&quot;imagename eq notepad.exe&quot;</span> <span class="p">|</span> find <span class="s2">&quot;notepad.exe&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">equ</span> 0 <span class="p">(</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    timeout /t 1 <span class="p">&gt;</span>nul
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>    <span class="k">goto</span> <span class="nl">wait_loop</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="p">)</span>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="k">echo</span> 进程已结束
+</span></code></pre></div>
+<h3 id="1183">11.8.3 安全终止进程<a class="headerlink" href="#1183" title="Permanent link">&para;</a></h3>
+<p><strong>先检查再终止</strong>：</p>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">set</span> <span class="s2">&quot;target=notepad.exe&quot;</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1">REM 检查进程是否存在</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>tasklist /fi <span class="s2">&quot;imagename eq </span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">|</span> find <span class="s2">&quot;</span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">neq</span> 0 <span class="p">(</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>    <span class="k">echo</span> 进程 <span class="nv">%target%</span> 不存在
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>    <span class="k">exit</span> /b 1
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="p">)</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="c1">REM 尝试正常终止</span>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="k">echo</span> 尝试终止 <span class="nv">%target%</span>...
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a>taskkill /im <span class="nv">%target%</span> <span class="p">&gt;</span>nul <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="c1">REM 等待2秒</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a>timeout /t 2 <span class="p">&gt;</span>nul
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a>
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="c1">REM 检查是否还在运行</span>
+</span><span id="__span-33-19"><a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a>tasklist /fi <span class="s2">&quot;imagename eq </span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">|</span> find <span class="s2">&quot;</span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-33-20"><a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">equ</span> 0 <span class="p">(</span>
+</span><span id="__span-33-21"><a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a>    <span class="k">echo</span> 进程未响应，强制终止...
+</span><span id="__span-33-22"><a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a>    taskkill /im <span class="nv">%target%</span> /f
+</span><span id="__span-33-23"><a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span><span id="__span-33-24"><a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a>    <span class="k">echo</span> 进程已正常终止
+</span><span id="__span-33-25"><a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="1184">11.8.4 常见陷阱<a class="headerlink" href="#1184" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>陷阱</th>
+<th>说明</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>忘记管理员权限</td>
+<td>服务操作失败</td>
+<td>检查并提示用户</td>
+</tr>
+<tr>
+<td>进程名拼写错误</td>
+<td>找不到进程</td>
+<td>先查询确认存在</td>
+</tr>
+<tr>
+<td>杀错进程</td>
+<td>影响系统运行</td>
+<td>使用PID而非进程名</td>
+</tr>
+<tr>
+<td>未等待进程结束</td>
+<td>后续操作失败</td>
+<td>使用 <code>start /wait</code></td>
+</tr>
+<tr>
+<td>路径含空格</td>
+<td>命令执行错误</td>
+<td>使用引号包裹路径</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="119">11.9 实战练习<a class="headerlink" href="#119" title="Permanent link">&para;</a></h2>
+<h3 id="1">练习1：基础进程查询<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>编写脚本 <code>exercise1.bat</code>，实现：</p>
+<ol>
+<li>显示所有正在运行的进程</li>
+<li>只显示内存使用超过50MB的进程</li>
+<li>按内存使用排序显示前5个进程</li>
+</ol>
+<details class="tip">
+<summary>参考答案</summary>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="k">echo</span> 内存使用超过50MB的进程
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="k">echo</span> =======================
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="c1">REM 方法：使用wmic获取内存信息</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;skip=1&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;wmic process get name^,workingsetsize /format:csv&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>    <span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=2,3 delims=,&quot;</span> <span class="se">%%</span>b <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">%%</span><span class="s2">a&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="nv">mem</span><span class="o">=%%</span><span class="nv">c</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span> <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>        <span class="k">if</span> <span class="nv">!mem!</span> <span class="ow">gtr</span> 50 <span class="k">echo</span> <span class="se">%%</span>b: <span class="nv">!mem!</span> MB
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>    <span class="p">)</span>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<h3 id="2">练习2：服务状态检查<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>编写脚本 <code>exercise2.bat</code>，实现：</p>
+<ol>
+<li>检查以下服务状态：wuauserv（Windows Update）、Spooler（打印服务）、Dhcp（DHCP客户端）</li>
+<li>输出服务名称、显示名称、当前状态</li>
+<li>如果服务停止，提示用户是否需要启动</li>
+</ol>
+<details class="tip">
+<summary>参考答案</summary>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">setlocal</span> enabledelayedexpansion
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="k">set</span> <span class="nv">services</span><span class="p">=</span>wuauserv Spooler Dhcp
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="k">for</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="nv">%services%</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>    <span class="k">echo</span> 检查服务: <span class="se">%%</span>s
+</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>    <span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=2 delims=:&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;sc query </span><span class="se">%%</span><span class="s1">s ^| findstr &quot;STATE&quot;&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>        <span class="k">echo</span> 状态: <span class="se">%%</span>a
+</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>    <span class="p">)</span>
+</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>    <span class="k">echo</span>.
+</span><span id="__span-35-12"><a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<h3 id="3">练习3：进程监控器<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>编写脚本 <code>exercise3.bat</code>，实现：</p>
+<ol>
+<li>持续监控指定进程</li>
+<li>如果进程消失，记录日志并尝试重启</li>
+<li>日志文件包含时间戳</li>
+</ol>
+<details class="tip">
+<summary>参考答案</summary>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="k">setlocal</span> enabledelayedexpansion
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="k">set</span> <span class="s2">&quot;target=notepad.exe&quot;</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="k">set</span> <span class="s2">&quot;log=monitor.log&quot;</span>
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="k">set</span> <span class="s2">&quot;restart_cmd=notepad.exe&quot;</span>
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="p">:</span><span class="nl">loop</span>
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="k">set</span> <span class="s2">&quot;timestamp=</span><span class="nv">%date%</span><span class="s2"> </span><span class="nv">%time%</span><span class="s2">&quot;</span>
+</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a>
+</span><span id="__span-36-11"><a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a>tasklist /fi <span class="s2">&quot;imagename eq </span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">|</span> find <span class="s2">&quot;</span><span class="nv">%target%</span><span class="s2">&quot;</span> <span class="p">&gt;</span>nul
+</span><span id="__span-36-12"><a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="ow">neq</span> 0 <span class="p">(</span>
+</span><span id="__span-36-13"><a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a>    <span class="k">echo</span> [!timestamp!] <span class="nv">%target%</span> 未运行，正在重启... <span class="p">&gt;&gt;</span> <span class="nv">%log%</span>
+</span><span id="__span-36-14"><a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a>    <span class="k">start</span> <span class="nv">%restart_cmd%</span>
+</span><span id="__span-36-15"><a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a>    <span class="k">echo</span> [!timestamp!] 已重启 <span class="nv">%target%</span> <span class="p">&gt;&gt;</span> <span class="nv">%log%</span>
+</span><span id="__span-36-16"><a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span><span id="__span-36-17"><a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a>    <span class="k">echo</span> [!timestamp!] <span class="nv">%target%</span> 正在运行 <span class="p">&gt;&gt;</span> <span class="nv">%log%</span>
+</span><span id="__span-36-18"><a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="p">)</span>
+</span><span id="__span-36-19"><a id="__codelineno-36-19" name="__codelineno-36-19" href="#__codelineno-36-19"></a>
+</span><span id="__span-36-20"><a id="__codelineno-36-20" name="__codelineno-36-20" href="#__codelineno-36-20"></a>timeout /t 10 <span class="p">&gt;</span>nul
+</span><span id="__span-36-21"><a id="__codelineno-36-21" name="__codelineno-36-21" href="#__codelineno-36-21"></a><span class="k">goto</span> <span class="nl">loop</span>
+</span></code></pre></div>
+</details>
+<h3 id="4">练习4：系统健康检查<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>编写脚本 <code>exercise4.bat</code>，实现：</p>
+<ol>
+<li>收集系统信息（CPU、内存、磁盘）</li>
+<li>检查关键服务状态</li>
+<li>生成报告文件</li>
+<li>如果发现问题，高亮显示</li>
+</ol>
+<details class="tip">
+<summary>参考答案</summary>
+<div class="language-batch highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="k">setlocal</span> enabledelayedexpansion
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="k">set</span> <span class="s2">&quot;report=health_report.txt&quot;</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="k">echo</span> 系统健康检查报告 <span class="p">&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="k">echo</span> 检查时间: <span class="nv">%date%</span> <span class="nv">%time%</span> <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="k">echo</span> ================================ <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>
+</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="c1">REM 检查内存</span>
+</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="k">echo</span>. <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="k">echo</span> 内存信息: <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-13"><a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;skip=1&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;wmic os get freephysicalmemory^,totalvisiblememorysize&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-37-14"><a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a>    <span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=1,2&quot;</span> <span class="se">%%</span>b <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">%%</span><span class="s2">a&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-37-15"><a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="nv">free</span><span class="o">=%%</span><span class="nv">b</span><span class="o">/</span><span class="mi">1024</span>
+</span><span id="__span-37-16"><a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="nv">total</span><span class="o">=%%</span><span class="nv">c</span><span class="o">/</span><span class="mi">1024</span>
+</span><span id="__span-37-17"><a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="nv">used</span><span class="o">=</span><span class="nv">total</span><span class="o">-</span><span class="nv">free</span>
+</span><span id="__span-37-18"><a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="nv">percent</span><span class="o">=</span><span class="nv">used</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="nv">total</span>
+</span><span id="__span-37-19"><a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a>        <span class="k">echo</span> 可用内存: <span class="nv">!free!</span> MB <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-20"><a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a>        <span class="k">echo</span> 总内存: <span class="nv">!total!</span> MB <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-21"><a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a>        <span class="k">echo</span> 使用率: <span class="nv">!percent!</span><span class="se">%%</span> <span class="p">&gt;&gt;</span> <span class="nv">%report%</span>
+</span><span id="__span-37-22"><a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a>
+</span><span id="__span-37-23"><a id="__codelineno-37-23" name="__codelineno-37-23" href="#__codelineno-37-23"></a>        <span class="k">if</span> <span class="nv">!percent!</span> <span class="ow">gtr</span> 90 <span class="p">(</span>
+</span><span id="__span-37-24"><a id="__codelineno-37-24" name="__codelineno-37-24" href="#__codelineno-37-24"></a>            <span class="k">echo</span> [警告] 内存使用率超过90<span class="nv">%！&gt;&gt; %</span>report%
+</span><span id="__span-37-25"><a id="__codelineno-37-25" name="__codelineno-37-25" href="#__codelineno-37-25"></a>        <span class="p">)</span>
+</span><span id="__span-37-26"><a id="__codelineno-37-26" name="__codelineno-37-26" href="#__codelineno-37-26"></a>    <span class="p">)</span>
+</span><span id="__span-37-27"><a id="__codelineno-37-27" name="__codelineno-37-27" href="#__codelineno-37-27"></a><span class="p">)</span>
+</span><span id="__span-37-28"><a id="__codelineno-37-28" name="__codelineno-37-28" href="#__codelineno-37-28"></a>
+</span><span id="__span-37-29"><a id="__codelineno-37-29" name="__codelineno-37-29" href="#__codelineno-37-29"></a><span class="k">echo</span> 报告已生成: <span class="nv">%report%</span>
+</span></code></pre></div>
+</details>
+<hr />
+<h2 id="1110">11.10 总结<a class="headerlink" href="#1110" title="Permanent link">&para;</a></h2>
+<h3 id="_2">关键要点<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>进程管理三剑客</strong>：</li>
+<li><code>tasklist</code>：查看进程</li>
+<li><code>taskkill</code>：终止进程</li>
+<li>
+<p><code>start</code>：启动进程</p>
+</li>
+<li>
+<p><strong>服务管理核心</strong>：</p>
+</li>
+<li><code>sc query</code>：查询服务状态</li>
+<li><code>sc start/stop</code>：控制服务</li>
+<li>
+<p><code>net start/stop</code>：简化操作</p>
+</li>
+<li>
+<p><strong>系统信息工具</strong>：</p>
+</li>
+<li><code>systeminfo</code>：系统概览</li>
+<li><code>wmic</code>：WMI查询</li>
+<li>
+<p><code>driverquery</code>：驱动信息</p>
+</li>
+<li>
+<p><strong>安全第一</strong>：</p>
+</li>
+<li>操作前检查进程/服务是否存在</li>
+<li>优先使用正常终止</li>
+<li>避免终止系统关键进程</li>
+<li>需要时请求管理员权限</li>
+</ol>
+<h3 id="_3">下一步<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>第12章将学习<strong>任务计划程序</strong>，实现定时自动执行</li>
+<li>结合本章知识，可以编写进程自动重启脚本</li>
+<li>探索 PowerShell 获取更强大的进程管理能力</li>
+</ul>
+<hr />
+<h2 id="1111_1">11.11 参考资源<a class="headerlink" href="#1111_1" title="Permanent link">&para;</a></h2>
+<h3 id="_4">官方文档<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/tasklist">tasklist 命令参考</a></li>
+<li><a href="https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/taskkill">taskkill 命令参考</a></li>
+<li><a href="https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands-sc-query">sc 命令参考</a></li>
+<li><a href="https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/wmic">wmic 命令参考</a></li>
+</ul>
+<h3 id="_5">相关工具<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Process Explorer</strong>：微软官方高级进程管理工具</li>
+<li><strong>Process Monitor</strong>：实时监控文件、注册表、进程活动</li>
+<li><strong>Services</strong>：Windows服务管理控制台（services.msc）</li>
+</ul>
+<hr />
+<p><em>本章完成时间：预计90-120分钟</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/example/cmd-learn" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

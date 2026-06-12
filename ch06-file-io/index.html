@@ -1,0 +1,3727 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Windows 命令行脚本编程完整学习教程">
+      
+      
+        <meta name="author" content="CMD Learn Project">
+      
+      
+      
+        <link rel="prev" href="../ch05-string-processing/">
+      
+      
+        <link rel="next" href="../ch07-functions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>第06章：文件I/O与重定向 — 数据的流动 - CMD/BAT 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#06io" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-header__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CMD/BAT 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第06章：文件I/O与重定向 — 数据的流动
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch01-hello-cmd/" class="md-tabs__link">
+          
+  
+  
+  入门篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ch05-string-processing/" class="md-tabs__link">
+          
+  
+  
+  进阶篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch09-env-registry/" class="md-tabs__link">
+          
+  
+  
+  高级篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch13-multilang/" class="md-tabs__link">
+          
+  
+  
+  精通篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../appendix/" class="md-tabs__link">
+          
+  
+  
+  附录
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-nav__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CMD/BAT 从入门到精通
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    入门篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    入门篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch01-hello-cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第01章：Hello CMD — 初识命令行脚本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch02-file-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第02章 文件与目录管理 — 操作文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch03-conditionals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第03章：条件与流程控制 — 程序的判断力
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch04-loops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第04章 循环与跳转 — 重复的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进阶篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    进阶篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch05-string-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第05章 字符串处理 — 文本的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第06章：文件I/O与重定向 — 数据的流动
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第06章：文件I/O与重定向 — 数据的流动
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 I/O重定向概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 I/O重定向概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        什么是I/O重定向？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-standard-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 标准流（Standard Streams）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 标准流（Standard Streams）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#621" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.1 三个标准流
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#622" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.2 流的类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 输出重定向
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 输出重定向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 基本输出重定向 &gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 追加输出重定向 &gt;&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#633-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.3 错误重定向 2&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#634-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.4 合并错误到标准输出 2&gt;&amp;1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#635-nul" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.5 丢弃输出 &gt;nul
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 输入重定向
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 输入重定向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#641" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.1 基本输入重定向 &lt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#642" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.2 组合输入输出重定向
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-pipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 管道（Pipe）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 管道（Pipe）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#651" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.1 管道基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.2 多级管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.3 管道中的变量扩展
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-here-documenthere-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Here Document（Here Doc）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.6 Here Document（Here Doc）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#661-cmdhere-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6.1 CMD中的Here Document模拟
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#662-here-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6.2 使用临时文件模拟Here Doc
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 文件读取
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.7 文件读取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#671-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.1 type 命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#672-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.2 more 命令（分页显示）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#673-for-f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.3 for /F 逐行读取
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#68" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 文件写入
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.8 文件写入">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#681-echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.1 echo 重定向写入
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#682-set-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.2 set /p 写入（无换行）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#683-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.3 type 追加文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#684-copy-con" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.4 copy con 交互式写入
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#69" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 临时文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.9 临时文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#691-temp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.1 %TEMP% 环境变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#692" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.2 创建唯一临时文件名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#693" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.3 临时文件最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#610" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10 文件锁和并发
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.10 文件锁和并发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6101-cmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.1 CMD的并发限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.2 简单的锁机制模拟
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#611" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11 数据结构概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.11 数据结构概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11.1 缓冲区机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6112-crlf-vs-lf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11.2 换行符（CRLF vs LF）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#612" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.12 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6121-pythonio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.1 Python文件I/O对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6122-javascript-nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.2 JavaScript (Node.js) 对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6123-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.3 C语言对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#613" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13 最佳实践和常见陷阱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.13 最佳实践和常见陷阱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6131" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.1 重定向顺序的重要性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6132-gbk-vs-utf-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.2 编码问题（GBK vs UTF-8）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6133" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.3 管道中的变量扩展时机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6134" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.4 大文件处理的性能问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#614" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.14 练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.14 练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：基础重定向
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：管道组合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：文件处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4here-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：Here Document
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5：临时文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#615" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.15 总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#616" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.16 下一步学习
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#617" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.17 附加资源
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch07-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第07章 函数与模块化 — 代码的组织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch08-data-structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第08章 数据结构模拟 — 在限制中创造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高级篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    高级篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch09-env-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第09章 环境变量与注册表 — 系统配置的钥匙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch10-network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第10章 网络工具 — 连接世界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch11-process-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章 进程与服务管理 — 系统的守护者
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch12-task-scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第12章 任务计划与调度 — 自动化的基石
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    精通篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    精通篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch13-multilang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第13章 多语言集成 — 万物互联
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch14-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：实战项目 — 学以致用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch15-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第15章 安全与权限 — 守护系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录：速查表与参考资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 I/O重定向概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 I/O重定向概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        什么是I/O重定向？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-standard-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 标准流（Standard Streams）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 标准流（Standard Streams）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#621" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.1 三个标准流
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#622" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.2 流的类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 输出重定向
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 输出重定向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 基本输出重定向 &gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 追加输出重定向 &gt;&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#633-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.3 错误重定向 2&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#634-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.4 合并错误到标准输出 2&gt;&amp;1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#635-nul" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.5 丢弃输出 &gt;nul
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 输入重定向
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 输入重定向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#641" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.1 基本输入重定向 &lt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#642" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.2 组合输入输出重定向
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-pipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 管道（Pipe）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 管道（Pipe）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#651" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.1 管道基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.2 多级管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.3 管道中的变量扩展
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-here-documenthere-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Here Document（Here Doc）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.6 Here Document（Here Doc）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#661-cmdhere-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6.1 CMD中的Here Document模拟
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#662-here-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6.2 使用临时文件模拟Here Doc
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 文件读取
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.7 文件读取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#671-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.1 type 命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#672-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.2 more 命令（分页显示）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#673-for-f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.3 for /F 逐行读取
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#68" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 文件写入
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.8 文件写入">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#681-echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.1 echo 重定向写入
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#682-set-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.2 set /p 写入（无换行）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#683-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.3 type 追加文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#684-copy-con" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8.4 copy con 交互式写入
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#69" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 临时文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.9 临时文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#691-temp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.1 %TEMP% 环境变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#692" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.2 创建唯一临时文件名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#693" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9.3 临时文件最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#610" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10 文件锁和并发
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.10 文件锁和并发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6101-cmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.1 CMD的并发限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.2 简单的锁机制模拟
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#611" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11 数据结构概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.11 数据结构概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11.1 缓冲区机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6112-crlf-vs-lf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11.2 换行符（CRLF vs LF）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#612" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.12 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6121-pythonio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.1 Python文件I/O对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6122-javascript-nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.2 JavaScript (Node.js) 对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6123-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.12.3 C语言对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#613" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13 最佳实践和常见陷阱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.13 最佳实践和常见陷阱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6131" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.1 重定向顺序的重要性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6132-gbk-vs-utf-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.2 编码问题（GBK vs UTF-8）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6133" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.3 管道中的变量扩展时机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6134" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.13.4 大文件处理的性能问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#614" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.14 练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.14 练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：基础重定向
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：管道组合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：文件处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4here-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：Here Document
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5：临时文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#615" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.15 总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#616" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.16 下一步学习
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#617" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.17 附加资源
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="06io">第06章：文件I/O与重定向 — 数据的流动<a class="headerlink" href="#06io" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">学习目标</p>
+<ul>
+<li>理解标准流（stdin、stdout、stderr）的概念</li>
+<li>掌握输出重定向、输入重定向和管道的使用</li>
+<li>学会使用CMD进行文件读写操作</li>
+<li>了解CMD脚本中数据流动的机制</li>
+</ul>
+</div>
+<p><strong>预计学习时间</strong>：45-60分钟<br />
+<strong>难度等级</strong>：⭐⭐⭐ 中级</p>
+<h2 id="61-io">6.1 I/O重定向概述<a class="headerlink" href="#61-io" title="Permanent link">&para;</a></h2>
+<p>I/O重定向是CMD脚本中最强大的特性之一。它允许你控制命令的输入来源和输出去向，而不是仅限于屏幕和键盘。</p>
+<h3 id="io">什么是I/O重定向？<a class="headerlink" href="#io" title="Permanent link">&para;</a></h3>
+<p>在命令行环境中，每个程序都有三个标准的数据通道：</p>
+<pre class="mermaid"><code>graph LR
+    A[键盘] --&gt;|stdin| B[命令/程序]
+    B --&gt;|stdout| C[屏幕]
+    B --&gt;|stderr| D[错误信息]
+
+    style A fill:#e1f5fe
+    style C fill:#e8f5e8
+    style D fill:#ffebee</code></pre>
+<p><strong>I/O重定向</strong>允许你改变这些数据流的方向：
+- 将输出写入文件而不是屏幕
+- 从文件读取输入而不是键盘
+- 将错误信息重定向到文件
+- 通过管道将多个命令串联</p>
+<h2 id="62-standard-streams">6.2 标准流（Standard Streams）<a class="headerlink" href="#62-standard-streams" title="Permanent link">&para;</a></h2>
+<h3 id="621">6.2.1 三个标准流<a class="headerlink" href="#621" title="Permanent link">&para;</a></h3>
+<p>在Windows CMD中，每个进程都有三个预定义的流：</p>
+<table>
+<thead>
+<tr>
+<th>流名称</th>
+<th>文件描述符</th>
+<th>变量</th>
+<th>默认设备</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>stdin</strong></td>
+<td>0</td>
+<td><code>%input%</code></td>
+<td>键盘</td>
+<td>标准输入</td>
+</tr>
+<tr>
+<td><strong>stdout</strong></td>
+<td>1</td>
+<td><code>%output%</code></td>
+<td>屏幕</td>
+<td>标准输出</td>
+</tr>
+<tr>
+<td><strong>stderr</strong></td>
+<td>2</td>
+<td><code>%error%</code></td>
+<td>屏幕</td>
+<td>标准错误</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">文件描述符</p>
+<p>文件描述符（File Descriptor）是操作系统用来标识打开文件或流的整数。在CMD中：
+- <code>0</code> 代表标准输入（stdin）
+- <code>1</code> 代表标准输出（stdout）
+- <code>2</code> 代表标准错误（stderr）</p>
+</div>
+<h3 id="622">6.2.2 流的类型<a class="headerlink" href="#622" title="Permanent link">&para;</a></h3>
+<p>CMD中的流分为两种类型：</p>
+<p><strong>文本流（Text Stream）</strong>
+- 以行为单位处理数据
+- 每行以换行符（CRLF）结束
+- 自动进行字符编码转换</p>
+<p><strong>字节流（Byte Stream）</strong>
+- 以字节为单位处理数据
+- 不处理换行符
+- 原始二进制数据</p>
+<div class="admonition warning">
+<p class="admonition-title">换行符差异</p>
+<p>Windows使用CRLF（<code>\r\n</code>）作为换行符，而Unix/Linux使用LF（<code>\n</code>）。在跨平台处理文件时需要注意这个差异。</p>
+</div>
+<h2 id="63">6.3 输出重定向<a class="headerlink" href="#63" title="Permanent link">&para;</a></h2>
+<h3 id="631">6.3.1 基本输出重定向 <code>&gt;</code><a class="headerlink" href="#631" title="Permanent link">&para;</a></h3>
+<p><code>&gt;</code> 操作符将命令的输出写入文件，如果文件已存在则<strong>覆盖</strong>原有内容。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>命令 <span class="p">&gt;</span> 文件名
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">echo</span> Hello World <span class="p">&gt;</span> output.txt
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">dir</span> <span class="p">&gt;</span> directory_list.txt
+</span></code></pre></div></p>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[echo Hello World] --&gt;|stdout| B[&gt;]
+    B --&gt;|覆盖写入| C[output.txt]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8</code></pre></p>
+<h3 id="632">6.3.2 追加输出重定向 <code>&gt;&gt;</code><a class="headerlink" href="#632" title="Permanent link">&para;</a></h3>
+<p><code>&gt;&gt;</code> 操作符将输出追加到文件末尾，不会覆盖原有内容。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>命令 <span class="p">&gt;&gt;</span> 文件名
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">echo</span> First line <span class="p">&gt;</span> log.txt
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">echo</span> Second line <span class="p">&gt;&gt;</span> log.txt
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">echo</span> Third line <span class="p">&gt;&gt;</span> log.txt
+</span></code></pre></div></p>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph TB
+    A[echo First line] --&gt;|1&gt;| B[log.txt]
+    C[echo Second line] --&gt;|&gt;&gt;| B
+    D[echo Third line] --&gt;|&gt;&gt;| B
+
+    B --&gt; E[文件内容]
+    E --&gt; F[First line]
+    E --&gt; G[Second line]
+    E --&gt; H[Third line]</code></pre></p>
+<h3 id="633-2">6.3.3 错误重定向 <code>2&gt;</code><a class="headerlink" href="#633-2" title="Permanent link">&para;</a></h3>
+<p><code>2&gt;</code> 操作符专门重定向标准错误输出（stderr）。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>命令 <span class="mi">2</span><span class="p">&gt;</span> 错误文件
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">dir</span> nonexistent_directory <span class="mi">2</span><span class="p">&gt;</span> error.log
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">type</span> missing_file.txt <span class="mi">2</span><span class="p">&gt;</span> error.log
+</span></code></pre></div></p>
+<p><strong>分离输出和错误</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">dir</span> C:\ <span class="p">&gt;</span> output.txt <span class="mi">2</span><span class="p">&gt;</span> error.txt
+</span></code></pre></div></p>
+<h3 id="634-21">6.3.4 合并错误到标准输出 <code>2&gt;&amp;1</code><a class="headerlink" href="#634-21" title="Permanent link">&para;</a></h3>
+<p><code>2&gt;&amp;1</code> 将标准错误合并到标准输出，这样错误信息和正常输出会写入同一个地方。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>命令 <span class="p">&gt;</span> 文件 <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">dir</span> C:\ <span class="p">&gt;</span> full_output.txt <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span></code></pre></div></p>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[dir C:\] --&gt;|stdout| B[&gt;]
+    A --&gt;|stderr| C[2&gt;&amp;1]
+    B --&gt; D[full_output.txt]
+    C --&gt;|重定向到stdout| B
+
+    style A fill:#e3f2fd
+    style D fill:#e8f5e8</code></pre></p>
+<div class="admonition warning">
+<p class="admonition-title">重定向顺序</p>
+<p>重定向的顺序非常重要！<code>2&gt;&amp;1</code> 必须在 <code>&gt;</code> 之后，否则会出错：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">:</span><span class="c1">: 正确</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">dir</span> <span class="p">&gt;</span> output.txt <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">:</span><span class="c1">: 错误 - stderr会输出到屏幕</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">dir</span> <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span> <span class="p">&gt;</span> output.txt
+</span></code></pre></div></p>
+</div>
+<h3 id="635-nul">6.3.5 丢弃输出 <code>&gt;nul</code><a class="headerlink" href="#635-nul" title="Permanent link">&para;</a></h3>
+<p>将输出重定向到 <code>nul</code> 设备会丢弃所有输出。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>命令 <span class="p">&gt;</span>nul
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>命令 <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>命令 <span class="p">&gt;</span>nul <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">:</span><span class="c1">: 静默删除文件</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">del</span> temp.txt <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">:</span><span class="c1">: 静默执行，不显示任何输出</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">echo</span> Secret operation <span class="p">&gt;</span>nul <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">nul的作用</p>
+<p><code>nul</code> 是Windows的空设备，类似于Unix的 <code>/dev/null</code>。写入 <code>nul</code> 的数据会被丢弃，读取 <code>nul</code> 会立即返回EOF。</p>
+</div>
+<h2 id="64">6.4 输入重定向<a class="headerlink" href="#64" title="Permanent link">&para;</a></h2>
+<h3 id="641">6.4.1 基本输入重定向 <code>&lt;</code><a class="headerlink" href="#641" title="Permanent link">&para;</a></h3>
+<p><code>&lt;</code> 操作符从文件读取输入，而不是从键盘读取。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>命令 <span class="p">&lt;</span> 输入文件
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sort <span class="p">&lt;</span> unsorted.txt
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>find <span class="s2">&quot;keyword&quot;</span> <span class="p">&lt;</span> data.txt
+</span></code></pre></div></p>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[input.txt] --&gt;|&lt;| B[sort]
+    B --&gt;|stdout| C[屏幕]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8</code></pre></p>
+<h3 id="642">6.4.2 组合输入输出重定向<a class="headerlink" href="#642" title="Permanent link">&para;</a></h3>
+<p>可以同时使用输入和输出重定向：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sort <span class="p">&lt;</span> unsorted.txt <span class="p">&gt;</span> sorted.txt
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>find <span class="s2">&quot;error&quot;</span> <span class="p">&lt;</span> log.txt <span class="p">&gt;</span> errors.txt
+</span></code></pre></div>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[unsorted.txt] --&gt;|&lt;| B[sort]
+    B --&gt;|&gt;| C[sorted.txt]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8</code></pre></p>
+<h2 id="65-pipe">6.5 管道（Pipe）<a class="headerlink" href="#65-pipe" title="Permanent link">&para;</a></h2>
+<h3 id="651">6.5.1 管道基础<a class="headerlink" href="#651" title="Permanent link">&para;</a></h3>
+<p>管道 <code>|</code> 将一个命令的输出作为另一个命令的输入。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>命令1 <span class="p">|</span> 命令2
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">dir</span> <span class="p">|</span> find <span class="s2">&quot;.txt&quot;</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">echo</span> hello <span class="p">|</span> findstr <span class="s2">&quot;hello&quot;</span>
+</span></code></pre></div></p>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[dir] --&gt;|stdout| B[管道 |]
+    B --&gt;|stdin| C[find ".txt"]
+    C --&gt;|stdout| D[屏幕]
+
+    style A fill:#e3f2fd
+    style D fill:#e8f5e8</code></pre></p>
+<h3 id="652">6.5.2 多级管道<a class="headerlink" href="#652" title="Permanent link">&para;</a></h3>
+<p>可以将多个命令通过管道串联：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">dir</span> <span class="p">|</span> find <span class="s2">&quot;.bat&quot;</span> <span class="p">|</span> sort <span class="p">|</span> find /c /v <span class="s2">&quot;&quot;</span>
+</span></code></pre></div>
+<p><strong>执行流程</strong>：
+<pre class="mermaid"><code>graph LR
+    A[dir] --&gt;|stdout| B[find ".bat"]
+    B --&gt;|stdout| C[sort]
+    C --&gt;|stdout| D[find /c /v ""]
+    D --&gt;|stdout| E[屏幕]
+
+    style A fill:#e3f2fd
+    style E fill:#e8f5e8</code></pre></p>
+<h3 id="653">6.5.3 管道中的变量扩展<a class="headerlink" href="#653" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">变量扩展时机</p>
+<p>在管道中，变量扩展发生在管道执行之前，这可能导致意外行为：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">set</span> <span class="s2">&quot;var=hello&quot;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">echo</span> <span class="nv">%var%</span> <span class="p">|</span> findstr <span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="p">:</span><span class="c1">: 正确工作</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">:</span><span class="c1">: 但如果在括号代码块中...</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="p">(</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="k">set</span> <span class="s2">&quot;var=hello&quot;</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="k">echo</span> <span class="nv">%var%</span> <span class="p">|</span> findstr <span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">)</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="p">:</span><span class="c1">: %var%可能为空，因为变量在括号开始时就已扩展</span>
+</span></code></pre></div>
+<p><strong>解决方案</strong>：使用延迟扩展 <code>!var!</code></p>
+</div>
+<h2 id="66-here-documenthere-doc">6.6 Here Document（Here Doc）<a class="headerlink" href="#66-here-documenthere-doc" title="Permanent link">&para;</a></h2>
+<h3 id="661-cmdhere-document">6.6.1 CMD中的Here Document模拟<a class="headerlink" href="#661-cmdhere-document" title="Permanent link">&para;</a></h3>
+<p>CMD没有真正的Here Document语法，但可以使用括号代码块模拟：</p>
+<p><strong>基本模式</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">echo</span> 第一行
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="k">echo</span> 第二行
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">echo</span> 第三行
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="p">)</span> <span class="p">&gt;</span> output.txt
+</span></code></pre></div></p>
+<p><strong>示例：生成HTML文件</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="p">(</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">echo</span> <span class="se">^&lt;</span>!DOCTYPE html<span class="se">^&gt;</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">echo</span> <span class="se">^&lt;</span>html<span class="se">^&gt;</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="k">echo</span> <span class="se">^&lt;</span>head<span class="se">^&gt;</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="k">echo</span>     <span class="se">^&lt;</span>title<span class="se">^&gt;</span>Test Page<span class="se">^&lt;</span>/title<span class="se">^&gt;</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="k">echo</span> <span class="se">^&lt;</span>/head<span class="se">^&gt;</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="k">echo</span> <span class="se">^&lt;</span>body<span class="se">^&gt;</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="k">echo</span>     <span class="se">^&lt;</span>h1<span class="se">^&gt;</span>Hello World<span class="se">^&lt;</span>/h1<span class="se">^&gt;</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="k">echo</span> <span class="se">^&lt;</span>/body<span class="se">^&gt;</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="k">echo</span> <span class="se">^&lt;</span>/html<span class="se">^&gt;</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="p">)</span> <span class="p">&gt;</span> page.html
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">特殊字符转义</p>
+<p>在括号代码块中，以下字符需要转义：
+- <code>&lt;</code> → <code>^&lt;</code>
+- <code>&gt;</code> → <code>^&gt;</code>
+- <code>|</code> → <code>^|</code>
+- <code>&amp;</code> → <code>^&amp;</code>
+- <code>(</code> → <code>^(</code>  （在某些情况下）
+- <code>)</code> → <code>^)</code>  （在某些情况下）</p>
+</div>
+<h3 id="662-here-doc">6.6.2 使用临时文件模拟Here Doc<a class="headerlink" href="#662-here-doc" title="Permanent link">&para;</a></h3>
+<p>更可靠的方法是使用临时文件：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">setlocal</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="p">:</span><span class="c1">: 创建临时文件</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">set</span> <span class="s2">&quot;TMPFILE=</span><span class="nv">%TEMP%</span><span class="s2">\heredoc_</span><span class="nv">%RANDOM%</span><span class="s2">.txt&quot;</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="p">:</span><span class="c1">: 写入内容</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="k">echo</span> Line 1 <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="k">echo</span> Line 2 <span class="p">&gt;&gt;</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="k">echo</span> Line 3 <span class="p">&gt;&gt;</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="p">:</span><span class="c1">: 使用临时文件</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="k">type</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span> <span class="p">|</span> findstr <span class="s2">&quot;Line&quot;</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="p">:</span><span class="c1">: 清理</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="k">del</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span> <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<h2 id="67">6.7 文件读取<a class="headerlink" href="#67" title="Permanent link">&para;</a></h2>
+<h3 id="671-type">6.7.1 <code>type</code> 命令<a class="headerlink" href="#671-type" title="Permanent link">&para;</a></h3>
+<p><code>type</code> 命令显示文件内容。</p>
+<p><strong>基本用法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">type</span> filename.txt
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">type</span> <span class="s2">&quot;path with spaces\file.txt&quot;</span>
+</span></code></pre></div></p>
+<p><strong>特点</strong>：
+- 显示整个文件内容
+- 支持通配符（<code>*.txt</code>）
+- 不能分页显示</p>
+<h3 id="672-more">6.7.2 <code>more</code> 命令（分页显示）<a class="headerlink" href="#672-more" title="Permanent link">&para;</a></h3>
+<p><code>more</code> 命令分页显示文件内容。</p>
+<p><strong>基本用法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>more filename.txt
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>more <span class="p">&lt;</span> filename.txt
+</span></code></pre></div></p>
+<p><strong>交互命令</strong>：
+- <code>Space</code> - 显示下一页
+- <code>Enter</code> - 显示下一行
+- <code>Q</code> 或 <code>Ctrl+C</code> - 退出</p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">:</span><span class="c1">: 分页显示大文件</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>more large_file.txt
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">:</span><span class="c1">: 结合管道使用</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="k">dir</span> /s <span class="p">|</span> more
+</span></code></pre></div></p>
+<h3 id="673-for-f">6.7.3 <code>for /F</code> 逐行读取<a class="headerlink" href="#673-for-f" title="Permanent link">&para;</a></h3>
+<p><code>for /F</code> 是最强大的文件读取方式，可以逐行处理文件内容。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;options&quot;</span> <span class="se">%%</span>variable <span class="k">in</span> <span class="p">(</span>file<span class="p">)</span> <span class="k">do</span> command
+</span></code></pre></div></p>
+<p><strong>选项说明</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tokens=N</code></td>
+<td>提取第N个标记</td>
+<td><code>tokens=1</code></td>
+</tr>
+<tr>
+<td><code>delims=X</code></td>
+<td>使用X作为分隔符</td>
+<td><code>delims=,</code></td>
+</tr>
+<tr>
+<td><code>skip=N</code></td>
+<td>跳过前N行</td>
+<td><code>skip=2</code></td>
+</tr>
+<tr>
+<td><code>usebackq</code></td>
+<td>允许使用反引号</td>
+<td>文件名有空格时使用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例1：简单逐行读取</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>file.txt<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="k">echo</span> 行内容: <span class="se">%%</span>a
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>示例2：提取特定列</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">:</span><span class="c1">: 假设文件内容: name,age,city</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=1,3 delims=,&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>data.csv<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="k">echo</span> 姓名: <span class="se">%%</span>a, 城市: <span class="se">%%</span>c
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>示例3：跳过标题行</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;skip=1 tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>data.csv<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    <span class="k">echo</span> <span class="se">%%</span>a
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>示例4：带行号读取</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="k">set</span> <span class="s2">&quot;linenum=0&quot;</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>file.txt<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;linenum+=1&quot;</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>    <span class="k">echo</span> <span class="nv">!linenum!</span>: <span class="se">%%</span>a
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">usebackq选项</p>
+<p>当文件路径包含空格时，使用 <code>usebackq</code> 选项并用反引号包裹路径：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;usebackq tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;C:\My Files\data.txt&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>    <span class="k">echo</span> <span class="se">%%</span>a
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="p">)</span>
+</span></code></pre></div></p>
+</div>
+<h2 id="68">6.8 文件写入<a class="headerlink" href="#68" title="Permanent link">&para;</a></h2>
+<h3 id="681-echo">6.8.1 <code>echo</code> 重定向写入<a class="headerlink" href="#681-echo" title="Permanent link">&para;</a></h3>
+<p>最常见的文件写入方式。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">echo</span> 内容 <span class="p">&gt;</span> 文件名
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">echo</span> 内容 <span class="p">&gt;&gt;</span> 文件名
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">:</span><span class="c1">: 覆盖写入</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="k">echo</span> Hello <span class="p">&gt;</span> output.txt
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="p">:</span><span class="c1">: 追加写入</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="k">echo</span> World <span class="p">&gt;&gt;</span> output.txt
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="p">:</span><span class="c1">: 写入空行</span>
+</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="k">echo</span>. <span class="p">&gt;&gt;</span> output.txt
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">echo的尾部空格</p>
+<p><code>echo</code> 命令会包含尾部的空格：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">echo</span> Hello   <span class="p">&gt;</span> file.txt
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="p">:</span><span class="c1">: 文件内容: &quot;Hello   &quot; (包含尾部空格)</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="p">:</span><span class="c1">: 解决方案：确保&gt;紧贴内容</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="k">echo</span> Hello<span class="p">&gt;</span> file.txt
+</span></code></pre></div></p>
+</div>
+<h3 id="682-set-p">6.8.2 <code>set /p</code> 写入（无换行）<a class="headerlink" href="#682-set-p" title="Permanent link">&para;</a></h3>
+<p><code>set /p</code> 可以写入不带换行符的内容。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">&lt;</span>nul <span class="k">set</span> <span class="k">/p</span> <span class="s2">&quot;=内容&quot;</span> <span class="p">&gt;</span> 文件名
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">:</span><span class="c1">: 写入不带换行的内容</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="p">&lt;</span>nul <span class="k">set</span> <span class="k">/p</span> <span class="s2">&quot;=No newline&quot;</span> <span class="p">&gt;</span> file.txt
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="k">echo</span>. <span class="p">&gt;&gt;</span> file.txt  :: 添加换行
+</span></code></pre></div></p>
+<h3 id="683-type">6.8.3 <code>type</code> 追加文件<a class="headerlink" href="#683-type" title="Permanent link">&para;</a></h3>
+<p>使用 <code>type</code> 命令可以将一个文件的内容追加到另一个文件。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">type</span> source.txt <span class="p">&gt;&gt;</span> destination.txt
+</span></code></pre></div></p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">:</span><span class="c1">: 合并多个文件</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="k">type</span> part1.txt <span class="p">&gt;</span> combined.txt
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="k">type</span> part2.txt <span class="p">&gt;&gt;</span> combined.txt
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="k">type</span> part3.txt <span class="p">&gt;&gt;</span> combined.txt
+</span></code></pre></div></p>
+<h3 id="684-copy-con">6.8.4 <code>copy con</code> 交互式写入<a class="headerlink" href="#684-copy-con" title="Permanent link">&para;</a></h3>
+<p><code>copy con</code> 允许从键盘交互式输入内容到文件。</p>
+<p><strong>基本语法</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">copy</span> con filename.txt
+</span></code></pre></div></p>
+<p><strong>使用方法</strong>：
+1. 输入命令后，光标会移到下一行
+2. 逐行输入内容
+3. 按 <code>Ctrl+Z</code> 然后 <code>Enter</code> 结束输入</p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">copy</span> con notes.txt
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>This is line 1
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>This is line 2
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="se">^Z</span>
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">copy con的用途</p>
+<p><code>copy con</code> 适合快速创建小型文本文件，但不适合脚本自动化，因为它需要用户交互。</p>
+</div>
+<h2 id="69">6.9 临时文件<a class="headerlink" href="#69" title="Permanent link">&para;</a></h2>
+<h3 id="691-temp">6.9.1 <code>%TEMP%</code> 环境变量<a class="headerlink" href="#691-temp" title="Permanent link">&para;</a></h3>
+<p>Windows提供了 <code>%TEMP%</code> 环境变量指向临时目录。</p>
+<p><strong>常用临时目录</strong>：
+- <code>%TEMP%</code> - 当前用户的临时目录
+- <code>%TMP%</code> - 通常与 <code>%TEMP%</code> 相同
+- <code>%USERPROFILE%\AppData\Local\Temp</code> - 完整路径</p>
+<p><strong>示例</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">echo</span> 临时目录: <span class="nv">%TEMP%</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="k">echo</span> 用户临时目录: <span class="nv">%TMP%</span>
+</span></code></pre></div></p>
+<h3 id="692">6.9.2 创建唯一临时文件名<a class="headerlink" href="#692" title="Permanent link">&para;</a></h3>
+<p>使用 <code>%RANDOM%</code> 或 <code>%TIME%</code> 创建唯一文件名：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">:</span><span class="c1">: 使用随机数</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">set</span> <span class="s2">&quot;TMPFILE=</span><span class="nv">%TEMP%</span><span class="s2">\myapp_</span><span class="nv">%RANDOM%</span><span class="s2">.txt&quot;</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="p">:</span><span class="c1">: 使用时间戳</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="k">set</span> <span class="s2">&quot;TMPFILE=</span><span class="nv">%TEMP%</span><span class="s2">\myapp_</span><span class="nv">%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%</span><span class="s2">.txt&quot;</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="p">:</span><span class="c1">: 使用GUID（需要PowerShell）</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;delims=&quot;</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;powershell -command &quot;[guid]::NewGuid().ToString()&quot;&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;TMPFILE=</span><span class="nv">%TEMP%</span><span class="s2">\</span><span class="se">%%</span><span class="s2">i.txt&quot;</span>
+</span></code></pre></div>
+<h3 id="693">6.9.3 临时文件最佳实践<a class="headerlink" href="#693" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">临时文件清理</p>
+<p><strong>必须</strong>在脚本结束时清理临时文件：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="k">setlocal</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="k">set</span> <span class="s2">&quot;TMPFILE=</span><span class="nv">%TEMP%</span><span class="s2">\myapp_</span><span class="nv">%RANDOM%</span><span class="s2">.txt&quot;</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="p">:</span><span class="c1">: 使用临时文件</span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="k">echo</span> Data <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a>
+</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="p">:</span><span class="c1">: 清理（确保执行）</span>
+</span><span id="__span-42-10"><a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="k">del</span> <span class="s2">&quot;</span><span class="nv">%TMPFILE%</span><span class="s2">&quot;</span> <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-42-11"><a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a>
+</span><span id="__span-42-12"><a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+</div>
+<h2 id="610">6.10 文件锁和并发<a class="headerlink" href="#610" title="Permanent link">&para;</a></h2>
+<h3 id="6101-cmd">6.10.1 CMD的并发限制<a class="headerlink" href="#6101-cmd" title="Permanent link">&para;</a></h3>
+<p>CMD批处理脚本<strong>没有内置的文件锁机制</strong>，这在并发场景下会导致问题：</p>
+<p><strong>常见问题</strong>：
+- 多个脚本同时写入同一文件
+- 读取正在被写入的文件
+- 文件损坏或数据丢失</p>
+<h3 id="6102">6.10.2 简单的锁机制模拟<a class="headerlink" href="#6102" title="Permanent link">&para;</a></h3>
+<p>可以使用锁文件模拟简单的并发控制：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="k">setlocal</span>
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="k">set</span> <span class="s2">&quot;LOCKFILE=</span><span class="nv">%TEMP%</span><span class="s2">\myapp.lock&quot;</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>
+</span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="p">:</span><span class="c1">: 检查锁是否存在</span>
+</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="k">if</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%LOCKFILE%</span><span class="s2">&quot;</span> <span class="p">(</span>
+</span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a>    <span class="k">echo</span> 另一个实例正在运行
+</span><span id="__span-43-9"><a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>    <span class="k">exit</span> /b 1
+</span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="p">)</span>
+</span><span id="__span-43-11"><a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>
+</span><span id="__span-43-12"><a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="p">:</span><span class="c1">: 创建锁</span>
+</span><span id="__span-43-13"><a id="__codelineno-43-13" name="__codelineno-43-13" href="#__codelineno-43-13"></a><span class="k">echo</span> <span class="nv">%PID%</span> <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%LOCKFILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-43-14"><a id="__codelineno-43-14" name="__codelineno-43-14" href="#__codelineno-43-14"></a>
+</span><span id="__span-43-15"><a id="__codelineno-43-15" name="__codelineno-43-15" href="#__codelineno-43-15"></a><span class="p">:</span><span class="c1">: 执行操作</span>
+</span><span id="__span-43-16"><a id="__codelineno-43-16" name="__codelineno-43-16" href="#__codelineno-43-16"></a><span class="k">echo</span> Processing...
+</span><span id="__span-43-17"><a id="__codelineno-43-17" name="__codelineno-43-17" href="#__codelineno-43-17"></a>
+</span><span id="__span-43-18"><a id="__codelineno-43-18" name="__codelineno-43-18" href="#__codelineno-43-18"></a><span class="p">:</span><span class="c1">: 释放锁</span>
+</span><span id="__span-43-19"><a id="__codelineno-43-19" name="__codelineno-43-19" href="#__codelineno-43-19"></a><span class="k">del</span> <span class="s2">&quot;</span><span class="nv">%LOCKFILE%</span><span class="s2">&quot;</span> <span class="mi">2</span><span class="p">&gt;</span>nul
+</span><span id="__span-43-20"><a id="__codelineno-43-20" name="__codelineno-43-20" href="#__codelineno-43-20"></a>
+</span><span id="__span-43-21"><a id="__codelineno-43-21" name="__codelineno-43-21" href="#__codelineno-43-21"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">锁机制的局限性</p>
+<p>这种简单的锁机制存在竞态条件（race condition），不适用于高并发场景。对于生产环境，建议使用：
+- PowerShell的 <code>Mutex</code>
+- 第三方工具
+- 数据库</p>
+</div>
+<h2 id="611">6.11 数据结构概念<a class="headerlink" href="#611" title="Permanent link">&para;</a></h2>
+<h3 id="6111">6.11.1 缓冲区机制<a class="headerlink" href="#6111" title="Permanent link">&para;</a></h3>
+<p>CMD使用缓冲区来提高I/O性能：</p>
+<pre class="mermaid"><code>graph TB
+    A[命令输出] --&gt; B[输出缓冲区]
+    B --&gt; C[文件/屏幕]
+    D[文件/键盘] --&gt; E[输入缓冲区]
+    E --&gt; F[命令输入]
+
+    style B fill:#fff3e0
+    style E fill:#e3f2fd</code></pre>
+<p><strong>缓冲区类型</strong>：
+- <strong>行缓冲</strong>：遇到换行符时刷新
+- <strong>全缓冲</strong>：缓冲区满时刷新
+- <strong>无缓冲</strong>：立即写入</p>
+<h3 id="6112-crlf-vs-lf">6.11.2 换行符（CRLF vs LF）<a class="headerlink" href="#6112-crlf-vs-lf" title="Permanent link">&para;</a></h3>
+<p><strong>Windows换行符</strong>：CRLF（<code>\r\n</code>，十六进制 <code>0D 0A</code>）
+<strong>Unix/Linux换行符</strong>：LF（<code>\n</code>，十六进制 <code>0A</code>）</p>
+<p><strong>处理建议</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">:</span><span class="c1">: 查看文件的换行符类型</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>xxd filename.txt <span class="p">|</span> find <span class="s2">&quot;0d 0a&quot;</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="p">:</span><span class="c1">: 转换LF到CRLF（需要Unix工具）</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="p">:</span><span class="c1">: dos2unix filename.txt</span>
+</span></code></pre></div></p>
+<h2 id="612">6.12 与其他语言的对比<a class="headerlink" href="#612" title="Permanent link">&para;</a></h2>
+<h3 id="6121-pythonio">6.12.1 Python文件I/O对比<a class="headerlink" href="#6121-pythonio" title="Permanent link">&para;</a></h3>
+<p><strong>Python</strong>：
+<div class="language-python highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="c1"># 读取文件</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>
+</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="c1"># 写入文件</span>
+</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Hello</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;World</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>CMD</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">:</span><span class="c1">: 读取文件</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>file.txt<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>    <span class="k">echo</span> <span class="se">%%</span>a
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="p">)</span>
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a>
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="p">:</span><span class="c1">: 写入文件</span>
+</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="k">echo</span> Hello <span class="p">&gt;</span> file.txt
+</span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="k">echo</span> World <span class="p">&gt;&gt;</span> file.txt
+</span></code></pre></div></p>
+<p><strong>主要差异</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Python</th>
+<th>CMD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件打开</td>
+<td><code>open()</code> 函数</td>
+<td>自动处理</td>
+</tr>
+<tr>
+<td>编码控制</td>
+<td><code>encoding</code> 参数</td>
+<td>系统默认</td>
+</tr>
+<tr>
+<td>异常处理</td>
+<td><code>try/except</code></td>
+<td><code>2&gt;nul</code></td>
+</tr>
+<tr>
+<td>缓冲控制</td>
+<td><code>buffering</code> 参数</td>
+<td>无控制</td>
+</tr>
+<tr>
+<td>二进制模式</td>
+<td><code>'rb'</code>/<code>'wb'</code></td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6122-javascript-nodejs">6.12.2 JavaScript (Node.js) 对比<a class="headerlink" href="#6122-javascript-nodejs" title="Permanent link">&para;</a></h3>
+<p><strong>Node.js</strong>：
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="c1">// 同步读取</span>
+</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+</span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>
+</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a><span class="c1">// 异步写入</span>
+</span><span id="__span-47-7"><a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="s1">&#39;file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Hello\n&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+</span><span id="__span-47-9"><a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="p">});</span>
+</span></code></pre></div></p>
+<p><strong>主要差异</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Node.js</th>
+<th>CMD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>异步支持</td>
+<td>原生支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>流式处理</td>
+<td>Stream API</td>
+<td>管道</td>
+</tr>
+<tr>
+<td>文件监听</td>
+<td><code>fs.watch()</code></td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>大文件处理</td>
+<td>流式处理</td>
+<td>分块读取</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6123-c">6.12.3 C语言对比<a class="headerlink" href="#6123-c" title="Permanent link">&para;</a></h3>
+<p><strong>C语言</strong>：
+<div class="language-c highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;file.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">line</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">line</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span>
+</span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span><span id="__span-48-10"><a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-48-11"><a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p><strong>主要差异</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>C语言</th>
+<th>CMD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存管理</td>
+<td>手动</td>
+<td>自动</td>
+</tr>
+<tr>
+<td>错误处理</td>
+<td>返回值检查</td>
+<td><code>errorlevel</code></td>
+</tr>
+<tr>
+<td>文件指针</td>
+<td><code>FILE*</code></td>
+<td>隐式</td>
+</tr>
+<tr>
+<td>缓冲控制</td>
+<td><code>setbuf()</code></td>
+<td>无控制</td>
+</tr>
+</tbody>
+</table>
+<h2 id="613">6.13 最佳实践和常见陷阱<a class="headerlink" href="#613" title="Permanent link">&para;</a></h2>
+<h3 id="6131">6.13.1 重定向顺序的重要性<a class="headerlink" href="#6131" title="Permanent link">&para;</a></h3>
+<p><strong>正确的重定向顺序</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">:</span><span class="c1">: 正确：先重定向stdout，再合并stderr</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>command <span class="p">&gt;</span> output.txt <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>
+</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="p">:</span><span class="c1">: 错误：stderr会输出到屏幕</span>
+</span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>command <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span> <span class="p">&gt;</span> output.txt
+</span></code></pre></div></p>
+<p><strong>多个重定向的顺序</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p">:</span><span class="c1">: 正确顺序</span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>command <span class="mi">1</span><span class="p">&gt;</span> output.txt <span class="mi">2</span><span class="p">&gt;</span> error.txt
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>
+</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="p">:</span><span class="c1">: 合并到同一文件</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>command <span class="p">&gt;</span> all.txt <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span>
+</span></code></pre></div></p>
+<h3 id="6132-gbk-vs-utf-8">6.13.2 编码问题（GBK vs UTF-8）<a class="headerlink" href="#6132-gbk-vs-utf-8" title="Permanent link">&para;</a></h3>
+<p><strong>Windows默认编码</strong>：
+- CMD默认使用GBK（代码页936）
+- 记事本默认使用ANSI（通常是GBK）
+- 现代编辑器默认使用UTF-8</p>
+<p><strong>处理编码问题</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="p">:</span><span class="c1">: 查看当前代码页</span>
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>chcp
+</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>
+</span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="p">:</span><span class="c1">: 切换到UTF-8</span>
+</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>chcp 65001
+</span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a>
+</span><span id="__span-51-7"><a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a><span class="p">:</span><span class="c1">: 切换回GBK</span>
+</span><span id="__span-51-8"><a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a>chcp 936
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">编码不匹配</p>
+<p>如果文件是UTF-8编码但CMD使用GBK，会出现乱码。解决方案：
+1. 使用 <code>chcp 65001</code> 切换到UTF-8
+2. 在文件开头添加BOM（<code>\xEF\xBB\xBF</code>）
+3. 使用支持指定编码的工具（如PowerShell）</p>
+</div>
+<h3 id="6133">6.13.3 管道中的变量扩展时机<a class="headerlink" href="#6133" title="Permanent link">&para;</a></h3>
+<p><strong>问题</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="k">setlocal</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a>
+</span><span id="__span-52-4"><a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="k">set</span> <span class="s2">&quot;var=hello&quot;</span>
+</span><span id="__span-52-5"><a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="k">echo</span> <span class="nv">%var%</span> <span class="p">|</span> findstr <span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-52-6"><a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a><span class="p">:</span><span class="c1">: 正常工作</span>
+</span><span id="__span-52-7"><a id="__codelineno-52-7" name="__codelineno-52-7" href="#__codelineno-52-7"></a>
+</span><span id="__span-52-8"><a id="__codelineno-52-8" name="__codelineno-52-8" href="#__codelineno-52-8"></a><span class="p">:</span><span class="c1">: 在括号代码块中</span>
+</span><span id="__span-52-9"><a id="__codelineno-52-9" name="__codelineno-52-9" href="#__codelineno-52-9"></a><span class="p">(</span>
+</span><span id="__span-52-10"><a id="__codelineno-52-10" name="__codelineno-52-10" href="#__codelineno-52-10"></a>    <span class="k">set</span> <span class="s2">&quot;var=world&quot;</span>
+</span><span id="__span-52-11"><a id="__codelineno-52-11" name="__codelineno-52-11" href="#__codelineno-52-11"></a>    <span class="k">echo</span> <span class="nv">%var%</span> <span class="p">|</span> findstr <span class="s2">&quot;world&quot;</span>
+</span><span id="__span-52-12"><a id="__codelineno-52-12" name="__codelineno-52-12" href="#__codelineno-52-12"></a>    <span class="p">:</span><span class="c1">: 可能失败！%var%在括号开始时已扩展</span>
+</span><span id="__span-52-13"><a id="__codelineno-52-13" name="__codelineno-52-13" href="#__codelineno-52-13"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>解决方案：延迟扩展</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>
+</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="p">(</span>
+</span><span id="__span-53-5"><a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>    <span class="k">set</span> <span class="s2">&quot;var=world&quot;</span>
+</span><span id="__span-53-6"><a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a>    <span class="k">echo</span> <span class="nv">!var!</span> <span class="p">|</span> findstr <span class="s2">&quot;world&quot;</span>
+</span><span id="__span-53-7"><a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a>    <span class="p">:</span><span class="c1">: 正常工作</span>
+</span><span id="__span-53-8"><a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<h3 id="6134">6.13.4 大文件处理的性能问题<a class="headerlink" href="#6134" title="Permanent link">&para;</a></h3>
+<p><strong>性能瓶颈</strong>：
+- <code>for /F</code> 会将整个文件加载到内存
+- 管道会创建临时文件
+- 重复的文件打开/关闭</p>
+<p><strong>优化建议</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="p">:</span><span class="c1">: 避免在循环中多次打开文件</span>
+</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="p">:</span><span class="c1">: 不好的做法</span>
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="k">for</span> <span class="k">/L</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">1</span>,<span class="mi">1</span>,<span class="mi">100</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>    <span class="k">type</span> file.txt <span class="p">|</span> findstr <span class="s2">&quot;pattern&quot;</span>
+</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="p">)</span>
+</span><span id="__span-54-6"><a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a>
+</span><span id="__span-54-7"><a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a><span class="p">:</span><span class="c1">: 好的做法</span>
+</span><span id="__span-54-8"><a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span>file.txt<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-54-9"><a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a>    <span class="k">echo</span> <span class="se">%%</span>a <span class="p">|</span> findstr <span class="s2">&quot;pattern&quot;</span>
+</span><span id="__span-54-10"><a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>大文件处理技巧</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="p">:</span><span class="c1">: 使用more分页处理</span>
+</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>more large.txt <span class="p">|</span> findstr <span class="s2">&quot;pattern&quot;</span>
+</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>
+</span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="p">:</span><span class="c1">: 使用PowerShell处理大文件</span>
+</span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>powershell -command <span class="s2">&quot;Get-Content large.txt | Where-Object { $_ -match &#39;pattern&#39; }&quot;</span>
+</span></code></pre></div></p>
+<h2 id="614">6.14 练习题<a class="headerlink" href="#614" title="Permanent link">&para;</a></h2>
+<h3 id="1">练习1：基础重定向<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p><strong>题目</strong>：创建一个批处理脚本，将当前目录的文件列表保存到 <code>filelist.txt</code>，并将错误信息保存到 <code>errors.txt</code>。</p>
+<p><strong>要求</strong>：
+- 使用 <code>dir</code> 命令
+- 分离标准输出和错误输出
+- 显示生成的文件内容</p>
+<p><strong>提示</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="k">dir</span> <span class="p">&gt;</span> filelist.txt <span class="mi">2</span><span class="p">&gt;</span> errors.txt
+</span></code></pre></div></p>
+<h3 id="2">练习2：管道组合<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p><strong>题目</strong>：创建一个脚本，统计当前目录下所有 <code>.bat</code> 文件的数量。</p>
+<p><strong>要求</strong>：
+- 使用管道组合多个命令
+- 只显示数量，不显示文件列表</p>
+<p><strong>提示</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="k">dir</span> /b <span class="p">|</span> find /c <span class="s2">&quot;.bat&quot;</span>
+</span></code></pre></div></p>
+<h3 id="3">练习3：文件处理<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p><strong>题目</strong>：创建一个脚本，读取一个文本文件，为每一行添加行号，然后保存到新文件。</p>
+<p><strong>要求</strong>：
+- 使用 <code>for /F</code> 逐行读取
+- 使用延迟扩展
+- 输出格式：<code>行号: 内容</code></p>
+<p><strong>参考代码</strong>：
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
+</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="k">set</span> <span class="s2">&quot;INPUT=input.txt&quot;</span>
+</span><span id="__span-58-5"><a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="k">set</span> <span class="s2">&quot;OUTPUT=output_with_linenum.txt&quot;</span>
+</span><span id="__span-58-6"><a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="k">set</span> <span class="s2">&quot;linenum=0&quot;</span>
+</span><span id="__span-58-7"><a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a>
+</span><span id="__span-58-8"><a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a><span class="k">echo</span>. <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%OUTPUT%</span><span class="s2">&quot;</span>
+</span><span id="__span-58-9"><a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%INPUT%</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-58-10"><a id="__codelineno-58-10" name="__codelineno-58-10" href="#__codelineno-58-10"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;linenum+=1&quot;</span>
+</span><span id="__span-58-11"><a id="__codelineno-58-11" name="__codelineno-58-11" href="#__codelineno-58-11"></a>    <span class="k">echo</span> <span class="nv">!linenum!</span>: <span class="se">%%</span>a <span class="p">&gt;&gt;</span> <span class="s2">&quot;</span><span class="nv">%OUTPUT%</span><span class="s2">&quot;</span>
+</span><span id="__span-58-12"><a id="__codelineno-58-12" name="__codelineno-58-12" href="#__codelineno-58-12"></a><span class="p">)</span>
+</span><span id="__span-58-13"><a id="__codelineno-58-13" name="__codelineno-58-13" href="#__codelineno-58-13"></a>
+</span><span id="__span-58-14"><a id="__codelineno-58-14" name="__codelineno-58-14" href="#__codelineno-58-14"></a><span class="k">echo</span> 处理完成，共 <span class="nv">!linenum!</span> 行
+</span><span id="__span-58-15"><a id="__codelineno-58-15" name="__codelineno-58-15" href="#__codelineno-58-15"></a><span class="k">type</span> <span class="s2">&quot;</span><span class="nv">%OUTPUT%</span><span class="s2">&quot;</span>
+</span></code></pre></div></p>
+<h3 id="4here-document">练习4：Here Document<a class="headerlink" href="#4here-document" title="Permanent link">&para;</a></h3>
+<p><strong>题目</strong>：创建一个脚本，使用Here Document方式生成一个简单的HTML页面。</p>
+<p><strong>要求</strong>：
+- 使用括号代码块模拟Here Document
+- 包含基本的HTML结构
+- 正确转义特殊字符</p>
+<h3 id="5">练习5：临时文件管理<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p><strong>题目</strong>：创建一个脚本，演示临时文件的创建、使用和清理。</p>
+<p><strong>要求</strong>：
+- 使用 <code>%TEMP%</code> 环境变量
+- 创建唯一文件名（使用 <code>%RANDOM%</code>）
+- 确保脚本退出时清理临时文件</p>
+<h2 id="615">6.15 总结<a class="headerlink" href="#615" title="Permanent link">&para;</a></h2>
+<p>本章介绍了CMD中文件I/O和重定向的核心概念：</p>
+<ol>
+<li><strong>标准流</strong>：stdin(0)、stdout(1)、stderr(2)</li>
+<li><strong>输出重定向</strong>：<code>&gt;</code> 覆盖、<code>&gt;&gt;</code> 追加、<code>2&gt;</code> 错误、<code>2&gt;&amp;1</code> 合并、<code>&gt;nul</code> 丢弃</li>
+<li><strong>输入重定向</strong>：<code>&lt;</code> 从文件读取</li>
+<li><strong>管道</strong>：<code>|</code> 连接命令</li>
+<li><strong>文件读取</strong>：<code>type</code>、<code>more</code>、<code>for /F</code></li>
+<li><strong>文件写入</strong>：<code>echo</code> 重定向、<code>set /p</code>、<code>type</code> 追加</li>
+<li><strong>临时文件</strong>：<code>%TEMP%</code>、<code>%RANDOM%</code></li>
+<li><strong>最佳实践</strong>：重定向顺序、编码问题、变量扩展时机</li>
+</ol>
+<p>掌握这些概念将使你能够编写更强大的CMD脚本，处理复杂的数据流和文件操作。</p>
+<h2 id="616">6.16 下一步学习<a class="headerlink" href="#616" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../ch07-functions/">第07章：函数与模块化 — 代码的复用</a></li>
+<li><a href="../ch08-data-structures/">第08章：数据结构 — 信息的组织</a></li>
+</ul>
+<h2 id="617">6.17 附加资源<a class="headerlink" href="#617" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/redirection-operators">Microsoft Docs: Redirection</a></li>
+<li><a href="https://ss64.com/nt/syntax-redirection.html">SS64: Redirection</a></li>
+<li><a href="https://www.tutorialspoint.com/batch_script/">Batch File Programming</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/example/cmd-learn" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

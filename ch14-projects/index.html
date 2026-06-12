@@ -1,0 +1,3945 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Windows 命令行脚本编程完整学习教程">
+      
+      
+        <meta name="author" content="CMD Learn Project">
+      
+      
+      
+        <link rel="prev" href="../ch13-multilang/">
+      
+      
+        <link rel="next" href="../ch15-security/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>第14章：实战项目 — 学以致用 - CMD/BAT 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#14" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-header__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CMD/BAT 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第14章：实战项目 — 学以致用
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch01-hello-cmd/" class="md-tabs__link">
+          
+  
+  
+  入门篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch05-string-processing/" class="md-tabs__link">
+          
+  
+  
+  进阶篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch09-env-registry/" class="md-tabs__link">
+          
+  
+  
+  高级篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ch13-multilang/" class="md-tabs__link">
+          
+  
+  
+  精通篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../appendix/" class="md-tabs__link">
+          
+  
+  
+  附录
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-nav__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CMD/BAT 从入门到精通
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    入门篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    入门篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch01-hello-cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第01章：Hello CMD — 初识命令行脚本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch02-file-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第02章 文件与目录管理 — 操作文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch03-conditionals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第03章：条件与流程控制 — 程序的判断力
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch04-loops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第04章 循环与跳转 — 重复的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进阶篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    进阶篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch05-string-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第05章 字符串处理 — 文本的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch06-file-io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第06章：文件I/O与重定向 — 数据的流动
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch07-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第07章 函数与模块化 — 代码的组织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch08-data-structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第08章 数据结构模拟 — 在限制中创造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高级篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    高级篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch09-env-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第09章 环境变量与注册表 — 系统配置的钥匙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch10-network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第10章 网络工具 — 连接世界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch11-process-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章 进程与服务管理 — 系统的守护者
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch12-task-scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第12章 任务计划与调度 — 自动化的基石
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    精通篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    精通篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch13-multilang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第13章 多语言集成 — 万物互联
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：实战项目 — 学以致用
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：实战项目 — 学以致用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        概述
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目架构设计
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最佳实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最佳实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 模块化设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 错误处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 日志记录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 配置文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目1：系统信息收集器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目1：系统信息收集器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 初始化部分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 系统信息收集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. HTML报告生成
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目2：日志分析工具
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目2：日志分析工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 文件读取和解析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 统计分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 报告生成
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目3：文件批量处理工具
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目3：文件批量处理工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 菜单系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 文件重命名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 操作确认
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目4：简易备份系统
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目4：简易备份系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 增量备份
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 备份恢复
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 配置文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目5：自动化部署脚本
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目5：自动化部署脚本">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 配置文件读取
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 部署步骤执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 错误处理和回滚
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pythonnodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        与Python/Node.js的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="与Python/Node.js的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python实现对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node.js实现对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：扩展系统信息收集器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：增强日志分析工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：改进文件批量处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：完善备份系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5：优化部署脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常用命令速查表
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch15-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第15章 安全与权限 — 守护系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录：速查表与参考资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        概述
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目架构设计
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最佳实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最佳实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 模块化设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 错误处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 日志记录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 配置文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目1：系统信息收集器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目1：系统信息收集器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 初始化部分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 系统信息收集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. HTML报告生成
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目2：日志分析工具
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目2：日志分析工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 文件读取和解析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 统计分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 报告生成
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目3：文件批量处理工具
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目3：文件批量处理工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 菜单系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 文件重命名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 操作确认
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目4：简易备份系统
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目4：简易备份系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 增量备份
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 备份恢复
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 配置文件管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目5：自动化部署脚本
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目5：自动化部署脚本">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        需求分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 配置文件读取
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 部署步骤执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 错误处理和回滚
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行效果展示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pythonnodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        与Python/Node.js的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="与Python/Node.js的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python实现对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node.js实现对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1：扩展系统信息收集器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2：增强日志分析工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3：改进文件批量处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4：完善备份系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5：优化部署脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常用命令速查表
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="14">第14章：实战项目 — 学以致用<a class="headerlink" href="#14" title="Permanent link">&para;</a></h1>
+<h2 id="_1">学习目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>通过本章学习，你将能够：</p>
+<ol>
+<li>综合运用前面章节学到的CMD/BAT脚本知识</li>
+<li>掌握实际项目开发的需求分析和设计思路</li>
+<li>实现5个完整的实战项目</li>
+<li>学习项目架构设计和最佳实践</li>
+<li>理解CMD脚本与其他编程语言的对比</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">学习时间</p>
+<p>预计学习时间：90-120分钟</p>
+</div>
+<h2 id="_2">概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>本章将通过5个完整的实战项目，将前面学到的CMD/BAT脚本知识进行综合运用。每个项目都包含：</p>
+<ul>
+<li><strong>需求分析</strong>：明确项目目标和功能需求</li>
+<li><strong>设计思路</strong>：规划实现方案和技术选型</li>
+<li><strong>代码实现</strong>：完整的代码实现和详细注释</li>
+<li><strong>运行效果</strong>：展示项目运行结果</li>
+<li><strong>扩展思考</strong>：讨论可能的改进和扩展</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">学习建议</p>
+<ul>
+<li>按顺序完成每个项目，逐步提升难度</li>
+<li>动手实践每个示例代码</li>
+<li>尝试修改和扩展示例功能</li>
+<li>记录遇到的问题和解决方案</li>
+</ul>
+</div>
+<h2 id="_3">项目架构设计<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>在开始具体项目之前，我们先了解整体架构设计：</p>
+<pre class="mermaid"><code>graph TB
+    subgraph "CMD实战项目架构"
+        A[主控制台] --&gt; B[系统信息收集器]
+        A --&gt; C[日志分析工具]
+        A --&gt; D[文件批量处理]
+        A --&gt; E[简易备份系统]
+        A --&gt; F[自动化部署脚本]
+
+        B --&gt; G[HTML报告生成]
+        C --&gt; H[统计分析报告]
+        D --&gt; I[批量操作引擎]
+        E --&gt; J[增量备份引擎]
+        F --&gt; K[部署流程控制]
+
+        G --&gt; L[输出目录]
+        H --&gt; L
+        I --&gt; M[文件系统]
+        J --&gt; N[备份存储]
+        K --&gt; O[部署日志]
+    end
+
+    subgraph "辅助模块"
+        P[配置文件管理] --&gt; B
+        P --&gt; C
+        P --&gt; D
+        P --&gt; E
+        P --&gt; F
+
+        Q[日志记录系统] --&gt; B
+        Q --&gt; C
+        Q --&gt; D
+        Q --&gt; E
+        Q --&gt; F
+
+        R[错误处理机制] --&gt; B
+        R --&gt; C
+        R --&gt; D
+        R --&gt; E
+        R --&gt; F
+    end
+
+    subgraph "外部接口"
+        S[Windows系统API] --&gt; B
+        T[文件系统API] --&gt; D
+        T --&gt; E
+        U[网络API] --&gt; F
+    end
+
+    style A fill:#e1f5fe
+    style L fill:#f3e5f5
+    style M fill:#e8f5e8
+    style N fill:#fff3e0
+    style O fill:#fce4ec</code></pre>
+<h2 id="_4">最佳实践<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>在开始项目之前，让我们先了解一些CMD脚本开发的最佳实践：</p>
+<h3 id="1">1. 模块化设计<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">:</span><span class="c1">: 模块化设计示例</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">setlocal</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">:</span><span class="c1">: 主模块</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">call</span> <span class="p">:</span><span class="nl">initialize</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">call</span> <span class="p">:</span><span class="nl">main_process</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">call</span> <span class="p">:</span><span class="nl">cleanup</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">:</span><span class="nl">initialize</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">:</span><span class="c1">: 初始化代码</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">:</span><span class="nl">main_process</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">:</span><span class="c1">: 主要处理逻辑</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">:</span><span class="nl">cleanup</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">:</span><span class="c1">: 清理代码</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="2">2. 错误处理<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">:</span><span class="c1">: 错误处理示例</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">setlocal</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">:</span><span class="c1">: 执行命令并检查错误</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>some_command
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">if</span> <span class="nv">%ERRORLEVEL%</span> <span class="ow">neq</span> 0 <span class="p">(</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">echo</span> [ERROR] 命令执行失败
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">call</span> <span class="p">:</span><span class="nl">error_handler</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="k">exit</span> /b 1
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">:</span><span class="nl">error_handler</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">:</span><span class="c1">: 错误处理逻辑</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">echo</span> 正在执行错误处理...
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="3">3. 日志记录<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">:</span><span class="c1">: 日志记录示例</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">setlocal</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">set</span> <span class="s2">&quot;LOG_FILE=</span><span class="nv">%~dp0</span><span class="s2">app.log&quot;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">:</span><span class="c1">: 记录日志函数</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">call</span> <span class="p">:</span><span class="nl">log</span> <span class="s2">&quot;INFO&quot;</span> <span class="s2">&quot;程序启动&quot;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">call</span> <span class="p">:</span><span class="nl">log</span> <span class="s2">&quot;ERROR&quot;</span> <span class="s2">&quot;发生错误&quot;</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">call</span> <span class="p">:</span><span class="nl">log</span> <span class="s2">&quot;INFO&quot;</span> <span class="s2">&quot;程序结束&quot;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">:</span><span class="nl">log</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">set</span> <span class="s2">&quot;LEVEL=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="k">set</span> <span class="s2">&quot;MESSAGE=</span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="k">echo</span> [<span class="nv">%DATE%</span> <span class="nv">%TIME%</span>] [<span class="nv">%LEVEL%</span>] <span class="nv">%MESSAGE%</span> <span class="p">&gt;&gt;</span> <span class="s2">&quot;</span><span class="nv">%LOG_FILE%</span><span class="s2">&quot;</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="k">echo</span> [<span class="nv">%LEVEL%</span>] <span class="nv">%MESSAGE%</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="4">4. 配置文件管理<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">:</span><span class="c1">: 配置文件读取示例</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">setlocal</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">set</span> <span class="s2">&quot;CONFIG_FILE=</span><span class="nv">%~dp0</span><span class="s2">config.ini&quot;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">:</span><span class="c1">: 读取配置文件</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=1,2 delims==&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;type &quot;</span><span class="nv">%CONFIG_FILE%</span><span class="s1">&quot; 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">set</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">a=</span><span class="se">%%</span><span class="s2">b&quot;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">)</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">echo</span> 应用名称: <span class="nv">%app_name%</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">echo</span> 版本: <span class="nv">%app_version%</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<h2 id="1_1">项目1：系统信息收集器<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h2>
+<h3 id="_5">需求分析<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><strong>目标</strong>：创建一个能够收集系统信息并生成HTML报告的工具</p>
+<p><strong>功能需求</strong>：
+1. 收集操作系统信息（版本、架构、安装日期）
+2. 收集CPU信息（型号、核心数、频率）
+3. 收集内存信息（总容量、速度）
+4. 收集磁盘信息（型号、容量）
+5. 收集网络信息（IP地址、MAC地址）
+6. 生成美观的HTML报告</p>
+<p><strong>技术要点</strong>：
+- 使用<code>wmic</code>命令获取系统信息
+- 使用<code>for /f</code>解析命令输出
+- 使用HTML模板生成报告
+- 处理命令输出中的特殊字符</p>
+<h3 id="_6">设计思路<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph LR
+    A[开始] --&gt; B[初始化变量]
+    B --&gt; C[收集OS信息]
+    C --&gt; D[收集CPU信息]
+    D --&gt; E[收集内存信息]
+    E --&gt; F[收集磁盘信息]
+    F --&gt; G[收集网络信息]
+    G --&gt; H[计算运行时间]
+    H --&gt; I[生成HTML报告]
+    I --&gt; J[显示完成信息]
+    J --&gt; K[结束]
+
+    style A fill:#e1f5fe
+    style K fill:#e8f5e8</code></pre>
+<h3 id="_7">代码实现详解<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h4 id="1_2">1. 初始化部分<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">:</span><span class="c1">: 初始化变量</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">set</span> <span class="s2">&quot;SCRIPT_DIR=</span><span class="nv">%~dp0</span><span class="s2">&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">set</span> <span class="s2">&quot;OUTPUT_DIR=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%OUTPUT_DIR%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">set</span> <span class="s2">&quot;OUTPUT_DIR=</span><span class="nv">%SCRIPT_DIR%</span><span class="s2">output&quot;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">set</span> <span class="s2">&quot;REPORT_FILE=</span><span class="nv">%OUTPUT_DIR%</span><span class="s2">\sysinfo_report.html&quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- <code>%~dp0</code>获取脚本所在目录
+- 支持命令行参数指定输出目录
+- 设置默认输出目录</p>
+<h4 id="2_1">2. 系统信息收集<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">:</span><span class="c1">: 收集操作系统信息</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=2 delims==&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;wmic os get Caption /value 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;OS_NAME=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=2 delims==&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;wmic os get Version /value 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;OS_VERSION=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>wmic</code>命令获取系统信息
+- 使用<code>for /f</code>解析命令输出
+- 使用<code>2^&gt;nul</code>隐藏错误输出</p>
+<h4 id="3-html">3. HTML报告生成<a class="headerlink" href="#3-html" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">:</span><span class="c1">: 生成HTML报告</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">(</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">echo</span> <span class="se">^&lt;</span>!DOCTYPE html<span class="se">^&gt;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">echo</span> <span class="se">^&lt;</span>html<span class="se">^&gt;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">echo</span> <span class="se">^&lt;</span>head<span class="se">^&gt;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">echo</span>     <span class="se">^&lt;</span>title<span class="se">^&gt;</span>系统信息报告<span class="se">^&lt;</span>/title<span class="se">^&gt;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">echo</span> <span class="se">^&lt;</span>/head<span class="se">^&gt;</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">echo</span> <span class="se">^&lt;</span>body<span class="se">^&gt;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="k">echo</span>     <span class="se">^&lt;</span>h1<span class="se">^&gt;</span>系统信息报告<span class="se">^&lt;</span>/h1<span class="se">^&gt;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="k">echo</span> <span class="se">^&lt;</span>/body<span class="se">^&gt;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="k">echo</span> <span class="se">^&lt;</span>/html<span class="se">^</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="se">)</span> <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%REPORT_FILE%</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用括号创建代码块
+- 使用<code>^</code>转义HTML特殊字符
+- 使用重定向<code>&gt;</code>写入文件</p>
+<h3 id="_8">运行效果展示<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>运行<code>sysinfo_collector.bat</code>后，会生成一个HTML报告文件，包含：</p>
+<ol>
+<li><strong>操作系统信息</strong>：</li>
+<li>操作系统名称和版本</li>
+<li>系统架构（32位/64位）</li>
+<li>
+<p>安装日期和上次启动时间</p>
+</li>
+<li>
+<p><strong>CPU信息</strong>：</p>
+</li>
+<li>处理器型号</li>
+<li>核心数和线程数</li>
+<li>
+<p>最大频率</p>
+</li>
+<li>
+<p><strong>内存信息</strong>：</p>
+</li>
+<li>总内存容量</li>
+<li>内存速度</li>
+<li>
+<p>制造商信息</p>
+</li>
+<li>
+<p><strong>网络信息</strong>：</p>
+</li>
+<li>IP地址</li>
+<li>MAC地址</li>
+<li>
+<p>DHCP状态</p>
+</li>
+<li>
+<p><strong>系统运行时间</strong>：</p>
+</li>
+<li>计算系统运行时长</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">使用方法</p>
+<ol>
+<li>双击运行<code>sysinfo_collector.bat</code></li>
+<li>等待信息收集完成</li>
+<li>自动生成HTML报告并打开浏览器显示</li>
+</ol>
+</div>
+<h2 id="2_2">项目2：日志分析工具<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h2>
+<h3 id="_9">需求分析<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><strong>目标</strong>：创建一个能够分析日志文件并生成统计报告的工具</p>
+<p><strong>功能需求</strong>：
+1. 读取日志文件
+2. 统计不同日志级别的数量
+3. 提取错误和警告详情
+4. 计算错误率
+5. 生成分析报告</p>
+<p><strong>技术要点</strong>：
+- 使用<code>for /f</code>读取文件内容
+- 使用<code>findstr</code>进行文本匹配
+- 使用变量计数和统计
+- 生成格式化的报告</p>
+<h3 id="_10">设计思路<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    A[开始] --&gt; B[检查日志文件]
+    B --&gt; C{文件存在?}
+    C --&gt;|否| D[显示错误]
+    C --&gt;|是| E[初始化统计变量]
+    E --&gt; F[第一遍：统计数量]
+    F --&gt; G[第二遍：提取详情]
+    G --&gt; H[第三遍：生成报告]
+    H --&gt; I[显示完成信息]
+    I --&gt; J[结束]
+
+    D --&gt; J
+
+    style A fill:#e1f5fe
+    style J fill:#e8f5e8
+    style D fill:#ffcdd2</code></pre>
+<h3 id="_11">代码实现详解<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h4 id="1_3">1. 文件读取和解析<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">:</span><span class="c1">: 读取日志文件</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;usebackq delims=&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%LOG_FILE%</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="k">set</span> <span class="s2">&quot;line=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;TOTAL_LINES+=1&quot;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="p">:</span><span class="c1">: 检查日志级别</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">echo</span> <span class="s2">&quot;</span><span class="nv">!line!</span><span class="s2">&quot;</span> <span class="p">|</span> findstr /i /c:<span class="s2">&quot;[ERROR]&quot;</span> <span class="p">&gt;</span> nul <span class="p">&amp;&amp;</span> <span class="p">(</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;ERROR_COUNT+=1&quot;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="p">)</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>for /f</code>逐行读取文件
+- 使用<code>findstr</code>进行模式匹配
+- 使用延迟扩展处理循环中的变量</p>
+<h4 id="2_3">2. 统计分析<a class="headerlink" href="#2_3" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">:</span><span class="c1">: 计算错误率</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;ERROR_RATE=0&quot;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">if</span> <span class="nv">%TOTAL_LINES%</span> <span class="ow">gtr</span> 0 <span class="p">(</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;ERROR_RATE=(ERROR_COUNT + FATAL_COUNT) * 100 / TOTAL_LINES&quot;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>set /a</code>进行算术运算
+- 处理除零错误
+- 计算百分比</p>
+<h4 id="3_1">3. 报告生成<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">:</span><span class="c1">: 生成报告</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">(</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">echo</span> 【基本信息】
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">echo</span> 总行数: <span class="nv">%TOTAL_LINES%</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">echo</span>.
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">echo</span> 【日志级别统计】
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">echo</span> ┌─────────────┬──────────┐
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="k">echo</span> │ 日志级别    │ 数量     │
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">echo</span> ├─────────────┼──────────┤
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="k">echo</span> │ ERROR       │ <span class="nv">%ERROR_COUNT%</span>        │
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">echo</span> └─────────────┴──────────┘
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="p">)</span> <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%REPORT_FILE%</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用ASCII字符绘制表格
+- 格式化输出
+- 写入报告文件</p>
+<h3 id="_12">运行效果展示<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>运行<code>log_analyzer.bat</code>后，会生成一个文本报告文件，包含：</p>
+<ol>
+<li><strong>基本信息</strong>：</li>
+<li>总行数</li>
+<li>
+<p>分析时间范围</p>
+</li>
+<li>
+<p><strong>日志级别统计</strong>：</p>
+</li>
+<li>FATAL、ERROR、WARNING、INFO、DEBUG数量</li>
+<li>
+<p>使用表格格式显示</p>
+</li>
+<li>
+<p><strong>错误率分析</strong>：</p>
+</li>
+<li>计算错误率百分比</li>
+<li>
+<p>给出状态评估（正常/注意/警告）</p>
+</li>
+<li>
+<p><strong>错误详情</strong>：</p>
+</li>
+<li>列出所有ERROR和FATAL日志</li>
+<li>
+<p>帮助定位问题根源</p>
+</li>
+<li>
+<p><strong>建议操作</strong>：</p>
+</li>
+<li>根据错误率给出处理建议</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">使用方法</p>
+<ol>
+<li>准备日志文件（可使用<code>logs/sample.log</code>示例）</li>
+<li>运行<code>log_analyzer.bat</code></li>
+<li>查看生成的分析报告</li>
+</ol>
+</div>
+<h2 id="3_2">项目3：文件批量处理工具<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h2>
+<h3 id="_13">需求分析<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p><strong>目标</strong>：创建一个能够批量处理文件的工具，支持重命名、修改扩展名、移动和复制</p>
+<p><strong>功能需求</strong>：
+1. 批量重命名文件（添加前缀、后缀、序号）
+2. 批量修改文件扩展名
+3. 批量移动文件
+4. 批量复制文件
+5. 操作预览和确认</p>
+<p><strong>技术要点</strong>：
+- 使用<code>for</code>循环遍历文件
+- 使用<code>ren</code>、<code>move</code>、<code>copy</code>命令操作文件
+- 使用菜单系统提供交互界面
+- 添加操作确认机制</p>
+<h3 id="_14">设计思路<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    A[主菜单] --&gt; B[批量重命名]
+    A --&gt; C[修改扩展名]
+    A --&gt; D[批量移动]
+    A --&gt; E[批量复制]
+    A --&gt; F[查看文件列表]
+    A --&gt; G[退出]
+
+    B --&gt; B1[添加前缀]
+    B --&gt; B2[添加后缀]
+    B --&gt; B3[添加序号]
+
+    B1 --&gt; H[预览操作]
+    B2 --&gt; H
+    B3 --&gt; H
+    C --&gt; H
+    D --&gt; H
+    E --&gt; H
+
+    H --&gt; I{确认执行?}
+    I --&gt;|是| J[执行操作]
+    I --&gt;|否| A
+
+    J --&gt; K[记录日志]
+    K --&gt; A
+
+    style A fill:#e1f5fe
+    style J fill:#e8f5e8
+    style I fill:#fff3e0</code></pre>
+<h3 id="_15">代码实现详解<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<h4 id="1_4">1. 菜单系统<a class="headerlink" href="#1_4" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">:</span><span class="nl">MAIN_MENU</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">echo</span> ============================================================
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">echo</span>                        主菜单
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">echo</span> ============================================================
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">echo</span> 1. 批量重命名文件
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">echo</span> 2. 批量修改扩展名
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">echo</span> 3. 批量移动文件
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">echo</span> 4. 批量复制文件
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">echo</span> 5. 查看目录文件列表
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="k">echo</span> 6. 退出
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="k">echo</span> ============================================================
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="k">set</span> <span class="k">/p</span> <span class="s2">&quot;CHOICE=请选择操作 (1-6): &quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用标签创建菜单循环
+- 使用<code>set /p</code>获取用户输入
+- 使用<code>if</code>语句处理选择</p>
+<h4 id="2_4">2. 文件重命名<a class="headerlink" href="#2_4" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">:</span><span class="c1">: 添加前缀</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">set</span> <span class="k">/p</span> <span class="s2">&quot;PREFIX=请输入前缀: &quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">for</span> <span class="se">%%</span>f <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%TARGET_DIR%</span><span class="s2">\*.*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="k">set</span> <span class="s2">&quot;FILENAME=</span><span class="se">%%</span><span class="s2">~nxf&quot;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="k">ren</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">f&quot;</span> <span class="s2">&quot;</span><span class="nv">%PREFIX%!FILENAME!</span><span class="s2">&quot;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>for</code>循环遍历文件
+- 使用<code>%%~nxf</code>获取文件名
+- 使用<code>ren</code>命令重命名</p>
+<h4 id="3_3">3. 操作确认<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">:</span><span class="c1">: 预览和确认</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">echo</span> 预览重命名结果：
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">for</span> <span class="se">%%</span>f <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%TARGET_DIR%</span><span class="s2">\*.*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="k">echo</span> <span class="se">%%</span>~nxf -<span class="se">^&gt;</span> <span class="nv">%PREFIX%</span><span class="se">%%</span>~nxf
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">)</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">set</span> <span class="k">/p</span> <span class="s2">&quot;CONFIRM=确认执行重命名？(Y/N): &quot;</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">if</span> <span class="k">/i</span> <span class="s2">&quot;</span><span class="nv">%CONFIRM%</span><span class="s2">&quot;</span> <span class="ow">neq</span> <span class="s2">&quot;Y&quot;</span> <span class="k">goto</span> <span class="nl">MAIN_MENU</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 先预览再执行
+- 使用<code>/i</code>忽略大小写比较
+- 提供取消机制</p>
+<h3 id="_16">运行效果展示<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<p>运行<code>file_batch.bat</code>后，会显示交互式菜单：</p>
+<ol>
+<li><strong>主菜单</strong>：</li>
+<li>显示可用操作选项</li>
+<li>
+<p>接收用户选择</p>
+</li>
+<li>
+<p><strong>批量重命名</strong>：</p>
+</li>
+<li>选择重命名方式（前缀/后缀/序号）</li>
+<li>输入参数</li>
+<li>预览重命名结果</li>
+<li>
+<p>确认执行</p>
+</li>
+<li>
+<p><strong>批量修改扩展名</strong>：</p>
+</li>
+<li>输入原扩展名和新扩展名</li>
+<li>预览修改结果</li>
+<li>
+<p>确认执行</p>
+</li>
+<li>
+<p><strong>批量移动/复制</strong>：</p>
+</li>
+<li>输入文件匹配模式</li>
+<li>输入目标目录</li>
+<li>预览操作结果</li>
+<li>确认执行</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">使用方法</p>
+<ol>
+<li>准备测试文件（可使用<code>test_files/</code>目录）</li>
+<li>运行<code>file_batch.bat</code></li>
+<li>选择操作类型</li>
+<li>输入参数并确认执行</li>
+</ol>
+</div>
+<h2 id="4_1">项目4：简易备份系统<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h2>
+<h3 id="_17">需求分析<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p><strong>目标</strong>：创建一个支持增量备份和恢复的备份系统</p>
+<p><strong>功能需求</strong>：
+1. 增量备份（基于时间戳）
+2. 全量备份
+3. 备份日志记录
+4. 备份恢复功能
+5. 备份配置管理</p>
+<p><strong>技术要点</strong>：
+- 使用时间戳创建备份目录
+- 使用<code>copy</code>命令复制文件
+- 记录备份日志
+- 实现恢复功能</p>
+<h3 id="_18">设计思路<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    A[主菜单] --&gt; B[增量备份]
+    A --&gt; C[全量备份]
+    A --&gt; D[查看备份记录]
+    A --&gt; E[恢复文件]
+    A --&gt; F[备份配置]
+    A --&gt; G[退出]
+
+    B --&gt; H[获取上次备份时间]
+    H --&gt; I[创建备份目录]
+    I --&gt; J[复制修改的文件]
+    J --&gt; K[更新配置文件]
+    K --&gt; L[记录备份日志]
+
+    C --&gt; M[创建备份目录]
+    M --&gt; N[复制所有文件]
+    N --&gt; L
+
+    E --&gt; O[列出可用备份]
+    O --&gt; P[选择备份]
+    P --&gt; Q[选择恢复方式]
+    Q --&gt; R[执行恢复]
+    R --&gt; L
+
+    L --&gt; A
+
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#e8f5e8
+    style E fill:#fff3e0</code></pre>
+<h3 id="_19">代码实现详解<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<h4 id="1_5">1. 增量备份<a class="headerlink" href="#1_5" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">:</span><span class="c1">: 获取上次备份时间</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">set</span> <span class="s2">&quot;LAST_BACKUP_TIME=&quot;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">if</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%CONFIG_FILE%</span><span class="s2">&quot;</span> <span class="p">(</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=2 delims==&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;findstr /i &quot;last_backup_time&quot; &quot;</span><span class="nv">%CONFIG_FILE%</span><span class="s1">&quot; 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="k">set</span> <span class="s2">&quot;LAST_BACKUP_TIME=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="p">)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">:</span><span class="c1">: 创建备份目录</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="k">set</span> <span class="s2">&quot;BACKUP_PATH=</span><span class="nv">%BACKUP_DIR%</span><span class="s2">\backup_</span><span class="nv">%TIMESTAMP%</span><span class="s2">&quot;</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="k">mkdir</span> <span class="s2">&quot;</span><span class="nv">%BACKUP_PATH%</span><span class="s2">&quot;</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="p">:</span><span class="c1">: 执行备份</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="k">for</span> <span class="se">%%</span>f <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%SOURCE_DIR%</span><span class="s2">\*.*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="k">copy</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">f&quot;</span> <span class="s2">&quot;</span><span class="nv">%BACKUP_PATH%</span><span class="s2">&quot;</span> <span class="p">&gt;</span> nul
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 读取上次备份时间
+- 使用时间戳创建唯一备份目录
+- 复制文件到备份目录</p>
+<h4 id="2_5">2. 备份恢复<a class="headerlink" href="#2_5" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">:</span><span class="c1">: 列出可用备份</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">set</span> <span class="s2">&quot;BACKUP_INDEX=0&quot;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">for</span> /d <span class="se">%%</span>d <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%BACKUP_DIR%</span><span class="s2">\backup_*&quot;</span> <span class="s2">&quot;</span><span class="nv">%BACKUP_DIR%</span><span class="s2">\full_backup_*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;BACKUP_INDEX+=1&quot;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="k">set</span> <span class="s2">&quot;BACKUP_!BACKUP_INDEX!=</span><span class="se">%%</span><span class="s2">~nxd&quot;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="k">echo</span> <span class="nv">!BACKUP_INDEX!</span>. <span class="se">%%</span>~nxd (<span class="se">%%</span>~td<span class="p">)</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1">)</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">:</span><span class="c1">: 执行恢复</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="k">for</span> <span class="se">%%</span>f <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">!RESTORE_PATH!</span><span class="s2">\*.*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="k">copy</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">f&quot;</span> <span class="s2">&quot;</span><span class="nv">%SOURCE_DIR%</span><span class="s2">&quot;</span> <span class="p">&gt;</span> nul
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 列出所有备份目录
+- 让用户选择恢复目标
+- 复制文件到源目录</p>
+<h4 id="3_4">3. 配置文件管理<a class="headerlink" href="#3_4" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">:</span><span class="c1">: 更新配置文件</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="p">(</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">echo</span> [backup_config]
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="k">echo</span> last_backup_time=<span class="nv">%DATE%</span> <span class="nv">%TIME%</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">echo</span> last_backup_path=<span class="nv">%BACKUP_PATH%</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">echo</span> backup_type=<span class="nv">!BACKUP_TYPE!</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">echo</span> backup_count=<span class="nv">!BACKUP_COUNT!</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="p">)</span> <span class="p">&gt;</span> <span class="s2">&quot;</span><span class="nv">%CONFIG_FILE%</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用括号创建配置内容
+- 写入配置文件
+- 记录备份元数据</p>
+<h3 id="_20">运行效果展示<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p>运行<code>backup_system.bat</code>后，会显示交互式菜单：</p>
+<ol>
+<li><strong>主菜单</strong>：</li>
+<li>显示源目录和备份目录</li>
+<li>
+<p>提供备份和恢复选项</p>
+</li>
+<li>
+<p><strong>增量备份</strong>：</p>
+</li>
+<li>检查上次备份时间</li>
+<li>只备份修改过的文件</li>
+<li>
+<p>显示备份统计信息</p>
+</li>
+<li>
+<p><strong>全量备份</strong>：</p>
+</li>
+<li>备份所有文件</li>
+<li>
+<p>显示备份大小和文件数</p>
+</li>
+<li>
+<p><strong>备份恢复</strong>：</p>
+</li>
+<li>列出所有可用备份</li>
+<li>选择恢复到原目录或新目录</li>
+<li>
+<p>执行恢复操作</p>
+</li>
+<li>
+<p><strong>备份配置</strong>：</p>
+</li>
+<li>显示当前配置</li>
+<li>支持修改配置</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">使用方法</p>
+<ol>
+<li>准备源文件目录（可使用<code>test_files/</code>）</li>
+<li>运行<code>backup_system.bat</code></li>
+<li>选择备份或恢复操作</li>
+<li>查看备份日志</li>
+</ol>
+</div>
+<h2 id="5">项目5：自动化部署脚本<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="_21">需求分析<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p><strong>目标</strong>：创建一个自动化部署脚本，支持配置文件、错误处理和回滚</p>
+<p><strong>功能需求</strong>：
+1. 读取部署配置文件
+2. 执行部署步骤（备份、停止、部署、启动、验证）
+3. 错误处理和自动回滚
+4. 健康检查
+5. 部署日志记录</p>
+<p><strong>技术要点</strong>：
+- 读取INI配置文件
+- 实现步骤化部署流程
+- 错误检测和回滚机制
+- 健康检查模拟</p>
+<h3 id="_22">设计思路<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    A[开始部署] --&gt; B[读取配置文件]
+    B --&gt; C[执行部署步骤]
+    C --&gt; D{步骤成功?}
+    D --&gt;|是| E[下一个步骤]
+    D --&gt;|否| F{启用回滚?}
+    F --&gt;|是| G[执行回滚]
+    F --&gt;|否| H[部署失败]
+
+    E --&gt; I{所有步骤完成?}
+    I --&gt;|否| C
+    I --&gt;|是| J[部署成功]
+
+    G --&gt; K[恢复备份]
+    K --&gt; L[重启服务]
+    L --&gt; H
+
+    J --&gt; M[记录部署日志]
+    H --&gt; M
+    M --&gt; N[结束]
+
+    style A fill:#e1f5fe
+    style J fill:#e8f5e8
+    style H fill:#ffcdd2
+    style G fill:#fff3e0</code></pre>
+<h3 id="_23">代码实现详解<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<h4 id="1_6">1. 配置文件读取<a class="headerlink" href="#1_6" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">:</span><span class="c1">: 读取配置文件</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=1,2 delims==&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;type &quot;</span><span class="nv">%CONFIG_FILE%</span><span class="s1">&quot; 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="k">set</span> <span class="s2">&quot;KEY=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="k">set</span> <span class="s2">&quot;VALUE=</span><span class="se">%%</span><span class="s2">b&quot;</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">!KEY!</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;app_name&quot;</span> <span class="k">set</span> <span class="s2">&quot;APP_NAME=!VALUE!&quot;</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">!KEY!</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;app_version&quot;</span> <span class="k">set</span> <span class="s2">&quot;APP_VERSION=!VALUE!&quot;</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">!KEY!</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;deploy_steps&quot;</span> <span class="k">set</span> <span class="s2">&quot;DEPLOY_STEPS=!VALUE!&quot;</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>for /f</code>解析配置文件
+- 使用<code>delims==</code>按等号分割
+- 存储配置值到变量</p>
+<h4 id="2_6">2. 部署步骤执行<a class="headerlink" href="#2_6" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">:</span><span class="c1">: 执行部署步骤</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">for</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="nv">%DEPLOY_STEPS%</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="k">call</span> <span class="p">:</span><span class="nl">EXECUTE_STEP</span> <span class="se">%%</span>s
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="k">if</span> <span class="nv">!ERRORLEVEL!</span> <span class="ow">neq</span> 0 <span class="p">(</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="k">echo</span> [ERROR] 步骤 <span class="se">%%</span>s 执行失败！
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="k">set</span> <span class="s2">&quot;DEPLOY_STATUS=FAILED&quot;</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="k">set</span> <span class="s2">&quot;FAILED_STEP=</span><span class="se">%%</span><span class="s2">s&quot;</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>        <span class="p">:</span><span class="c1">: 检查是否需要回滚</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>        <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%ROLLBACK_ENABLED%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;true&quot;</span> <span class="p">(</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>            <span class="k">goto</span> <span class="nl">AUTO_ROLLBACK</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>        <span class="p">)</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="p">)</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 使用<code>for</code>循环执行步骤
+- 检查每个步骤的返回值
+- 失败时触发回滚机制</p>
+<h4 id="3_5">3. 错误处理和回滚<a class="headerlink" href="#3_5" title="Permanent link">&para;</a></h4>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">:</span><span class="nl">AUTO_ROLLBACK</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">echo</span> [INFO] 开始自动回滚...
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="p">:</span><span class="c1">: 停止当前应用</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">echo</span> [模拟] 停止当前应用
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>timeout /t 1 <span class="p">&gt;</span> nul
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="p">:</span><span class="c1">: 恢复备份文件</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="k">echo</span> [模拟] 恢复备份文件
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>timeout /t 2 <span class="p">&gt;</span> nul
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="p">:</span><span class="c1">: 重启应用</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="k">echo</span> [模拟] 重启应用
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>timeout /t 1 <span class="p">&gt;</span> nul
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="k">echo</span> [完成] 回滚完成！
+</span></code></pre></div>
+<p><strong>关键点</strong>：
+- 实现自动回滚流程
+- 模拟停止、恢复、重启操作
+- 记录回滚日志</p>
+<h3 id="_24">运行效果展示<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<p>运行<code>deploy.bat</code>后，会显示交互式菜单：</p>
+<ol>
+<li><strong>主菜单</strong>：</li>
+<li>显示部署环境和配置</li>
+<li>
+<p>提供部署和回滚选项</p>
+</li>
+<li>
+<p><strong>完整部署</strong>：</p>
+</li>
+<li>读取配置文件</li>
+<li>按步骤执行部署</li>
+<li>显示每个步骤的状态</li>
+<li>
+<p>失败时自动回滚</p>
+</li>
+<li>
+<p><strong>单个步骤执行</strong>：</p>
+</li>
+<li>选择要执行的步骤</li>
+<li>
+<p>单独执行并显示结果</p>
+</li>
+<li>
+<p><strong>健康检查</strong>：</p>
+</li>
+<li>检查应用状态</li>
+<li>
+<p>显示健康检查结果</p>
+</li>
+<li>
+<p><strong>回滚部署</strong>：</p>
+</li>
+<li>列出可用备份</li>
+<li>选择回滚目标</li>
+<li>
+<p>执行回滚操作</p>
+</li>
+<li>
+<p><strong>部署日志</strong>：</p>
+</li>
+<li>查看部署历史记录</li>
+<li>分析部署状态</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">使用方法</p>
+<ol>
+<li>准备配置文件（可使用<code>config/settings.ini</code>）</li>
+<li>运行<code>deploy.bat</code></li>
+<li>选择部署环境</li>
+<li>执行部署或回滚操作</li>
+<li>查看部署日志</li>
+</ol>
+</div>
+<h2 id="pythonnodejs">与Python/Node.js的对比<a class="headerlink" href="#pythonnodejs" title="Permanent link">&para;</a></h2>
+<h3 id="python">Python实现对比<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<p>Python实现相同功能时，具有以下优势：</p>
+<ol>
+<li>
+<p><strong>代码简洁性</strong>：
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Python - 获取系统信息</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">os_info</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="s1">&#39;system&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="s1">&#39;machine&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">()</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>错误处理</strong>：
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Python - 异常处理</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">some_operation</span><span class="p">()</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;操作失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>数据处理</strong>：
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Python - 日志分析</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;log.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>        <span class="k">if</span> <span class="s1">&#39;ERROR&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>            <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="nodejs">Node.js实现对比<a class="headerlink" href="#nodejs" title="Permanent link">&para;</a></h3>
+<p>Node.js实现相同功能时，具有以下特点：</p>
+<ol>
+<li>
+<p><strong>异步处理</strong>：
+   <div class="language-javascript highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1">// Node.js - 文件操作</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">});</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>模块化</strong>：
+   <div class="language-javascript highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1">// Node.js - 模块导出</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">SystemInfoCollector</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nx">collect</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="p">}</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">SystemInfoCollector</span><span class="p">;</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>跨平台</strong>：
+   <div class="language-javascript highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">// Node.js - 跨平台API</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">os</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">);</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">platform</span><span class="p">());</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="_25">对比总结<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>CMD/BAT</th>
+<th>Python</th>
+<th>Node.js</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学习曲线</td>
+<td>低</td>
+<td>中</td>
+<td>中</td>
+</tr>
+<tr>
+<td>代码简洁性</td>
+<td>低</td>
+<td>高</td>
+<td>中</td>
+</tr>
+<tr>
+<td>错误处理</td>
+<td>基础</td>
+<td>强大</td>
+<td>强大</td>
+</tr>
+<tr>
+<td>跨平台</td>
+<td>Windows</td>
+<td>跨平台</td>
+<td>跨平台</td>
+</tr>
+<tr>
+<td>执行速度</td>
+<td>快</td>
+<td>中</td>
+<td>快</td>
+</tr>
+<tr>
+<td>生态系统</td>
+<td>小</td>
+<td>大</td>
+<td>大</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>Windows系统管理</td>
+<td>数据处理、自动化</td>
+<td>Web开发、工具开发</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">选择建议</p>
+<ul>
+<li><strong>CMD/BAT</strong>：适合Windows系统管理、简单自动化任务</li>
+<li><strong>Python</strong>：适合数据处理、复杂自动化、跨平台需求</li>
+<li><strong>Node.js</strong>：适合Web开发、工具开发、异步处理</li>
+</ul>
+</div>
+<h2 id="_26">总结<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h2>
+<p>通过本章的5个实战项目，你已经掌握了：</p>
+<ol>
+<li><strong>系统信息收集</strong>：使用<code>wmic</code>命令获取系统信息</li>
+<li><strong>日志分析</strong>：使用<code>for</code>循环和<code>findstr</code>进行文本处理</li>
+<li><strong>文件批量处理</strong>：使用<code>for</code>循环和文件操作命令</li>
+<li><strong>备份系统</strong>：实现增量备份和恢复功能</li>
+<li><strong>自动化部署</strong>：实现步骤化部署和错误处理</li>
+</ol>
+<p>这些项目综合运用了前面章节学到的所有知识，包括：
+- 变量和数据类型
+- 条件判断和循环
+- 函数和模块化
+- 文件操作
+- 错误处理
+- 配置文件管理</p>
+<div class="admonition tip">
+<p class="admonition-title">下一步学习</p>
+<ul>
+<li>尝试扩展这些项目的功能</li>
+<li>将项目应用到实际工作中</li>
+<li>学习PowerShell或Python提升自动化能力</li>
+<li>探索更多Windows系统管理命令</li>
+</ul>
+</div>
+<h2 id="_27">练习题<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h2>
+<h3 id="1_7">练习1：扩展系统信息收集器<a class="headerlink" href="#1_7" title="Permanent link">&para;</a></h3>
+<p>扩展<code>sysinfo_collector.bat</code>，添加以下功能：
+1. 收集已安装软件列表
+2. 收集系统服务状态
+3. 收集系统事件日志
+4. 生成JSON格式报告</p>
+<h3 id="2_7">练习2：增强日志分析工具<a class="headerlink" href="#2_7" title="Permanent link">&para;</a></h3>
+<p>增强<code>log_analyzer.bat</code>，添加以下功能：
+1. 支持正则表达式匹配
+2. 按时间范围过滤日志
+3. 生成图表（使用HTML/CSS）
+4. 支持多种日志格式</p>
+<h3 id="3_6">练习3：改进文件批量处理<a class="headerlink" href="#3_6" title="Permanent link">&para;</a></h3>
+<p>改进<code>file_batch.bat</code>，添加以下功能：
+1. 支持正则表达式匹配文件名
+2. 添加撤销功能
+3. 支持递归处理子目录
+4. 添加文件内容预览</p>
+<h3 id="4_2">练习4：完善备份系统<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h3>
+<p>完善<code>backup_system.bat</code>，添加以下功能：
+1. 支持增量备份（基于文件修改时间）
+2. 添加备份压缩功能
+3. 支持远程备份（网络路径）
+4. 添加备份验证功能</p>
+<h3 id="5_1">练习5：优化部署脚本<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h3>
+<p>优化<code>deploy.bat</code>，添加以下功能：
+1. 支持多环境部署（开发、测试、生产）
+2. 添加部署前检查
+3. 支持蓝绿部署
+4. 添加部署回滚验证</p>
+<h2 id="_28">附录：常用命令速查表<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wmic</code></td>
+<td>Windows管理工具</td>
+<td><code>wmic os get Caption</code></td>
+</tr>
+<tr>
+<td><code>findstr</code></td>
+<td>文本搜索</td>
+<td><code>findstr /i "error" log.txt</code></td>
+</tr>
+<tr>
+<td><code>for /f</code></td>
+<td>文件解析</td>
+<td><code>for /f "delims=" %%a in (file) do</code></td>
+</tr>
+<tr>
+<td><code>ren</code></td>
+<td>重命名文件</td>
+<td><code>ren old.txt new.txt</code></td>
+</tr>
+<tr>
+<td><code>move</code></td>
+<td>移动文件</td>
+<td><code>move file.txt C:\backup\</code></td>
+</tr>
+<tr>
+<td><code>copy</code></td>
+<td>复制文件</td>
+<td><code>copy file1.txt file2.txt</code></td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>创建目录</td>
+<td><code>mkdir new_folder</code></td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td>删除目录</td>
+<td><code>rmdir empty_folder</code></td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>显示文件内容</td>
+<td><code>type file.txt</code></td>
+</tr>
+<tr>
+<td><code>find</code></td>
+<td>查找文本</td>
+<td><code>find "error" log.txt</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>章节总结：</strong>
+本章通过5个完整的实战项目，将前面学到的CMD/BAT脚本知识进行了综合运用。每个项目都包含了需求分析、设计思路、代码实现和运行效果，帮助你理解如何将理论知识应用到实际项目中。通过对比Python和Node.js的实现，你也了解了CMD脚本的优势和局限性。掌握这些实战技能后，你将能够独立开发实用的Windows系统管理工具。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/example/cmd-learn" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

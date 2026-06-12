@@ -1,0 +1,4048 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Windows 命令行脚本编程完整学习教程">
+      
+      
+        <meta name="author" content="CMD Learn Project">
+      
+      
+      
+        <link rel="prev" href="../ch06-file-io/">
+      
+      
+        <link rel="next" href="../ch08-data-structures/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>第07章 函数与模块化 — 代码的组织 - CMD/BAT 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#07" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-header__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CMD/BAT 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第07章 函数与模块化 — 代码的组织
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch01-hello-cmd/" class="md-tabs__link">
+          
+  
+  
+  入门篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ch05-string-processing/" class="md-tabs__link">
+          
+  
+  
+  进阶篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch09-env-registry/" class="md-tabs__link">
+          
+  
+  
+  高级篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ch13-multilang/" class="md-tabs__link">
+          
+  
+  
+  精通篇
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../appendix/" class="md-tabs__link">
+          
+  
+  
+  附录
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CMD/BAT 从入门到精通" class="md-nav__button md-logo" aria-label="CMD/BAT 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CMD/BAT 从入门到精通
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/example/cmd-learn" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    入门篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    入门篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch01-hello-cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第01章：Hello CMD — 初识命令行脚本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch02-file-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第02章 文件与目录管理 — 操作文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch03-conditionals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第03章：条件与流程控制 — 程序的判断力
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch04-loops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第04章 循环与跳转 — 重复的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进阶篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    进阶篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch05-string-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第05章 字符串处理 — 文本的艺术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch06-file-io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第06章：文件I/O与重定向 — 数据的流动
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第07章 函数与模块化 — 代码的组织
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第07章 函数与模块化 — 代码的组织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 为什么需要函数？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 标签和 goto：函数的基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.2 标签和 goto：函数的基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#721" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.1 标签定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#722-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.2 goto 命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#723" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.3 标签作为函数的基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 call 命令：调用子程序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 call 命令：调用子程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#731-call-label-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.1 call :label - 调用当前脚本中的标签
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#732-call-scriptbat-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2 call script.bat - 调用外部脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#733-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.3 call 嵌套调用的限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 参数传递
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.4 参数传递">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#741-0-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.1 位置参数 %0 ~ %9
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#742" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.2 参数扩展修饰符
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#743" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.3 %* 所有参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#744" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.4 参数中的特殊字符处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#745" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.5 命名参数的实现技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#746" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.6 参数个数统计
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 返回值
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 返回值">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#751-errorlevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.1 通过 ERRORLEVEL 返回数值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#752" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.2 通过变量返回（副作用方式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#753-goto-eof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.3 goto :eof 结束子程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#76-cmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 延迟扩展：CMD函数的核心机制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.6 延迟扩展：CMD函数的核心机制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#761" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.1 为什么需要延迟扩展？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#762" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.2 启用延迟扩展
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#763-var-vs-var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.3 !var! vs %var%
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#764-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.4 延迟扩展在 for 循环中的应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#765" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.5 感叹号的处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#77" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 作用域管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.7 作用域管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#771-setlocal-endlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.1 setlocal 和 endlocal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#772" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.2 函数中的作用域
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#773-endlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.3 跨 endlocal 传递变量的技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#78" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8 函数库文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.8 函数库文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#781" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.1 创建函数库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#782" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.2 使用函数库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#783" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.3 库文件组织最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#79" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9 数据结构概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.9 数据结构概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#791" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.1 调用栈的概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#792-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.2 变量作用域（全局 vs 局部）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#793" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.3 参数传递机制（值传递）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#710" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.10 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10.1 函数定义对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10.2 主要差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#711" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11 最佳实践和常见陷阱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.11 最佳实践和常见陷阱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.1 最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.2 常见陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.3 性能考虑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#712" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.12 实战练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.12 实战练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1: 基础函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2: 字符串处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3: 数组处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4: 作用域管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5: 综合应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#713" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.13 本章小结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.13 本章小结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键概念回顾
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心语法速查
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下一步学习
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#714" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.14 附加资源
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.14 附加资源">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比语言代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch08-data-structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第08章 数据结构模拟 — 在限制中创造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高级篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    高级篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch09-env-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第09章 环境变量与注册表 — 系统配置的钥匙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch10-network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第10章 网络工具 — 连接世界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch11-process-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章 进程与服务管理 — 系统的守护者
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch12-task-scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第12章 任务计划与调度 — 自动化的基石
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    精通篇
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    精通篇
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch13-multilang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第13章 多语言集成 — 万物互联
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch14-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：实战项目 — 学以致用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch15-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第15章 安全与权限 — 守护系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录：速查表与参考资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 为什么需要函数？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 标签和 goto：函数的基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.2 标签和 goto：函数的基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#721" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.1 标签定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#722-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.2 goto 命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#723" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2.3 标签作为函数的基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 call 命令：调用子程序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 call 命令：调用子程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#731-call-label-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.1 call :label - 调用当前脚本中的标签
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#732-call-scriptbat-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2 call script.bat - 调用外部脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#733-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.3 call 嵌套调用的限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 参数传递
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.4 参数传递">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#741-0-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.1 位置参数 %0 ~ %9
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#742" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.2 参数扩展修饰符
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#743" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.3 %* 所有参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#744" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.4 参数中的特殊字符处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#745" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.5 命名参数的实现技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#746" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.6 参数个数统计
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 返回值
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 返回值">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#751-errorlevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.1 通过 ERRORLEVEL 返回数值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#752" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.2 通过变量返回（副作用方式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#753-goto-eof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5.3 goto :eof 结束子程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#76-cmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 延迟扩展：CMD函数的核心机制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.6 延迟扩展：CMD函数的核心机制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#761" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.1 为什么需要延迟扩展？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#762" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.2 启用延迟扩展
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#763-var-vs-var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.3 !var! vs %var%
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#764-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.4 延迟扩展在 for 循环中的应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#765" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6.5 感叹号的处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#77" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 作用域管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.7 作用域管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#771-setlocal-endlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.1 setlocal 和 endlocal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#772" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.2 函数中的作用域
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#773-endlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7.3 跨 endlocal 传递变量的技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#78" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8 函数库文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.8 函数库文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#781" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.1 创建函数库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#782" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.2 使用函数库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#783" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8.3 库文件组织最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#79" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9 数据结构概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.9 数据结构概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#791" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.1 调用栈的概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#792-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.2 变量作用域（全局 vs 局部）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#793" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9.3 参数传递机制（值传递）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#710" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10 与其他语言的对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.10 与其他语言的对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10.1 函数定义对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.10.2 主要差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#711" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11 最佳实践和常见陷阱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.11 最佳实践和常见陷阱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.1 最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.2 常见陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.11.3 性能考虑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#712" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.12 实战练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.12 实战练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习1: 基础函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习2: 字符串处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习3: 数组处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习4: 作用域管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习5: 综合应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#713" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.13 本章小结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.13 本章小结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键概念回顾
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心语法速查
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下一步学习
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#714" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.14 附加资源
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.14 附加资源">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比语言代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="07">第07章 函数与模块化 — 代码的组织<a class="headerlink" href="#07" title="Permanent link">&para;</a></h1>
+<h2 id="_1">本章目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>通过本章学习，你将能够：</p>
+<ul>
+<li>理解CMD中函数的概念和实现方式</li>
+<li>掌握使用 <code>call</code> 命令调用子程序</li>
+<li>学会参数传递和返回值处理</li>
+<li>理解延迟扩展的必要性和使用场景</li>
+<li>掌握变量作用域管理</li>
+<li>创建可复用的函数库文件</li>
+</ul>
+<p><strong>预计学习时间</strong>: 45-60分钟</p>
+<p><strong>前置知识</strong>: 第1-6章内容，特别是变量、循环和条件判断</p>
+<hr />
+<h2 id="71">7.1 为什么需要函数？<a class="headerlink" href="#71" title="Permanent link">&para;</a></h2>
+<p>在编写较复杂的批处理脚本时，你经常会遇到以下问题：</p>
+<ol>
+<li><strong>代码重复</strong> - 相同的逻辑在多个地方出现</li>
+<li><strong>难以维护</strong> - 修改一个功能需要找到所有相关代码</li>
+<li><strong>逻辑混乱</strong> - 所有代码堆在一起，难以理解</li>
+</ol>
+<p>函数（在CMD中称为"子程序"）正是解决这些问题的关键。</p>
+<pre class="mermaid"><code>graph LR
+    A[主程序] --&gt; B[函数A]
+    A --&gt; C[函数B]
+    A --&gt; D[函数C]
+    B --&gt; E[返回主程序]
+    C --&gt; E
+    D --&gt; E</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">类比理解</p>
+<p>函数就像是一个"子任务"：主程序告诉函数"请帮我完成这件事"，函数完成后返回结果，主程序继续执行。</p>
+</div>
+<hr />
+<h2 id="72-goto">7.2 标签和 goto：函数的基础<a class="headerlink" href="#72-goto" title="Permanent link">&para;</a></h2>
+<p>在CMD中，函数本质上是通过<strong>标签（label）</strong> 和 <strong>goto</strong> 来实现的。</p>
+<h3 id="721">7.2.1 标签定义<a class="headerlink" href="#721" title="Permanent link">&para;</a></h3>
+<p>标签以冒号 <code>:</code> 开头，放在行首：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">:</span><span class="nl">label_name</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">:</span><span class="c1">: 这里是标签下的代码</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">echo</span> This is inside the label
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">标签命名规则</p>
+<ul>
+<li>标签名不能包含空格</li>
+<li>标签名不区分大小写</li>
+<li>建议使用有意义的名称，如 <code>:greet</code>、<code>:calculate</code></li>
+</ul>
+</div>
+<h3 id="722-goto">7.2.2 goto 命令<a class="headerlink" href="#722-goto" title="Permanent link">&para;</a></h3>
+<p><code>goto</code> 命令用于跳转到指定标签：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">echo</span> Before goto
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">skip_middle</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">echo</span> This line is skipped!
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">:</span><span class="nl">skip_middle</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">echo</span> After goto
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Before goto
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>After goto
+</span></code></pre></div></p>
+<h3 id="723">7.2.3 标签作为函数的基本结构<a class="headerlink" href="#723" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">:</span><span class="c1">: 主程序</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">echo</span> 主程序开始
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">my_function</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">echo</span> 主程序结束
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">:</span><span class="nl">my_function</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">echo</span> 函数执行中...
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<hr />
+<h2 id="73-call">7.3 call 命令：调用子程序<a class="headerlink" href="#73-call" title="Permanent link">&para;</a></h2>
+<p><code>call</code> 是CMD中调用函数的核心命令。</p>
+<h3 id="731-call-label-">7.3.1 call :label - 调用当前脚本中的标签<a class="headerlink" href="#731-call-label-" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">echo</span> 主程序开始
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">call</span> <span class="p">:</span><span class="nl">greet</span> <span class="s2">&quot;Alice&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">greet</span> <span class="s2">&quot;Bob&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">echo</span> 主程序结束
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">:</span><span class="nl">greet</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">echo</span> 你好, <span class="nv">%~1</span>!
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>主程序开始
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>你好, Alice!
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>你好, Bob!
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>主程序结束
+</span></code></pre></div></p>
+<h3 id="732-call-scriptbat-">7.3.2 call script.bat - 调用外部脚本<a class="headerlink" href="#732-call-scriptbat-" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">:</span><span class="c1">: 主脚本 (main.bat)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">echo</span> 主脚本开始
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">call</span> helper.bat
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">echo</span> 主脚本结束
+</span></code></pre></div>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">:</span><span class="c1">: 辅助脚本 (helper.bat)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">echo</span> 辅助脚本被调用
+</span></code></pre></div>
+<h3 id="733-call">7.3.3 call 嵌套调用的限制<a class="headerlink" href="#733-call" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">嵌套深度限制</p>
+<p>CMD的call命令有嵌套深度限制，默认约为128层。超过限制会导致错误。</p>
+</div>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">:</span><span class="c1">: 计数器，用于跟踪嵌套深度</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">set</span> <span class="s2">&quot;depth=0&quot;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">:</span><span class="nl">recursive</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;depth+=1&quot;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">echo</span> 嵌套深度: <span class="nv">!depth!</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">:</span><span class="c1">: 限制递归深度，防止无限循环</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="k">if</span> <span class="nv">!depth!</span> <span class="ow">GEQ</span> 10 <span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">recursive</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>嵌套深度: 1
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>嵌套深度: 2
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>嵌套深度: 3
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>嵌套深度: 4
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>嵌套深度: 5
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>嵌套深度: 6
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>嵌套深度: 7
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>嵌套深度: 8
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>嵌套深度: 9
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>嵌套深度: 10
+</span></code></pre></div></p>
+<hr />
+<h2 id="74">7.4 参数传递<a class="headerlink" href="#74" title="Permanent link">&para;</a></h2>
+<p>CMD中的参数传递非常灵活，但也有其特殊性。</p>
+<h3 id="741-0-9">7.4.1 位置参数 %0 ~ %9<a class="headerlink" href="#741-0-9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>%0</code> - 脚本或函数名本身</li>
+<li><code>%1</code> 到 <code>%9</code> - 第1到第9个参数</li>
+</ul>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">call</span> <span class="p">:</span><span class="nl">show_params</span> arg1 arg2 arg3
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">:</span><span class="nl">show_params</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">echo</span> 函数名: <span class="nv">%0</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">echo</span> 参数1: <span class="nv">%1</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">echo</span> 参数2: <span class="nv">%2</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">echo</span> 参数3: <span class="nv">%3</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>函数名: :show_params
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>参数1: arg1
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>参数2: arg2
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>参数3: arg3
+</span></code></pre></div></p>
+<h3 id="742">7.4.2 参数扩展修饰符<a class="headerlink" href="#742" title="Permanent link">&para;</a></h3>
+<p>使用 <code>~</code> 修饰符可以去除引号等：</p>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%~1</code></td>
+<td>去除引号</td>
+<td><code>"hello"</code> → <code>hello</code></td>
+</tr>
+<tr>
+<td><code>%~f1</code></td>
+<td>完整路径</td>
+<td><code>file.txt</code> → <code>C:\path\file.txt</code></td>
+</tr>
+<tr>
+<td><code>%~d1</code></td>
+<td>驱动器号</td>
+<td><code>C:\file.txt</code> → <code>C:</code></td>
+</tr>
+<tr>
+<td><code>%~p1</code></td>
+<td>路径部分</td>
+<td><code>C:\dir\file.txt</code> → <code>\dir\</code></td>
+</tr>
+<tr>
+<td><code>%~n1</code></td>
+<td>文件名</td>
+<td><code>file.txt</code> → <code>file</code></td>
+</tr>
+<tr>
+<td><code>%~x1</code></td>
+<td>扩展名</td>
+<td><code>file.txt</code> → <code>.txt</code></td>
+</tr>
+<tr>
+<td><code>%~s1</code></td>
+<td>短路径</td>
+<td>长路径 → <code>8.3</code>格式</td>
+</tr>
+<tr>
+<td><code>%~a1</code></td>
+<td>文件属性</td>
+<td>显示文件属性</td>
+</tr>
+<tr>
+<td><code>%~t1</code></td>
+<td>文件时间</td>
+<td>显示修改时间</td>
+</tr>
+<tr>
+<td><code>%~z1</code></td>
+<td>文件大小</td>
+<td>显示文件大小</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">call</span> <span class="p">:</span><span class="nl">show_info</span> <span class="s2">&quot;C:\My Documents\report.txt&quot;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">:</span><span class="nl">show_info</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">echo</span> 完整路径: <span class="nv">%~f1</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">echo</span> 驱动器: <span class="nv">%~d1</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="k">echo</span> 路径: <span class="nv">%~p1</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">echo</span> 文件名: <span class="nv">%~n1</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="k">echo</span> 扩展名: <span class="nv">%~x1</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="743">7.4.3 %* 所有参数<a class="headerlink" href="#743" title="Permanent link">&para;</a></h3>
+<p><code>%*</code> 代表传递给脚本或函数的所有参数（保留原始格式）：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">call</span> <span class="p">:</span><span class="nl">show_all</span> <span class="s2">&quot;hello world&quot;</span> foo bar
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">:</span><span class="nl">show_all</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="k">echo</span> 所有参数: <span class="nv">%*</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="k">echo</span> 参数1: <span class="nv">%~1</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="k">echo</span> 参数2: <span class="nv">%~2</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>所有参数: &quot;hello world&quot; foo bar
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>参数1: hello world
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>参数2: foo
+</span></code></pre></div></p>
+<h3 id="744">7.4.4 参数中的特殊字符处理<a class="headerlink" href="#744" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">特殊字符问题</p>
+<p>参数中的特殊字符（如 <code>&amp;</code>, <code>|</code>, <code>&lt;</code>, <code>&gt;</code>）可能导致意外行为。务必使用引号包裹参数。</p>
+</div>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="p">:</span><span class="c1">: 错误示例 - 特殊字符会导致问题</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">call</span> <span class="p">:</span><span class="nl">show_msg</span> hello <span class="p">&amp;</span> world
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">:</span><span class="c1">: 正确示例 - 使用引号</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">call</span> <span class="p">:</span><span class="nl">show_msg</span> <span class="s2">&quot;hello &amp; world&quot;</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="p">:</span><span class="nl">show_msg</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="k">echo</span> 消息: <span class="nv">%~1</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="745">7.4.5 命名参数的实现技巧<a class="headerlink" href="#745" title="Permanent link">&para;</a></h3>
+<p>虽然CMD不原生支持命名参数，但可以通过解析实现：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">process_args</span> /name:Alice /age:25 /city:<span class="s2">&quot;New York&quot;</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">echo</span> 姓名: <span class="nv">!name!</span>, 年龄: <span class="nv">!age!</span>, 城市: <span class="nv">!city!</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">endlocal</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="p">:</span><span class="nl">process_args</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="k">set</span> <span class="s2">&quot;name=&quot;</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="k">set</span> <span class="s2">&quot;age=&quot;</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">set</span> <span class="s2">&quot;city=&quot;</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="p">:</span><span class="nl">parse_loop</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">goto</span> <span class="p">:</span><span class="nl">parse_done</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="k">if</span> <span class="k">/i</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;/name&quot;</span> <span class="p">(</span>
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>    <span class="k">set</span> <span class="s2">&quot;name=</span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>    <span class="k">shift</span>
+</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>    <span class="k">shift</span>
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>    <span class="k">goto</span> <span class="p">:</span><span class="nl">parse_loop</span>
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="p">)</span>
+</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
+</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="k">if</span> <span class="k">/i</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;/age&quot;</span> <span class="p">(</span>
+</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>    <span class="k">set</span> <span class="s2">&quot;age=</span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>    <span class="k">shift</span>
+</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>    <span class="k">shift</span>
+</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>    <span class="k">goto</span> <span class="p">:</span><span class="nl">parse_loop</span>
+</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a><span class="p">)</span>
+</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>
+</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a><span class="k">if</span> <span class="k">/i</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;/city&quot;</span> <span class="p">(</span>
+</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>    <span class="k">set</span> <span class="s2">&quot;city=</span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>    <span class="k">shift</span>
+</span><span id="__span-16-34"><a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>    <span class="k">shift</span>
+</span><span id="__span-16-35"><a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>    <span class="k">goto</span> <span class="p">:</span><span class="nl">parse_loop</span>
+</span><span id="__span-16-36"><a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a><span class="p">)</span>
+</span><span id="__span-16-37"><a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>
+</span><span id="__span-16-38"><a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a><span class="k">shift</span>
+</span><span id="__span-16-39"><a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">parse_loop</span>
+</span><span id="__span-16-40"><a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>
+</span><span id="__span-16-41"><a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a><span class="p">:</span><span class="nl">parse_done</span>
+</span><span id="__span-16-42"><a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>姓名: Alice, 年龄: 25, 城市: New York
+</span></code></pre></div></p>
+<h3 id="746">7.4.6 参数个数统计<a class="headerlink" href="#746" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">call</span> <span class="p">:</span><span class="nl">count_params</span> a b c d e
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">:</span><span class="nl">count_params</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="k">set</span> <span class="s2">&quot;count=0&quot;</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="p">:</span><span class="nl">params_loop</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">goto</span> <span class="p">:</span><span class="nl">params_done</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;count+=1&quot;</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="k">shift</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">params_loop</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="p">:</span><span class="nl">params_done</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="k">echo</span> 参数个数: <span class="nv">%count%</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>参数个数: 5
+</span></code></pre></div></p>
+<hr />
+<h2 id="75">7.5 返回值<a class="headerlink" href="#75" title="Permanent link">&para;</a></h2>
+<p>CMD中函数返回值有两种主要方式。</p>
+<h3 id="751-errorlevel">7.5.1 通过 ERRORLEVEL 返回数值<a class="headerlink" href="#751-errorlevel" title="Permanent link">&para;</a></h3>
+<p><code>exit /b</code> 命令可以设置 ERRORLEVEL：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">setlocal</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="p">:</span><span class="c1">: 调用加法函数</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="k">call</span> <span class="p">:</span><span class="nl">add</span> 3 5
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="k">echo</span> 3 + 5 = <span class="nv">%ERRORLEVEL%</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="p">:</span><span class="c1">: 调用乘法函数</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="k">call</span> <span class="p">:</span><span class="nl">multiply</span> 4 6
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="k">echo</span> 4 * 6 = <span class="nv">%ERRORLEVEL%</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="k">endlocal</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="p">:</span><span class="nl">add</span>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;result=</span><span class="nv">%~1</span><span class="s2"> + </span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="k">exit</span> /b <span class="nv">%result%</span>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="p">:</span><span class="nl">multiply</span>
+</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;result=</span><span class="nv">%~1</span><span class="s2"> * </span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="k">exit</span> /b <span class="nv">%result%</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>3 + 5 = 8
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>4 * 6 = 24
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">ERRORLEVEL的局限性</p>
+<p>ERRORLEVEL只能返回0-255的整数（实际上更大范围也可能工作，但不推荐）。如果需要返回更复杂的数据，应该使用变量。</p>
+</div>
+<h3 id="752">7.5.2 通过变量返回（副作用方式）<a class="headerlink" href="#752" title="Permanent link">&para;</a></h3>
+<p>这是更灵活的方式，通过修改全局变量来返回结果：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="p">:</span><span class="c1">: 通过变量返回结果</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">call</span> <span class="p">:</span><span class="nl">get_greeting</span> <span class="s2">&quot;Alice&quot;</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="k">echo</span> <span class="nv">!greeting!</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="k">call</span> <span class="p">:</span><span class="nl">calculate_area</span> 5 3
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="k">echo</span> 面积: <span class="nv">!area!</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="k">endlocal</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="p">:</span><span class="nl">get_greeting</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="k">set</span> <span class="s2">&quot;greeting=Hello, </span><span class="nv">%~1! Welcome!</span><span class="s2">&quot;</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="p">:</span><span class="nl">calculate_area</span>
+</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;area=</span><span class="nv">%~1</span><span class="s2"> * </span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Hello, Alice! Welcome!
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>面积: 15
+</span></code></pre></div></p>
+<h3 id="753-goto-eof">7.5.3 goto :eof 结束子程序<a class="headerlink" href="#753-goto-eof" title="Permanent link">&para;</a></h3>
+<p><code>goto :eof</code> 是CMD中结束子程序的标准方式：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">:</span><span class="nl">my_function</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="p">:</span><span class="c1">: 函数代码</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="k">echo</span> 执行中...
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">:</span><span class="c1">: 条件退出</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="k">if</span> <span class="nv">%some_condition%</span><span class="o">==</span>true <span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="p">:</span><span class="c1">: 继续执行</span>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="k">echo</span> 继续...
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">为什么用 goto :eof 而不是 exit /b？</p>
+<ul>
+<li><code>goto :eof</code> 只是跳转到文件末尾，不设置ERRORLEVEL</li>
+<li><code>exit /b</code> 可以同时设置ERRORLEVEL</li>
+<li>如果不需要返回值，两者都可以用</li>
+</ul>
+</div>
+<hr />
+<h2 id="76-cmd">7.6 延迟扩展：CMD函数的核心机制<a class="headerlink" href="#76-cmd" title="Permanent link">&para;</a></h2>
+<p>延迟扩展是理解CMD函数的关键概念。</p>
+<h3 id="761">7.6.1 为什么需要延迟扩展？<a class="headerlink" href="#761" title="Permanent link">&para;</a></h3>
+<p>CMD在解析命令时会立即替换 <code>%var%</code>，这在循环和代码块中会导致问题：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">setlocal</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="k">set</span> <span class="s2">&quot;count=0&quot;</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">for</span> <span class="k">/L</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">1</span>,<span class="mi">1</span>,<span class="mi">5</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;count+=1&quot;</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="k">echo</span> 计数: <span class="nv">%count%</span>  :: 这里显示的总是0！
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="p">)</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>计数: 0
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>计数: 0
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>计数: 0
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>计数: 0
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>计数: 0
+</span></code></pre></div></p>
+<p>问题在于：<code>%count%</code> 在循环开始前就被替换了，循环内永远不会更新。</p>
+<h3 id="762">7.6.2 启用延迟扩展<a class="headerlink" href="#762" title="Permanent link">&para;</a></h3>
+<p>使用 <code>setlocal EnableDelayedExpansion</code> 启用延迟扩展：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="k">set</span> <span class="s2">&quot;count=0&quot;</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="k">for</span> <span class="k">/L</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">1</span>,<span class="mi">1</span>,<span class="mi">5</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;count+=1&quot;</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>    <span class="k">echo</span> 计数: <span class="nv">!count!</span>  :: 使用感叹号，延迟扩展
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="p">)</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>计数: 1
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>计数: 2
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>计数: 3
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>计数: 4
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>计数: 5
+</span></code></pre></div></p>
+<h3 id="763-var-vs-var">7.6.3 !var! vs %var%<a class="headerlink" href="#763-var-vs-var" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>替换时机</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%var%</code></td>
+<td>解析时立即替换</td>
+<td>简单语句，for循环变量</td>
+</tr>
+<tr>
+<td><code>!var!</code></td>
+<td>执行时延迟替换</td>
+<td>循环体、代码块内的变量</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="k">set</span> <span class="s2">&quot;a=hello&quot;</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="k">set</span> <span class="s2">&quot;b=world&quot;</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">:</span><span class="c1">: 简单语句中，两者效果相同</span>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="k">echo</span> <span class="nv">%a%</span> <span class="nv">%b%</span>
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="k">echo</span> <span class="nv">!a!</span> <span class="nv">!b!</span>
+</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>
+</span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="p">:</span><span class="c1">: 代码块中，必须使用延迟扩展</span>
+</span><span id="__span-29-12"><a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="k">if</span> 1<span class="o">==</span>1 <span class="p">(</span>
+</span><span id="__span-29-13"><a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>    <span class="k">set</span> <span class="s2">&quot;c=inside block&quot;</span>
+</span><span id="__span-29-14"><a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>    <span class="k">echo</span> 延迟扩展: <span class="nv">!c!</span>
+</span><span id="__span-29-15"><a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>    <span class="k">echo</span> 即时扩展: <span class="nv">%c%</span>  :: 这会显示空！
+</span><span id="__span-29-16"><a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="p">)</span>
+</span><span id="__span-29-17"><a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>
+</span><span id="__span-29-18"><a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<h3 id="764-for">7.6.4 延迟扩展在 for 循环中的应用<a class="headerlink" href="#764-for" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="p">:</span><span class="c1">: 收集所有文件到变量</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="k">set</span> <span class="s2">&quot;files=&quot;</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="k">for</span> <span class="se">%%</span>f <span class="k">in</span> <span class="p">(</span>*.txt<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>    <span class="k">set</span> <span class="s2">&quot;files=!files! </span><span class="se">%%</span><span class="s2">f&quot;</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="p">)</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="k">echo</span> 找到的文件: <span class="nv">!files!</span>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="p">:</span><span class="c1">: 累加计算</span>
+</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="k">set</span> <span class="s2">&quot;total=0&quot;</span>
+</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="k">for</span> <span class="k">/L</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">1</span>,<span class="mi">1</span>,<span class="mi">10</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>    <span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;total+=</span><span class="se">%%</span><span class="s2">i&quot;</span>
+</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="p">)</span>
+</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="k">echo</span> 1到10的和: <span class="nv">!total!</span>
+</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a>
+</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">延迟扩展的性能开销</p>
+<p>延迟扩展会带来轻微的性能开销。在不需要时（如简单语句中），可以使用 <code>%var%</code>。</p>
+</div>
+<h3 id="765">7.6.5 感叹号的处理<a class="headerlink" href="#765" title="Permanent link">&para;</a></h3>
+<p>当变量值包含感叹号时，需要特别注意：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="p">:</span><span class="c1">: 包含感叹号的字符串</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="k">set</span> <span class="s2">&quot;msg=Hello World!&quot;</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="k">echo</span> 不使用延迟扩展: <span class="nv">%msg%</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="k">echo</span> 使用延迟扩展: <span class="nv">!msg!</span>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="p">:</span><span class="c1">: 如果启用了延迟扩展，感叹号会被解释为变量边界</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="p">:</span><span class="c1">: 这可能导致意外行为</span>
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="k">set</span> <span class="s2">&quot;test=This is a test!&quot;</span>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="k">echo</span> 测试: <span class="nv">!test!</span>
+</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>
+</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<hr />
+<h2 id="77">7.7 作用域管理<a class="headerlink" href="#77" title="Permanent link">&para;</a></h2>
+<p>CMD中的变量作用域管理对于函数的正确实现至关重要。</p>
+<h3 id="771-setlocal-endlocal">7.7.1 setlocal 和 endlocal<a class="headerlink" href="#771-setlocal-endlocal" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="p">:</span><span class="c1">: 全局变量</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="k">set</span> <span class="s2">&quot;global_var=I am global&quot;</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="k">echo</span> 全局变量: <span class="nv">%global_var%</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="p">:</span><span class="c1">: 进入局部作用域</span>
+</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="k">setlocal</span>
+</span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="k">set</span> <span class="s2">&quot;local_var=I am local&quot;</span>
+</span><span id="__span-32-10"><a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="k">echo</span> 局部变量: <span class="nv">%local_var%</span>
+</span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="k">echo</span> 全局变量仍然可访问: <span class="nv">%global_var%</span>
+</span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>
+</span><span id="__span-32-13"><a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="p">:</span><span class="c1">: 退出局部作用域</span>
+</span><span id="__span-32-14"><a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="k">endlocal</span>
+</span><span id="__span-32-15"><a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>
+</span><span id="__span-32-16"><a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="k">echo</span> 退出后全局变量: <span class="nv">%global_var%</span>
+</span><span id="__span-32-17"><a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="k">echo</span> 退出后局部变量: <span class="nv">%local_var%</span>  :: 这会显示空！
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>全局变量: I am global
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>局部变量: I am local
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>全局变量仍然可访问: I am global
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>退出后全局变量: I am global
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>退出后局部变量: 
+</span></code></pre></div></p>
+<h3 id="772">7.7.2 函数中的作用域<a class="headerlink" href="#772" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="k">set</span> <span class="s2">&quot;x=100&quot;</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="k">echo</span> 主程序 x=<span class="nv">%x%</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="k">call</span> <span class="p">:</span><span class="nl">my_function</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="k">echo</span> 调用后 x=<span class="nv">%x%</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="p">:</span><span class="nl">my_function</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="k">setlocal</span>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="k">set</span> <span class="s2">&quot;x=200&quot;</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="k">echo</span> 函数内 x=<span class="nv">%x%</span>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="k">endlocal</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>主程序 x=100
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>函数内 x=200
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>调用后 x=100
+</span></code></pre></div></p>
+<h3 id="773-endlocal">7.7.3 跨 endlocal 传递变量的技巧<a class="headerlink" href="#773-endlocal" title="Permanent link">&para;</a></h3>
+<p>这是一个高级技巧，用于从函数返回变量：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="k">setlocal</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">get_info</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="k">echo</span> 姓名: <span class="nv">%name%</span>
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="k">echo</span> 年龄: <span class="nv">%age%</span>
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="p">:</span><span class="nl">get_info</span>
+</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="k">setlocal</span>
+</span><span id="__span-36-11"><a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="k">set</span> <span class="s2">&quot;name=Alice&quot;</span>
+</span><span id="__span-36-12"><a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="k">set</span> <span class="s2">&quot;age=25&quot;</span>
+</span><span id="__span-36-13"><a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a>
+</span><span id="__span-36-14"><a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="p">:</span><span class="c1">: 技巧：使用 endlocal &amp; set 来传递变量</span>
+</span><span id="__span-36-15"><a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="p">:</span><span class="c1">: 命令在同一行执行，endlocal和set同时生效</span>
+</span><span id="__span-36-16"><a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="k">endlocal</span> <span class="p">&amp;</span> <span class="k">set</span> <span class="s2">&quot;name=</span><span class="nv">%name%</span><span class="s2">&quot;</span> <span class="p">&amp;</span> <span class="k">set</span> <span class="s2">&quot;age=</span><span class="nv">%age%</span><span class="s2">&quot;</span>
+</span><span id="__span-36-17"><a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>姓名: Alice
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>年龄: 25
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">跨endlocal传递的原理</p>
+<p>CMD在解析 <code>endlocal &amp; set "name=%name%"</code> 时：
+1. 先解析 <code>%name%</code>（此时还在setlocal内部）
+2. 然后执行 <code>endlocal</code>（销毁局部变量）
+3. 最后执行 <code>set "name=Alice"</code>（在新作用域创建变量）</p>
+</div>
+<hr />
+<h2 id="78">7.8 函数库文件<a class="headerlink" href="#78" title="Permanent link">&para;</a></h2>
+<p>将常用函数组织到单独的文件中，实现代码复用。</p>
+<h3 id="781">7.8.1 创建函数库<a class="headerlink" href="#781" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">:</span><span class="c1">: lib/string_utils.bat</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="p">:</span><span class="c1">: 字符串处理工具库</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="p">:</span><span class="nl">to_upper</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="p">:</span><span class="c1">: 将字符串转换为大写</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="k">set</span> <span class="s2">&quot;result=&quot;</span>
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="k">for</span> <span class="k">/l</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">0</span>,<span class="mi">1</span>,<span class="mi">1000</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-38-9"><a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>    <span class="k">if</span> <span class="s2">&quot;!</span><span class="nv">%~1</span><span class="s2">:~</span><span class="se">%%</span><span class="s2">i,1!&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">goto</span> <span class="p">:</span><span class="nl">to_upper_done</span>
+</span><span id="__span-38-10"><a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a>    <span class="k">set</span> <span class="s2">&quot;char=!</span><span class="nv">%~1</span><span class="s2">:~</span><span class="se">%%</span><span class="s2">i,1!&quot;</span>
+</span><span id="__span-38-11"><a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">!char!</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;a&quot;</span> <span class="k">set</span> <span class="s2">&quot;char=A&quot;</span>
+</span><span id="__span-38-12"><a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a>    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">!char!</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;b&quot;</span> <span class="k">set</span> <span class="s2">&quot;char=B&quot;</span>
+</span><span id="__span-38-13"><a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>    <span class="p">:</span><span class="c1">: ... 更多字符映射</span>
+</span><span id="__span-38-14"><a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a>    <span class="k">set</span> <span class="s2">&quot;result=!result!!char!&quot;</span>
+</span><span id="__span-38-15"><a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a><span class="p">)</span>
+</span><span id="__span-38-16"><a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a><span class="p">:</span><span class="nl">to_upper_done</span>
+</span><span id="__span-38-17"><a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a><span class="k">set</span> <span class="s2">&quot;</span><span class="nv">%~2</span><span class="s2">=!result!&quot;</span>
+</span><span id="__span-38-18"><a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-38-19"><a id="__codelineno-38-19" name="__codelineno-38-19" href="#__codelineno-38-19"></a>
+</span><span id="__span-38-20"><a id="__codelineno-38-20" name="__codelineno-38-20" href="#__codelineno-38-20"></a><span class="p">:</span><span class="nl">trim</span>
+</span><span id="__span-38-21"><a id="__codelineno-38-21" name="__codelineno-38-21" href="#__codelineno-38-21"></a><span class="p">:</span><span class="c1">: 去除字符串首尾空格</span>
+</span><span id="__span-38-22"><a id="__codelineno-38-22" name="__codelineno-38-22" href="#__codelineno-38-22"></a><span class="k">set</span> <span class="s2">&quot;str=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-38-23"><a id="__codelineno-38-23" name="__codelineno-38-23" href="#__codelineno-38-23"></a><span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%str%</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;str=</span><span class="se">%%</span><span class="s2">a&quot;</span>
+</span><span id="__span-38-24"><a id="__codelineno-38-24" name="__codelineno-38-24" href="#__codelineno-38-24"></a><span class="k">set</span> <span class="s2">&quot;</span><span class="nv">%~2</span><span class="s2">=</span><span class="nv">%str%</span><span class="s2">&quot;</span>
+</span><span id="__span-38-25"><a id="__codelineno-38-25" name="__codelineno-38-25" href="#__codelineno-38-25"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="782">7.8.2 使用函数库<a class="headerlink" href="#782" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="p">:</span><span class="c1">: 调用库函数</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="k">call</span> lib\string_utils.bat :to_upper <span class="s2">&quot;hello&quot;</span> upper_str
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="k">echo</span> 大写: <span class="nv">!upper_str!</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="k">call</span> lib\string_utils.bat :trim <span class="s2">&quot;  spaces  &quot;</span> trimmed
+</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a><span class="k">echo</span> 去除空格: [!trimmed!]
+</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a>
+</span><span id="__span-39-11"><a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<h3 id="783">7.8.3 库文件组织最佳实践<a class="headerlink" href="#783" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>project/
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>├── main.bat
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>├── lib/
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>│   ├── string_utils.bat
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>│   ├── math_utils.bat
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>│   ├── file_utils.bat
+</span><span id="__span-40-7"><a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>│   └── logging.bat
+</span><span id="__span-40-8"><a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a>└── config/
+</span><span id="__span-40-9"><a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a>    └── settings.bat
+</span></code></pre></div>
+<hr />
+<h2 id="79">7.9 数据结构概念<a class="headerlink" href="#79" title="Permanent link">&para;</a></h2>
+<h3 id="791">7.9.1 调用栈的概念<a class="headerlink" href="#791" title="Permanent link">&para;</a></h3>
+<p>CMD维护一个调用栈来跟踪函数调用：</p>
+<pre class="mermaid"><code>graph TD
+    A["主程序 (main.bat)"] --&gt;|call :func1| B["函数1 (:func1)"]
+    B --&gt;|call :func2| C["函数2 (:func2)"]
+    C --&gt;|goto :eof| D["返回函数1"]
+    D --&gt;|goto :eof| E["返回主程序"]</code></pre>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">echo</span> 主程序开始
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="k">call</span> <span class="p">:</span><span class="nl">func1</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="k">echo</span> 主程序结束
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="p">:</span><span class="nl">func1</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="k">echo</span> 函数1开始
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="k">call</span> <span class="p">:</span><span class="nl">func2</span>
+</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="k">echo</span> 函数1结束
+</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>
+</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="p">:</span><span class="nl">func2</span>
+</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="k">echo</span> 函数2开始
+</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="k">echo</span> 函数2结束
+</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>主程序开始
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>函数1开始
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>函数2开始
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>函数2结束
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>函数1结束
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a>主程序结束
+</span></code></pre></div></p>
+<h3 id="792-vs">7.9.2 变量作用域（全局 vs 局部）<a class="headerlink" href="#792-vs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>全局变量</th>
+<th>局部变量（setlocal）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定义方式</td>
+<td>直接 <code>set</code></td>
+<td>在 <code>setlocal</code> 内 <code>set</code></td>
+</tr>
+<tr>
+<td>可见性</td>
+<td>整个脚本</td>
+<td>仅在 <code>setlocal</code> 块内</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>脚本结束</td>
+<td><code>endlocal</code> 时销毁</td>
+</tr>
+<tr>
+<td>修改影响</td>
+<td>永久修改</td>
+<td>退出后恢复</td>
+</tr>
+</tbody>
+</table>
+<h3 id="793">7.9.3 参数传递机制（值传递）<a class="headerlink" href="#793" title="Permanent link">&para;</a></h3>
+<p>CMD中的参数传递是<strong>值传递</strong>，不是引用传递：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="k">set</span> <span class="s2">&quot;original=Hello&quot;</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="k">echo</span> 调用前: <span class="nv">!original!</span>
+</span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>
+</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="k">call</span> <span class="p">:</span><span class="nl">modify_var</span> <span class="s2">&quot;</span><span class="nv">!original!</span><span class="s2">&quot;</span>
+</span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="k">echo</span> 调用后: <span class="nv">!original!</span>
+</span><span id="__span-43-9"><a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>
+</span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="k">endlocal</span>
+</span><span id="__span-43-11"><a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-43-12"><a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a>
+</span><span id="__span-43-13"><a id="__codelineno-43-13" name="__codelineno-43-13" href="#__codelineno-43-13"></a><span class="p">:</span><span class="nl">modify_var</span>
+</span><span id="__span-43-14"><a id="__codelineno-43-14" name="__codelineno-43-14" href="#__codelineno-43-14"></a><span class="k">set</span> <span class="s2">&quot;arg=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-43-15"><a id="__codelineno-43-15" name="__codelineno-43-15" href="#__codelineno-43-15"></a><span class="k">set</span> <span class="s2">&quot;arg=Modified&quot;</span>
+</span><span id="__span-43-16"><a id="__codelineno-43-16" name="__codelineno-43-16" href="#__codelineno-43-16"></a><span class="k">echo</span> 函数内: <span class="nv">!arg!</span>
+</span><span id="__span-43-17"><a id="__codelineno-43-17" name="__codelineno-43-17" href="#__codelineno-43-17"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>输出结果：</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>调用前: Hello
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>函数内: Modified
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>调用后: Hello
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">为什么修改不生效？</p>
+<p>函数中的 <code>set "arg=%~1"</code> 创建了一个新的局部变量，修改的是这个局部变量，而不是原始变量。</p>
+</div>
+<hr />
+<h2 id="710">7.10 与其他语言的对比<a class="headerlink" href="#710" title="Permanent link">&para;</a></h2>
+<h3 id="7101">7.10.1 函数定义对比<a class="headerlink" href="#7101" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CMD/BAT</label><label for="__tabbed_1_2">Python</label><label for="__tabbed_1_3">JavaScript</label><label for="__tabbed_1_4">C</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="p">:</span><span class="c1">: 函数定义（使用标签）</span>
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="p">:</span><span class="nl">add</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;result=</span><span class="nv">%~1</span><span class="s2"> + </span><span class="nv">%~2</span><span class="s2">&quot;</span>
+</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>
+</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="p">:</span><span class="c1">: 函数调用</span>
+</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="k">call</span> <span class="p">:</span><span class="nl">add</span> 3 5
+</span><span id="__span-45-10"><a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a><span class="k">echo</span> 结果: <span class="nv">%ERRORLEVEL%</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="c1"># 函数定义</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="c1"># 函数调用</span>
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;结果: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="c1">// 函数定义</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="kd">function</span><span class="w"> </span><span class="nx">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="p">}</span>
+</span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>
+</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a><span class="c1">// 函数调用</span>
+</span><span id="__span-47-7"><a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">add</span><span class="p">(</span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">);</span>
+</span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`结果: </span><span class="si">${</span><span class="nx">result</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="c1">// 函数定义</span>
+</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="p">}</span>
+</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a>
+</span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="c1">// 函数调用</span>
+</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-10"><a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+</span><span id="__span-48-11"><a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;结果: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+</span><span id="__span-48-12"><a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-48-13"><a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="7102">7.10.2 主要差异<a class="headerlink" href="#7102" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>CMD/BAT</th>
+<th>Python/JS/C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数定义</td>
+<td>标签 <code>:name</code></td>
+<td>关键字 <code>def</code>/<code>function</code>/返回类型</td>
+</tr>
+<tr>
+<td>参数传递</td>
+<td><code>%1</code>-<code>%9</code></td>
+<td>命名参数</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>ERRORLEVEL 或变量</td>
+<td><code>return</code> 语句</td>
+</tr>
+<tr>
+<td>作用域</td>
+<td><code>setlocal</code>/<code>endlocal</code></td>
+<td>语言自动管理</td>
+</tr>
+<tr>
+<td>嵌套限制</td>
+<td>~128层</td>
+<td>通常无限制</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="711">7.11 最佳实践和常见陷阱<a class="headerlink" href="#711" title="Permanent link">&para;</a></h2>
+<h3 id="7111">7.11.1 最佳实践<a class="headerlink" href="#7111" title="Permanent link">&para;</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">函数设计原则</p>
+<ol>
+<li><strong>单一职责</strong> - 每个函数只做一件事</li>
+<li><strong>明确的输入输出</strong> - 清晰的参数和返回值</li>
+<li><strong>避免副作用</strong> - 尽量通过参数返回结果</li>
+<li><strong>错误处理</strong> - 检查参数有效性</li>
+</ol>
+</div>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">:</span><span class="c1">: 好的函数设计</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="p">:</span><span class="nl">get_file_size</span>
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="p">:</span><span class="c1">: 获取文件大小</span>
+</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="p">:</span><span class="c1">: 参数: %1 - 文件路径</span>
+</span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="p">:</span><span class="c1">: 返回: 设置 filesize 变量</span>
+</span><span id="__span-49-6"><a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="k">if</span> <span class="k">not</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span> <span class="p">(</span>
+</span><span id="__span-49-7"><a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a>    <span class="k">set</span> <span class="s2">&quot;filesize=-1&quot;</span>
+</span><span id="__span-49-8"><a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a>    <span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-49-9"><a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a><span class="p">)</span>
+</span><span id="__span-49-10"><a id="__codelineno-49-10" name="__codelineno-49-10" href="#__codelineno-49-10"></a><span class="k">for</span> <span class="se">%%</span>A <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;filesize=</span><span class="se">%%</span><span class="s2">~zA&quot;</span>
+</span><span id="__span-49-11"><a id="__codelineno-49-11" name="__codelineno-49-11" href="#__codelineno-49-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<h3 id="7112">7.11.2 常见陷阱<a class="headerlink" href="#7112" title="Permanent link">&para;</a></h3>
+<p><strong>陷阱1: goto 破坏 for 循环</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p">:</span><span class="c1">: 错误示例</span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="k">for</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span>1 2 3<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>    <span class="k">echo</span> <span class="se">%%</span>i
+</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a>    <span class="k">if</span> <span class="se">%%</span>i<span class="o">==</span>2 <span class="k">goto</span> <span class="p">:</span><span class="nl">found</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="p">)</span>
+</span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="p">:</span><span class="nl">found</span>
+</span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a><span class="k">echo</span> Found 2
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">为什么这是错误的？</p>
+<p><code>goto</code> 会跳出整个 <code>for</code> 循环，而不是继续执行。如果需要在循环中跳出，使用标志变量。</p>
+</div>
+<p><strong>正确做法：</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="k">set</span> <span class="s2">&quot;found=&quot;</span>
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="k">for</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span>1 2 3<span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>    <span class="k">echo</span> <span class="se">%%</span>i
+</span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>    <span class="k">if</span> <span class="se">%%</span>i<span class="o">==</span>2 <span class="k">set</span> <span class="s2">&quot;found=1&quot;</span>
+</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="p">)</span>
+</span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="k">if</span> <span class="k">defined</span> <span class="nv">found</span> <span class="k">echo</span> Found 2
+</span></code></pre></div>
+<p><strong>陷阱2: 延迟扩展的感叹号问题</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="k">set</span> <span class="s2">&quot;msg=Hello World!&quot;</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="k">echo</span> <span class="nv">!msg!</span>  :: 输出: Hello World  (感叹号消失了！)
+</span></code></pre></div>
+<p><strong>解决方案：</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">:</span><span class="c1">: 如果不需要延迟扩展，不要启用</span>
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="k">set</span> <span class="s2">&quot;msg=Hello World!&quot;</span>
+</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="k">echo</span> <span class="nv">%msg%</span>
+</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>
+</span><span id="__span-53-5"><a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a><span class="p">:</span><span class="c1">: 或者转义感叹号</span>
+</span><span id="__span-53-6"><a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a><span class="k">set</span> <span class="s2">&quot;msg=Hello World</span><span class="se">^!</span><span class="s2">&quot;</span>
+</span><span id="__span-53-7"><a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="k">echo</span> <span class="nv">!msg!</span>
+</span></code></pre></div>
+<p><strong>陷阱3: 变量名冲突</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="p">:</span><span class="c1">: 主程序</span>
+</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="k">set</span> <span class="s2">&quot;name=Alice&quot;</span>
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>
+</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">func1</span>
+</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="k">echo</span> 主程序: <span class="nv">%name%</span>  :: 可能被修改！
+</span><span id="__span-54-6"><a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-54-7"><a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a>
+</span><span id="__span-54-8"><a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a><span class="p">:</span><span class="nl">func1</span>
+</span><span id="__span-54-9"><a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a><span class="k">set</span> <span class="s2">&quot;name=Bob&quot;</span>  :: 修改了全局变量！
+</span><span id="__span-54-10"><a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>解决方案：</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="p">:</span><span class="nl">func1</span>
+</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="k">setlocal</span>
+</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="k">set</span> <span class="s2">&quot;local_name=Bob&quot;</span>
+</span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="p">:</span><span class="c1">: 使用局部变量</span>
+</span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a><span class="k">endlocal</span>
+</span><span id="__span-55-6"><a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>陷阱4: 嵌套call的深度限制</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="p">:</span><span class="c1">: 危险：可能导致栈溢出</span>
+</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="p">:</span><span class="nl">recursive</span>
+</span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="k">call</span> <span class="p">:</span><span class="nl">recursive</span>
+</span><span id="__span-56-4"><a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<p><strong>解决方案：</strong></p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="p">:</span><span class="c1">: 使用迭代代替递归</span>
+</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="k">set</span> <span class="s2">&quot;depth=0&quot;</span>
+</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="p">:</span><span class="nl">loop</span>
+</span><span id="__span-57-4"><a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;depth+=1&quot;</span>
+</span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="k">if</span> <span class="nv">%depth%</span> <span class="ow">GEQ</span> 100 <span class="k">goto</span> <span class="p">:</span><span class="nl">done</span>
+</span><span id="__span-57-6"><a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">loop</span>
+</span><span id="__span-57-7"><a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="p">:</span><span class="nl">done</span>
+</span></code></pre></div>
+<h3 id="7113">7.11.3 性能考虑<a class="headerlink" href="#7113" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">性能提示</p>
+<ul>
+<li>延迟扩展有轻微性能开销</li>
+<li>频繁的 <code>call</code> 调用比直接执行慢</li>
+<li>嵌套调用深度影响性能</li>
+<li>对于简单操作，考虑内联而不是函数调用</li>
+</ul>
+</div>
+<hr />
+<h2 id="712">7.12 实战练习<a class="headerlink" href="#712" title="Permanent link">&para;</a></h2>
+<h3 id="1">练习1: 基础函数<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>创建一个函数 <code>:max</code>，接收两个参数，返回较大的那个值。</p>
+<p><strong>要求：</strong>
+- 使用 ERRORLEVEL 返回结果
+- 处理相等的情况</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="k">setlocal</span>
+</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
+</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="p">:</span><span class="c1">: 测试你的函数</span>
+</span><span id="__span-58-5"><a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="k">call</span> <span class="p">:</span><span class="nl">max</span> 10 20
+</span><span id="__span-58-6"><a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="k">echo</span> 最大值: <span class="nv">%ERRORLEVEL%</span>
+</span><span id="__span-58-7"><a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a>
+</span><span id="__span-58-8"><a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a><span class="k">call</span> <span class="p">:</span><span class="nl">max</span> 30 15
+</span><span id="__span-58-9"><a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a><span class="k">echo</span> 最大值: <span class="nv">%ERRORLEVEL%</span>
+</span><span id="__span-58-10"><a id="__codelineno-58-10" name="__codelineno-58-10" href="#__codelineno-58-10"></a>
+</span><span id="__span-58-11"><a id="__codelineno-58-11" name="__codelineno-58-11" href="#__codelineno-58-11"></a><span class="k">endlocal</span>
+</span><span id="__span-58-12"><a id="__codelineno-58-12" name="__codelineno-58-12" href="#__codelineno-58-12"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-58-13"><a id="__codelineno-58-13" name="__codelineno-58-13" href="#__codelineno-58-13"></a>
+</span><span id="__span-58-14"><a id="__codelineno-58-14" name="__codelineno-58-14" href="#__codelineno-58-14"></a><span class="p">:</span><span class="nl">max</span>
+</span><span id="__span-58-15"><a id="__codelineno-58-15" name="__codelineno-58-15" href="#__codelineno-58-15"></a><span class="p">:</span><span class="c1">: 在这里实现你的代码</span>
+</span><span id="__span-58-16"><a id="__codelineno-58-16" name="__codelineno-58-16" href="#__codelineno-58-16"></a><span class="p">:</span><span class="c1">: ...</span>
+</span><span id="__span-58-17"><a id="__codelineno-58-17" name="__codelineno-58-17" href="#__codelineno-58-17"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<details class="success">
+<summary>参考答案</summary>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="p">:</span><span class="nl">max</span>
+</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="k">if</span> <span class="nv">%~1</span> <span class="ow">GEQ</span> <span class="nv">%~2</span> <span class="p">(</span>
+</span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>    <span class="k">exit</span> /b <span class="nv">%~1</span>
+</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span><span id="__span-59-5"><a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>    <span class="k">exit</span> /b <span class="nv">%~2</span>
+</span><span id="__span-59-6"><a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<h3 id="2">练习2: 字符串处理<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>创建一个函数 <code>:reverse</code>，反转字符串。</p>
+<p><strong>要求：</strong>
+- 使用延迟扩展
+- 通过变量返回结果</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>
+</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">reverse</span> <span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="k">echo</span> 反转: <span class="nv">!result!</span>
+</span><span id="__span-60-6"><a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a>
+</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="k">call</span> <span class="p">:</span><span class="nl">reverse</span> <span class="s2">&quot;batch&quot;</span>
+</span><span id="__span-60-8"><a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a><span class="k">echo</span> 反转: <span class="nv">!result!</span>
+</span><span id="__span-60-9"><a id="__codelineno-60-9" name="__codelineno-60-9" href="#__codelineno-60-9"></a>
+</span><span id="__span-60-10"><a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a><span class="k">endlocal</span>
+</span><span id="__span-60-11"><a id="__codelineno-60-11" name="__codelineno-60-11" href="#__codelineno-60-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-60-12"><a id="__codelineno-60-12" name="__codelineno-60-12" href="#__codelineno-60-12"></a>
+</span><span id="__span-60-13"><a id="__codelineno-60-13" name="__codelineno-60-13" href="#__codelineno-60-13"></a><span class="p">:</span><span class="nl">reverse</span>
+</span><span id="__span-60-14"><a id="__codelineno-60-14" name="__codelineno-60-14" href="#__codelineno-60-14"></a><span class="p">:</span><span class="c1">: 在这里实现你的代码</span>
+</span><span id="__span-60-15"><a id="__codelineno-60-15" name="__codelineno-60-15" href="#__codelineno-60-15"></a><span class="p">:</span><span class="c1">: ...</span>
+</span><span id="__span-60-16"><a id="__codelineno-60-16" name="__codelineno-60-16" href="#__codelineno-60-16"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<details class="success">
+<summary>参考答案</summary>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="p">:</span><span class="nl">reverse</span>
+</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="k">set</span> <span class="s2">&quot;str=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="k">set</span> <span class="s2">&quot;result=&quot;</span>
+</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="k">for</span> <span class="k">/l</span> <span class="se">%%</span>i <span class="k">in</span> <span class="p">(</span><span class="mi">0</span>,<span class="mi">1</span>,<span class="mi">1000</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span>
+</span><span id="__span-61-5"><a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>    <span class="k">if</span> <span class="s2">&quot;!str:~</span><span class="se">%%</span><span class="s2">i,1!&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">goto</span> <span class="p">:</span><span class="nl">reverse_done</span>
+</span><span id="__span-61-6"><a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>    <span class="k">set</span> <span class="s2">&quot;result=!str:~</span><span class="se">%%</span><span class="s2">i,1!!result!&quot;</span>
+</span><span id="__span-61-7"><a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="p">)</span>
+</span><span id="__span-61-8"><a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a><span class="p">:</span><span class="nl">reverse_done</span>
+</span><span id="__span-61-9"><a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+</details>
+<h3 id="3">练习3: 数组处理<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>创建一个函数 <code>:sum_array</code>，计算数组元素的和。</p>
+<p><strong>要求：</strong>
+- 数组通过多个参数传递
+- 使用 <code>%*</code> 和循环</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>
+</span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="k">call</span> <span class="p">:</span><span class="nl">sum_array</span> 1 2 3 4 5
+</span><span id="__span-62-5"><a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a><span class="k">echo</span> 总和: <span class="nv">!result!</span>
+</span><span id="__span-62-6"><a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a>
+</span><span id="__span-62-7"><a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a><span class="k">call</span> <span class="p">:</span><span class="nl">sum_array</span> 10 20 30
+</span><span id="__span-62-8"><a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a><span class="k">echo</span> 总和: <span class="nv">!result!</span>
+</span><span id="__span-62-9"><a id="__codelineno-62-9" name="__codelineno-62-9" href="#__codelineno-62-9"></a>
+</span><span id="__span-62-10"><a id="__codelineno-62-10" name="__codelineno-62-10" href="#__codelineno-62-10"></a><span class="k">endlocal</span>
+</span><span id="__span-62-11"><a id="__codelineno-62-11" name="__codelineno-62-11" href="#__codelineno-62-11"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-62-12"><a id="__codelineno-62-12" name="__codelineno-62-12" href="#__codelineno-62-12"></a>
+</span><span id="__span-62-13"><a id="__codelineno-62-13" name="__codelineno-62-13" href="#__codelineno-62-13"></a><span class="p">:</span><span class="nl">sum_array</span>
+</span><span id="__span-62-14"><a id="__codelineno-62-14" name="__codelineno-62-14" href="#__codelineno-62-14"></a><span class="p">:</span><span class="c1">: 在这里实现你的代码</span>
+</span><span id="__span-62-15"><a id="__codelineno-62-15" name="__codelineno-62-15" href="#__codelineno-62-15"></a><span class="p">:</span><span class="c1">: ...</span>
+</span><span id="__span-62-16"><a id="__codelineno-62-16" name="__codelineno-62-16" href="#__codelineno-62-16"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+<details class="success">
+<summary>参考答案</summary>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="p">:</span><span class="nl">sum_array</span>
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="k">set</span> <span class="s2">&quot;result=0&quot;</span>
+</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="p">:</span><span class="nl">sum_loop</span>
+</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="k">goto</span> <span class="p">:</span><span class="nl">sum_done</span>
+</span><span id="__span-63-5"><a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="k">set</span> <span class="k">/a</span> <span class="s2">&quot;result+=</span><span class="nv">%~1</span><span class="s2">&quot;</span>
+</span><span id="__span-63-6"><a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="k">shift</span>
+</span><span id="__span-63-7"><a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">sum_loop</span>
+</span><span id="__span-63-8"><a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="p">:</span><span class="nl">sum_done</span>
+</span><span id="__span-63-9"><a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span></code></pre></div>
+</details>
+<h3 id="4">练习4: 作用域管理<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>解释以下代码的输出，并说明为什么：</p>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="p">@</span><span class="k">echo</span> off
+</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="k">set</span> <span class="s2">&quot;x=1&quot;</span>
+</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="k">echo</span> A: <span class="nv">%x%</span>
+</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>
+</span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a><span class="k">setlocal</span>
+</span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="k">set</span> <span class="s2">&quot;x=2&quot;</span>
+</span><span id="__span-64-7"><a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="k">echo</span> B: <span class="nv">%x%</span>
+</span><span id="__span-64-8"><a id="__codelineno-64-8" name="__codelineno-64-8" href="#__codelineno-64-8"></a>
+</span><span id="__span-64-9"><a id="__codelineno-64-9" name="__codelineno-64-9" href="#__codelineno-64-9"></a><span class="k">setlocal</span>
+</span><span id="__span-64-10"><a id="__codelineno-64-10" name="__codelineno-64-10" href="#__codelineno-64-10"></a><span class="k">set</span> <span class="s2">&quot;x=3&quot;</span>
+</span><span id="__span-64-11"><a id="__codelineno-64-11" name="__codelineno-64-11" href="#__codelineno-64-11"></a><span class="k">echo</span> C: <span class="nv">%x%</span>
+</span><span id="__span-64-12"><a id="__codelineno-64-12" name="__codelineno-64-12" href="#__codelineno-64-12"></a><span class="k">endlocal</span>
+</span><span id="__span-64-13"><a id="__codelineno-64-13" name="__codelineno-64-13" href="#__codelineno-64-13"></a>
+</span><span id="__span-64-14"><a id="__codelineno-64-14" name="__codelineno-64-14" href="#__codelineno-64-14"></a><span class="k">echo</span> D: <span class="nv">%x%</span>
+</span><span id="__span-64-15"><a id="__codelineno-64-15" name="__codelineno-64-15" href="#__codelineno-64-15"></a><span class="k">endlocal</span>
+</span><span id="__span-64-16"><a id="__codelineno-64-16" name="__codelineno-64-16" href="#__codelineno-64-16"></a>
+</span><span id="__span-64-17"><a id="__codelineno-64-17" name="__codelineno-64-17" href="#__codelineno-64-17"></a><span class="k">echo</span> E: <span class="nv">%x%</span>
+</span></code></pre></div>
+<details class="success">
+<summary>参考答案</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>A: 1    (全局变量x=1)
+</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>B: 2    (第一层setlocal内x=2)
+</span><span id="__span-65-3"><a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a>C: 3    (第二层setlocal内x=3)
+</span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a>D: 2    (第二层endlocal，回到第一层，x=2)
+</span><span id="__span-65-5"><a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a>E: 1    (第一层endlocal，回到全局，x=1)
+</span></code></pre></div>
+</details>
+<h3 id="5">练习5: 综合应用<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p>创建一个简单的"计算器"库，支持加、减、乘、除四则运算。</p>
+<p><strong>要求：</strong>
+- 创建单独的库文件 <code>calc.bat</code>
+- 每个运算一个函数
+- 处理除零错误
+- 通过变量返回结果</p>
+<hr />
+<h2 id="713">7.13 本章小结<a class="headerlink" href="#713" title="Permanent link">&para;</a></h2>
+<h3 id="_2">关键概念回顾<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>标签和goto</strong> - CMD函数的基础，标签定义函数入口</li>
+<li><strong>call命令</strong> - 调用子程序的核心，支持调用内部标签和外部脚本</li>
+<li><strong>参数传递</strong> - 使用 <code>%1</code>-<code>%9</code> 和 <code>%*</code>，注意特殊字符处理</li>
+<li><strong>返回值</strong> - ERRORLEVEL（数值）或变量（任意值）</li>
+<li><strong>延迟扩展</strong> - 解决代码块内变量更新问题，使用 <code>!var!</code></li>
+<li><strong>作用域</strong> - <code>setlocal</code>/<code>endlocal</code> 管理局部变量</li>
+<li><strong>函数库</strong> - 将常用函数组织到单独文件</li>
+</ol>
+<h3 id="_3">核心语法速查<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="p">:</span><span class="c1">: 定义函数</span>
+</span><span id="__span-66-2"><a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="p">:</span><span class="nl">function_name</span>
+</span><span id="__span-66-3"><a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="p">:</span><span class="c1">: 函数代码</span>
+</span><span id="__span-66-4"><a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a><span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
+</span><span id="__span-66-5"><a id="__codelineno-66-5" name="__codelineno-66-5" href="#__codelineno-66-5"></a>
+</span><span id="__span-66-6"><a id="__codelineno-66-6" name="__codelineno-66-6" href="#__codelineno-66-6"></a><span class="p">:</span><span class="c1">: 调用函数</span>
+</span><span id="__span-66-7"><a id="__codelineno-66-7" name="__codelineno-66-7" href="#__codelineno-66-7"></a><span class="k">call</span> <span class="p">:</span><span class="nl">function_name</span> arg1 arg2
+</span><span id="__span-66-8"><a id="__codelineno-66-8" name="__codelineno-66-8" href="#__codelineno-66-8"></a>
+</span><span id="__span-66-9"><a id="__codelineno-66-9" name="__codelineno-66-9" href="#__codelineno-66-9"></a><span class="p">:</span><span class="c1">: 返回值</span>
+</span><span id="__span-66-10"><a id="__codelineno-66-10" name="__codelineno-66-10" href="#__codelineno-66-10"></a><span class="k">exit</span> /b <span class="nv">%value%</span>          :: ERRORLEVEL
+</span><span id="__span-66-11"><a id="__codelineno-66-11" name="__codelineno-66-11" href="#__codelineno-66-11"></a><span class="k">set</span> <span class="s2">&quot;result=value&quot;</span>       :: 变量返回
+</span><span id="__span-66-12"><a id="__codelineno-66-12" name="__codelineno-66-12" href="#__codelineno-66-12"></a>
+</span><span id="__span-66-13"><a id="__codelineno-66-13" name="__codelineno-66-13" href="#__codelineno-66-13"></a><span class="p">:</span><span class="c1">: 延迟扩展</span>
+</span><span id="__span-66-14"><a id="__codelineno-66-14" name="__codelineno-66-14" href="#__codelineno-66-14"></a><span class="k">setlocal</span> EnableDelayedExpansion
+</span><span id="__span-66-15"><a id="__codelineno-66-15" name="__codelineno-66-15" href="#__codelineno-66-15"></a><span class="k">echo</span> <span class="nv">!variable!</span>
+</span><span id="__span-66-16"><a id="__codelineno-66-16" name="__codelineno-66-16" href="#__codelineno-66-16"></a>
+</span><span id="__span-66-17"><a id="__codelineno-66-17" name="__codelineno-66-17" href="#__codelineno-66-17"></a><span class="p">:</span><span class="c1">: 作用域</span>
+</span><span id="__span-66-18"><a id="__codelineno-66-18" name="__codelineno-66-18" href="#__codelineno-66-18"></a><span class="k">setlocal</span>
+</span><span id="__span-66-19"><a id="__codelineno-66-19" name="__codelineno-66-19" href="#__codelineno-66-19"></a><span class="p">:</span><span class="c1">: 局部代码</span>
+</span><span id="__span-66-20"><a id="__codelineno-66-20" name="__codelineno-66-20" href="#__codelineno-66-20"></a><span class="k">endlocal</span>
+</span></code></pre></div>
+<h3 id="_4">下一步学习<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../ch08-data-structures/">第08章 数据结构</a> - 学习在CMD中模拟数组、栈等数据结构</li>
+<li><a href="../ch09-env-registry/">第09章 环境变量与注册表</a> - 深入了解系统配置</li>
+</ul>
+<hr />
+<h2 id="714">7.14 附加资源<a class="headerlink" href="#714" title="Permanent link">&para;</a></h2>
+<h3 id="_5">示例代码<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>本章所有示例代码可在 <code>examples/ch07/</code> 目录找到：</p>
+<ul>
+<li><code>call_basic.bat</code> - call基础用法演示</li>
+<li><code>params.bat</code> - 参数传递完整示例</li>
+<li><code>return_values.bat</code> - 返回值处理方法</li>
+<li><code>setlocal_demo.bat</code> - 作用域管理演示</li>
+<li><code>delayed_expansion.bat</code> - 延迟扩展详解</li>
+<li><code>library_demo.bat</code> - 函数库使用示例</li>
+</ul>
+<h3 id="_6">对比语言代码<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>comparison.py</code> - Python函数对比</li>
+<li><code>comparison.js</code> - JavaScript函数对比</li>
+<li><code>comparison.c</code> - C语言函数对比</li>
+<li><code>comparison.lua</code> - Lua函数对比</li>
+</ul>
+<h3 id="_7">参考资料<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call">Microsoft - Call命令文档</a></li>
+<li><a href="https://ss64.com/nt/call.html">SS64 - Batch Functions</a></li>
+<li><a href="https://www.robvanderwoude.com/battech_functions.php">Rob van der Woude - Batch Functions</a></li>
+</ul>
+<hr />
+<p><strong>下一章</strong>: <a href="../ch08-data-structures/">第08章 数据结构</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/example/cmd-learn" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
