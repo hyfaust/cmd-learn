@@ -142,7 +142,7 @@ graph TD
 
 ```cmd
 :: 克隆仓库
-git clone https://github.com/example/cmd-learn.git
+git clone https://github.com/hyfaust/cmd-learn.git
 cd cmd-learn
 
 :: 安装 MkDocs 和 Material 主题

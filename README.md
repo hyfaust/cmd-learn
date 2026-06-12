@@ -142,7 +142,7 @@ No installation required! The tutorial documentation can be accessed directly:
 
 ```bash
 # Clone the repository
-git clone https://github.com/example/cmd-learn.git
+git clone https://github.com/hyfaust/cmd-learn.git
 cd cmd-learn
 
 # Install MkDocs and Material theme

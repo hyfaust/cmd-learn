@@ -1,7 +1,7 @@
 site_name: CMD/BAT 从入门到精通
 site_description: Windows 命令行脚本编程完整学习教程
 site_author: CMD Learn Project
-repo_url: https://github.com/example/cmd-learn
+repo_url: https://github.com/hyfaust/cmd-learn
 edit_uri: ""
 
 theme:
@@ -73,7 +73,7 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/example/cmd-learn
+      link: https://github.com/hyfaust/cmd-learn
 
 nav:
   - 首页: index.md
