@@ -1,0 +1,101 @@
+site_name: CMD/BAT 从入门到精通
+site_description: Windows 命令行脚本编程完整学习教程
+site_author: CMD Learn Project
+repo_url: https://github.com/example/cmd-learn
+edit_uri: ""
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到暗色模式
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到亮色模式
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+plugins:
+  - search
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/example/cmd-learn
+
+nav:
+  - 首页: index.md
+  - 快速开始: getting-started.md
+  - 入门篇:
+    - ch01-hello-cmd/index.md
+    - ch02-file-management/index.md
+    - ch03-conditionals/index.md
+    - ch04-loops/index.md
+  - 进阶篇:
+    - ch05-string-processing/index.md
+    - ch06-file-io/index.md
+    - ch07-functions/index.md
+    - ch08-data-structures/index.md
+  - 高级篇:
+    - ch09-env-registry/index.md
+    - ch10-network/index.md
+    - ch11-process-services/index.md
+    - ch12-task-scheduler/index.md
+  - 精通篇:
+    - ch13-multilang/index.md
+    - ch14-projects/index.md
+    - ch15-security/index.md
+  - 附录:
+    - appendix/index.md

@@ -1,0 +1,36 @@
+# Qwen Code
+.qwen/
+
+# MkDocs build output
+site/
+
+# Test reports
+test_report.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
